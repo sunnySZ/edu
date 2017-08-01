@@ -1,0 +1,29 @@
+npm常用命令：
+    npm install 名字    安装    -D(模块名添加到package目录)
+    npm uninstall 名字  卸载    -save(模块名从package目录删除)     
+
+
+npm上传自己模块
+
+1，注册用户（官网注册或命令注册npm adduer,登录用npm login）
+2, 检查登录 
+      npm whoami
+3,npm install xxx --save 保持到package.json
+
+
+
+proxy:{
+      '/api':{
+        target:'https://api.douban.com',
+        pathRewrite:{'/api':''}
+      }
+    }
+
+
+
+
+
+loaders: {
+                        test: /\.less$/,
+                        loader: "style-loader!css-loader!less-loader",
+                    }

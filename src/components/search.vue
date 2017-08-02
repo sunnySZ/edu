@@ -1,0 +1,19 @@
+<template>
+	<div>
+	</div>
+</template>
+<script>
+  export default{
+      data(){
+          return{
+              selected:this.$route.name
+          }
+      },
+      watch:{
+          selected(curVal,oldVal){
+              console.log(curVal)
+                 this.$router.push({path:'/'+curVal})
+          }
+      }
+  }
+</script>

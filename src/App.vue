@@ -1,60 +1,44 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div id="app">
+        <!--<keep-alive><router-view></router-view></keep-alive>-->
+        <!--<transition name="slide-down"><router-view></router-view></transition>-->
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    export default {
+        name: 'app',
+        data() {
+            return {
+                msg: 'Welcome to Your Vue.js App'
+            }
+        }
     }
-  }
-}
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    #app {
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin-top: 50px;
+        margin-bottom: 65px;
+    }
+    a{ text-decoration: none;}
+    @media screen and (min-width:320px){html{font-size:10px;}}
+    @media screen and (min-width:540px){html{font-size:21px;}}
+    @media screen and (min-width:740px){html{font-size:28px;}}
 
-h1, h2 {
-  font-weight: normal;
-}
+    p{ padding: 0; margin: 0;}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+    .slide-down-enter-active, .slide-down-leave-active {
+        transition: .4s all ease;
+        opacity: 0.5;
+        transform: translate3d(0, 5em, 0);
+    }
+    .slide-down-enter, .slide-down-leave {
+        opacity: 1;
+        transform: translate3d(0, 5em, 0);
+    }
 </style>

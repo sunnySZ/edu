@@ -22,8 +22,6 @@
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        margin-top: 50px;
-        margin-bottom: 65px;
     }
     a{ text-decoration: none;}
     @media screen and (min-width:320px){html{font-size:10px;}}

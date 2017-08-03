@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <mt-header>
-            <router-link to="/" slot="left">
-                <input class="info" type="text" placeholder="搜索商品活动或游玩地" value="">
+    <div class="select_page">
+        <mt-header fixed>
+            <router-link to="/search" slot="left">
+                <input class="info" type="text" placeholder="搜索商品活动或游玩地">
             </router-link>
            </mt-header>
         <Banner></Banner>
@@ -50,7 +50,12 @@
                 </a>
             </li>
         </ul>
-
+        <mt-cell title="热门精选"></mt-cell>
+        <ul class="hot_list">
+            <li class="page-lazyload-listitem" v-for="item in list">
+                <img v-lazy="item" class="page-lazyload-image">
+            </li>
+        </ul>
         <Foot></Foot>
     </div>
 </template>
@@ -59,7 +64,15 @@
     import Foot from './footer.vue'
     export default{
         data(){
-            return {}
+            return {
+                list: [
+                    'http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg',
+                    'http://img.wanfantian.com/uploads/201708/02/eec9bf5575fe3f9f9bd5c8cf13b14083.jpg',
+                    'http://img.wanfantian.com/uploads/201708/03/6a3b89be6a1449f913891ec049e86bf3.jpg',
+                    'http://img.wanfantian.com/uploads/201707/24/5a0ff73b393e129fc887366611ba78b1.png',
+                    'http://img.wanfantian.com/uploads/201706/06/c8c5ae626076b0a2d999dffb72b27f8c.png',
+                ]
+            }
         },
         components: {
             Banner,
@@ -68,26 +81,30 @@
     }
 </script>
 <style lang="less">
-    #app {
+    .info{
+        padding:0.5rem 0 0.5rem 1rem;
+        border: none;
+        font-size:1.2rem;
+        box-sizing: border-box;
+        border-radius:1.5rem;
+        width: 70%;
+        position:absolute;
+        left:15%;
+        top:0.5rem;
+        color: #999999;
+    }
 
-        .mint-header{ position: fixed; left: 0; top: 0; width: 100%;}
-        .info{
-            padding:0.5rem 0 0.5rem 3rem;
-            border: none;
-            font-size:1.2rem;
-            box-sizing: border-box;
-            border-radius:1.5rem;
-            color: #999999;
-        }
-        .mint-swipe {height:16rem; margin-bottom: 1rem;}
-        .mint-swipe-item {line-height:16rem;font-size: 3.6rem; color: white; text-align: center; background-color: blueviolet;}
+    .select_page {
+        margin-top: 50px;
+        margin-bottom: 65px;
+
+
         .type_list,.coupon_list{display: flex; justify-content: space-between; padding: 0; margin: 0; }
-        .type_list > li{width: 18%; min-height:5rem;display: block; text-align: center;}
+        .type_list > li{width: 16%; min-height:5rem;display: block; text-align: center;}
         .type_list li img{ width: 100%;}
         .coupon_list > li{ width: 32%; display: block;}
         .coupon_list li img{ width: 100%;}
-        .coupon_list li a {
-            display: block;
+        .coupon_list li a {display: block;
               width: 100%;
             position: relative;
         }
@@ -127,5 +144,8 @@
         .mint-cell-allow-right::after {
             right: 0.5rem;
         }
+        .hot_list{ padding: 0; margin: 0;}
+        .hot_list li{ display: block}
+        .hot_list li img{width: 100%;}
     }
 </style>

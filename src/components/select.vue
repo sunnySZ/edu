@@ -25,35 +25,22 @@
                 <span>微度假</span>
             </li>
         </ul>
-        <mt-cell title="优惠推荐" is-link :to="{ name:'infinite', params: { url: '/lkp/v2/movie/coming_soon?' }}"
+        <mt-cell title="优惠推荐" label="全年遛娃 嗨翻天！" is-link
+                 :to="{ name:'home', params: { url: '/lkp/v2/movie/coming_soon?' }}"
                  value="更多"></mt-cell>
         <ul class="coupon_list">
-            <li>
-                <a href="https://play.wanfantian.com/ticket/commodityDetail?id=2569&#10;">
+            <li v-for="(item,index) in hotData">
+                <router-link :to="{ name: 'detail',params: { id: item.id }}">
                     <img src="http://img.wanfantian.com/uploads/201707/31/107fb1575047943239a8f94675eab7d2.jpg">
                     <span>¥49.90起</span>
                     <p>顽童堡儿童主题乐园</p>
-                </a>
-            </li>
-            <li>
-                <a href="https://play.wanfantian.com/ticket/commodityDetail?id=2541&#10;">
-                    <img src="http://img.wanfantian.com/uploads/201708/02/ff36a720297ebad5f71901d40f5f4cfe.jpg">
-                    <span>¥9.90起</span>
-                    <p>奥山小鬼帮帮团之极速前进</p>
-                </a>
-            </li>
-            <li>
-                <a href="https://play.wanfantian.com/ticket/commodityDetail?id=2541&#10;">
-                    <img src="http://img.wanfantian.com/uploads/201708/02/ff36a720297ebad5f71901d40f5f4cfe.jpg">
-                    <span>¥9.90起</span>
-                    <p>奥山小鬼帮帮团之极速前进</p>
-                </a>
+                </router-link>
             </li>
         </ul>
-        <mt-cell title="热门精选"></mt-cell>
+        <mt-cell title="热门精选" label="用心推荐 优质体验"></mt-cell>
         <ul class="hot_list">
-            <li>
-                <a href="">
+            <li v-for="(item,index) in hotData">
+                <router-link :to="{ name: 'detail',params: { id: item.id }}">
                     <img src="http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg"/>
                     <aside class="aside">
                         <p>超燃丨加拿大互动亲子剧《你是演奏家》</p>
@@ -63,20 +50,7 @@
                     </aside>
                     <span class="price">￥<mark>120.00</mark>起</span>
                     <span class="num">已售94份</span>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <img src="http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg"/>
-                    <aside class="aside">
-                        <p>超燃丨加拿大互动亲子剧《你是演奏家》</p>
-                        <span>返利18元</span>
-                        <span>分享有礼</span>
-                        <span>点评有礼</span>
-                    </aside>
-                    <span class="price">￥<mark>120.00</mark>起</span>
-                    <span class="num">已售94份</span>
-                </a>
+                </router-link>
             </li>
         </ul>
         <Foot></Foot>
@@ -88,13 +62,7 @@
     export default{
         data(){
             return {
-                list: [
-                    'http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg',
-                    'http://img.wanfantian.com/uploads/201708/02/eec9bf5575fe3f9f9bd5c8cf13b14083.jpg',
-                    'http://img.wanfantian.com/uploads/201708/03/6a3b89be6a1449f913891ec049e86bf3.jpg',
-                    'http://img.wanfantian.com/uploads/201707/24/5a0ff73b393e129fc887366611ba78b1.png',
-                    'http://img.wanfantian.com/uploads/201706/06/c8c5ae626076b0a2d999dffb72b27f8c.png',
-                ]
+                hotData:[{"id":1},{"id":2},{"id":3}]
             }
         },
         components: {
@@ -110,9 +78,9 @@
         padding-left: 3rem;
         box-sizing: border-box;
         border-radius: 15px;
-        width: 70%;
+        width: 76%;
         position: absolute;
-        left: 15%;
+        left: 12%;
         top: 6px;
         color: #999999;
         height: 28px;
@@ -177,6 +145,14 @@
             margin-top: 1rem;
             min-height: 3.2rem;
         }
+        .mint-cell-label {
+            display: inline;
+            color: #c4babd;
+            font-size: 1.2rem;
+            padding-left: 0.5rem;
+            margin-left: 0.5rem;
+            border-left: 1px solid #ccc;
+        }
         .mint-cell-title {
             border-left: 0.3rem solid green;
             padding-left: 0.5rem;
@@ -218,31 +194,31 @@
         }
         .hot_list li a .aside span {
             font-size: 1rem;
-            padding:0.2rem 0.5rem;
+            padding: 0.1rem 0.3rem;
             border: 1px solid #fa6e51;
             border-radius: 0.3rem;
             color: #fa6e51;
         }
         .hot_list li a .price {
             font-size: 1.2rem;
-            padding:0.2rem 0.5rem;
+            padding: 0.2rem 0.5rem;
             background: rgba(0, 0, 0, 0.6);
             color: #ffffff;
             position: absolute;
-            bottom:7rem;
+            bottom: 7rem;
             left: 0;
         }
         .hot_list li a .price mark {
-            font-size:2.4rem;
-            background:none;
+            font-size: 2.4rem;
+            background: none;
             color: #ffffff;
         }
         .hot_list li a .num {
-            border-radius:1rem 0 0 1rem;
-            padding:0.2rem 1rem;
+            border-radius: 1rem 0 0 1rem;
+            padding: 0.2rem 1rem;
             font-size: 1.2rem;
             position: absolute;
-            bottom:6rem;
+            bottom: 6rem;
             right: 0;
             background: rgba(0, 0, 0, 0.6);
             color: #ffffff;

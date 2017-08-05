@@ -6,12 +6,12 @@
             <mt-tab-item id="3">最新上架</mt-tab-item>
         </mt-navbar>
          <mt-popup v-model="popupVisible" position="top" class="pop_tab">
-             <div class="select_box" v-show="selected==1?true:false"><mt-cell v-for="n in 26" :title="'内容  ' + n" /></div>
+             <div class="select_box" v-show="selected==1?true:false"><mt-cell v-for="n in 26" :title="'内容  ' + n" :key="n" /></div>
              <div class="select_box" v-show="selected==2?true:false">222</div>
              <div class="select_box" v-show="selected==3?true:false">333</div>
            <mt-cell class="page-part" title="当前选中">{{selected}}</mt-cell>
          </mt-popup>
-        <mt-cell v-for="n in 6" :title="'内容  ' + n" />
+        <mt-cell v-for="n in 6" :title="'内容  ' + n" :key="n" />
         <Foot></Foot>
     </div>
 </template>

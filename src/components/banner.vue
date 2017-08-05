@@ -30,7 +30,7 @@
 </script>
 <style lang="less">
     .banner_page{
-    .mint-swipe {height: 13rem; margin-bottom: 1rem;}
+    .mint-swipe {height: 13rem;}
     .mint-swipe-item img{width: 100%;}
     }
 </style>

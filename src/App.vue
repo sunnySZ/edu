@@ -23,6 +23,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+    body{ background-color: #eeeeee; margin: 0;}
     a{ text-decoration: none;}
     @media screen and (min-width:320px){html{font-size:10px;}}
     @media screen and (min-width:540px){html{font-size:21px;}}

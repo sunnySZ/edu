@@ -1,17 +1,16 @@
 <template>
     <div class="select_page">
         <mt-header fixed>
+            <mt-button slot="left">深圳</mt-button>
             <router-link to="/search" slot="left">
                 <input class="info" type="text" placeholder="搜索商品活动或游玩地">
             </router-link>
-           </mt-header>
+        </mt-header>
         <Banner></Banner>
-
-
         <ul class="type_list">
             <li><img src="http://img.wanfantian.com/uploads/201706/16/bba95870ae8a27ce5f21a4571c4f66a7.png">
                 <span>夏令营</span></li>
-            <li>  <img src="http://img.wanfantian.com/uploads/201706/16/dd93350d82b61389b4f453b1c0c1ece9.png">
+            <li><img src="http://img.wanfantian.com/uploads/201706/16/dd93350d82b61389b4f453b1c0c1ece9.png">
                 <span>暑期游</span></li>
             <li>
                 <img src="http://img.wanfantian.com/uploads/201706/30/834b8eb4329534a71a60b7170b273580.png">
@@ -26,7 +25,8 @@
                 <span>微度假</span>
             </li>
         </ul>
-        <mt-cell title="优惠推荐" is-link :to="{ name:'infinite', params: { url: '/lkp/v2/movie/coming_soon?' }}" value="更多"></mt-cell>
+        <mt-cell title="优惠推荐" is-link :to="{ name:'infinite', params: { url: '/lkp/v2/movie/coming_soon?' }}"
+                 value="更多"></mt-cell>
         <ul class="coupon_list">
             <li>
                 <a href="https://play.wanfantian.com/ticket/commodityDetail?id=2569&#10;">
@@ -52,8 +52,31 @@
         </ul>
         <mt-cell title="热门精选"></mt-cell>
         <ul class="hot_list">
-            <li class="page-lazyload-listitem" v-for="item in list">
-                <img v-lazy="item" class="page-lazyload-image">
+            <li>
+                <a href="">
+                    <img src="http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg"/>
+                    <aside class="aside">
+                        <p>超燃丨加拿大互动亲子剧《你是演奏家》</p>
+                        <span>返利18元</span>
+                        <span>分享有礼</span>
+                        <span>点评有礼</span>
+                    </aside>
+                    <span class="price">￥<mark>120.00</mark>起</span>
+                    <span class="num">已售94份</span>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <img src="http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg"/>
+                    <aside class="aside">
+                        <p>超燃丨加拿大互动亲子剧《你是演奏家》</p>
+                        <span>返利18元</span>
+                        <span>分享有礼</span>
+                        <span>点评有礼</span>
+                    </aside>
+                    <span class="price">￥<mark>120.00</mark>起</span>
+                    <span class="num">已售94份</span>
+                </a>
             </li>
         </ul>
         <Foot></Foot>
@@ -81,56 +104,84 @@
     }
 </script>
 <style lang="less">
-    .info{
-        padding:0.5rem 0 0.5rem 1rem;
+    .info {
         border: none;
-        font-size:1.2rem;
+        font-size: 12px;
+        padding-left: 3rem;
         box-sizing: border-box;
-        border-radius:1.5rem;
+        border-radius: 15px;
         width: 70%;
-        position:absolute;
-        left:15%;
-        top:0.5rem;
+        position: absolute;
+        left: 15%;
+        top: 6px;
         color: #999999;
+        height: 28px;
+        line-height: 28px;
     }
 
     .select_page {
-        margin-top: 50px;
+        margin-top: 40px;
         margin-bottom: 65px;
-
-
-        .type_list,.coupon_list{display: flex; justify-content: space-between; padding: 0; margin: 0; }
-        .type_list > li{width: 16%; min-height:5rem;display: block; text-align: center;}
-        .type_list li img{ width: 100%;}
-        .coupon_list > li{ width: 32%; display: block;}
-        .coupon_list li img{ width: 100%;}
-        .coupon_list li a {display: block;
-              width: 100%;
+        .type_list, .coupon_list {
+            display: flex;
+            justify-content: space-around;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        .type_list {
+            padding: 1rem 0;
+        }
+        .type_list > li {
+            width: 16%;
+            min-height: 5rem;
+            display: block;
+            text-align: center;
+        }
+        .type_list li img {
+            width: 100%;
+        }
+        .coupon_list > li {
+            width: 30%;
+            display: block;
+        }
+        .coupon_list li img {
+            width: 100%;
+        }
+        .coupon_list li a {
+            display: block;
+            width: 100%;
             position: relative;
         }
-     .coupon_list li a span {
+        .coupon_list li a span {
             padding: 0 1rem;
-            height:2.4rem;
+            height: 2.4rem;
             line-height: 2.4rem;
             color: #fff;
             position: absolute;
-            left:0;
-            bottom:3.4rem;
+            left: 0;
+            bottom: 3.4rem;
             font-size: 1.2rem;
             background: #ee7e66;
         }
-        .coupon_list li a p{height:2.4rem;
-            font-size:1rem;
-            line-height:2.4rem;
+        .coupon_list li a p {
+            height: 2.4rem;
+            font-size: 1rem;
+            line-height: 2.4rem;
             color: #000;
             text-overflow: ellipsis;
             white-space: nowrap;
-            overflow: hidden;}
-
+            overflow: hidden;
+        }
+        .mint-cell {
+            margin-top: 1rem;
+            min-height: 3.2rem;
+        }
         .mint-cell-title {
             border-left: 0.3rem solid green;
             padding-left: 0.5rem;
             font-size: 1.4rem;
+
         }
         .mint-cell-wrapper {
             font-size: 1.2rem;
@@ -144,8 +195,57 @@
         .mint-cell-allow-right::after {
             right: 0.5rem;
         }
-        .hot_list{ padding: 0; margin: 0;}
-        .hot_list li{ display: block}
-        .hot_list li img{width: 100%;}
+        .hot_list {
+            padding: 0;
+            margin: 0;
+        }
+        .hot_list li {
+            display: block;
+            margin-bottom: 1rem;
+            position: relative;
+            background-color: white;
+            padding-bottom: 0.5rem;
+        }
+        .hot_list li a img {
+            width: 100%;
+        }
+        .hot_list li a .aside {
+            font-size: 1.4rem;
+            line-height: 2.2rem;
+            padding-left: 1rem;
+            color: #000000;
+            font-size: 1.4rem;
+        }
+        .hot_list li a .aside span {
+            font-size: 1rem;
+            padding:0.2rem 0.5rem;
+            border: 1px solid #fa6e51;
+            border-radius: 0.3rem;
+            color: #fa6e51;
+        }
+        .hot_list li a .price {
+            font-size: 1.2rem;
+            padding:0.2rem 0.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            position: absolute;
+            bottom:7rem;
+            left: 0;
+        }
+        .hot_list li a .price mark {
+            font-size:2.4rem;
+            background:none;
+            color: #ffffff;
+        }
+        .hot_list li a .num {
+            border-radius:1rem 0 0 1rem;
+            padding:0.2rem 1rem;
+            font-size: 1.2rem;
+            position: absolute;
+            bottom:6rem;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+        }
     }
 </style>

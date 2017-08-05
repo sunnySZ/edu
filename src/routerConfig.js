@@ -21,7 +21,7 @@ import Detail from './components/detail.vue'
 
 const router = new VueRouter({
     routes: [
-        {name: 'select', path: '/', component: Select},
+        {name: 'home', path: '/', component: Select},
         {name: 'select', path: '/select', component: Select},
         {name: 'activity', path: '/activity', component: Activity},
         {name: 'ticket', path: '/ticket', component: Ticket},

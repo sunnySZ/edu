@@ -85,8 +85,61 @@
         color: #999999;
         height: 28px;
         line-height: 28px;
+        background:#ffffff url("../assets/icon1.png") no-repeat;
+        background-position: 0 30%;
     }
-
+    .hot_list {
+        padding: 0;
+        margin: 0;
+    }
+    .hot_list li {
+        display: block;
+        margin-bottom: 1rem;
+        position: relative;
+        background-color: white;
+        padding-bottom: 0.5rem;
+    }
+    .hot_list li a img {
+        width: 100%;
+    }
+    .hot_list li a .aside {
+        font-size: 1.4rem;
+        line-height: 2.2rem;
+        padding-left: 1rem;
+        color: #000000;
+        font-size: 1.4rem;
+    }
+    .hot_list li a .aside span {
+        font-size: 1rem;
+        padding: 0.1rem 0.3rem;
+        border: 1px solid #fa6e51;
+        border-radius: 0.3rem;
+        color: #fa6e51;
+    }
+    .hot_list li a .price {
+        font-size: 1.2rem;
+        padding: 0.2rem 0.5rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        position: absolute;
+        bottom: 7rem;
+        left: 0;
+    }
+    .hot_list li a .price mark {
+        font-size: 2.4rem;
+        background: none;
+        color: #ffffff;
+    }
+    .hot_list li a .num {
+        border-radius: 1rem 0 0 1rem;
+        padding: 0.2rem 1rem;
+        font-size: 1.2rem;
+        position: absolute;
+        bottom: 6rem;
+        right: 0;
+        background: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+    }
     .select_page {
         margin-top: 40px;
         margin-bottom: 65px;
@@ -171,57 +224,6 @@
         .mint-cell-allow-right::after {
             right: 0.5rem;
         }
-        .hot_list {
-            padding: 0;
-            margin: 0;
-        }
-        .hot_list li {
-            display: block;
-            margin-bottom: 1rem;
-            position: relative;
-            background-color: white;
-            padding-bottom: 0.5rem;
-        }
-        .hot_list li a img {
-            width: 100%;
-        }
-        .hot_list li a .aside {
-            font-size: 1.4rem;
-            line-height: 2.2rem;
-            padding-left: 1rem;
-            color: #000000;
-            font-size: 1.4rem;
-        }
-        .hot_list li a .aside span {
-            font-size: 1rem;
-            padding: 0.1rem 0.3rem;
-            border: 1px solid #fa6e51;
-            border-radius: 0.3rem;
-            color: #fa6e51;
-        }
-        .hot_list li a .price {
-            font-size: 1.2rem;
-            padding: 0.2rem 0.5rem;
-            background: rgba(0, 0, 0, 0.6);
-            color: #ffffff;
-            position: absolute;
-            bottom: 7rem;
-            left: 0;
-        }
-        .hot_list li a .price mark {
-            font-size: 2.4rem;
-            background: none;
-            color: #ffffff;
-        }
-        .hot_list li a .num {
-            border-radius: 1rem 0 0 1rem;
-            padding: 0.2rem 1rem;
-            font-size: 1.2rem;
-            position: absolute;
-            bottom: 6rem;
-            right: 0;
-            background: rgba(0, 0, 0, 0.6);
-            color: #ffffff;
-        }
+
     }
 </style>

@@ -7,7 +7,21 @@
         </mt-navbar>
         <mt-tab-container v-model="selected">
             <mt-tab-container-item id="1">
-                <mt-cell v-for="n in 10" :title="'内容 ' + n" :key="n"/>
+                <ul class="hot_list">
+                    <li v-for="(item,index) in hotData">
+                        <router-link :to="{ name: 'detail',params: { id: item.id }}">
+                            <img src="http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg"/>
+                            <aside class="aside">
+                                <p>超燃丨加拿大互动亲子剧《你是演奏家》</p>
+                                <span>返利18元</span>
+                                <span>分享有礼</span>
+                                <span>点评有礼</span>
+                            </aside>
+                            <span class="price">￥<mark>120.00</mark>起</span>
+                            <span class="num">已售94份</span>
+                        </router-link>
+                    </li>
+                </ul>
             </mt-tab-container-item>
             <mt-tab-container-item id="2">
                 <mt-cell v-for="n in 4" :title="'测试 ' + n"  :key="n"/>
@@ -24,7 +38,8 @@
     export default{
         data(){
             return {
-                selected: '1'//设置默认高亮
+                selected: '1',//设置默认高亮
+                hotData:[{"id":1},{"id":2},{"id":3}]
             }
         },
         watch: {

@@ -65,6 +65,21 @@
                 hotData:[{"id":1},{"id":2},{"id":3}]
             }
         },
+      /*  created(){
+            this.$indicator.open('加载中...');
+            this.getBanner();
+        },*/
+        methods:{
+          /* getBanner(){
+               var url = 'lkp/yjt/bannerlist';
+               this.$http.get(url).then((res) => {
+                 console.log(res)
+                   this.$indicator.close();//隐藏loading
+               }).catch((err) => {
+
+               });
+           }*/
+        },
         components: {
             Banner,
             Foot

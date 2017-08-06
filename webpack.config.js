@@ -1,14 +1,14 @@
 var path = require('path')
 var webpack = require('webpack')
-var fs=require('fs')
-var HtmlWebpackPlugin=require('html-webpack-plugin')
-var production=(process.env.NODE_ENV === 'production')
+var fs = require('fs')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var production = (process.env.NODE_ENV === 'production')
 
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
+        publicPath: production ? './' : '/dist/',
         filename: 'build.js'
     },
     module: {
@@ -49,7 +49,16 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
-        noInfo: true
+        noInfo: true,
+        proxy: {
+            //将请求地址里的'/yjt'通过本地开发服务器webpack-dev-server转发到'http://121.40.154.136/'
+            '/yjt': {
+                target: 'http://121.40.154.136',
+                pathRewrite: {'^/yjt': '/yjt'}, //将 '^/yjt' 替换成http://121.40.154.136/yjt
+                secure: false,  // 如果是https接口，需要配置这个参数
+                changeOrigin: true
+            }
+        }
     },
     performance: {
         hints: false
@@ -93,10 +102,10 @@ if (process.env.NODE_ENV === 'production') {
             minimize: true
         }),
         new HtmlWebpackPlugin({
-            filename:'./index.html',//在dist目录下会生成index.html，并注入脚本
-            inject:true //此参数必须加上，不加不注入
+            filename: './index.html',//在dist目录下会生成index.html，并注入脚本
+            inject: true //此参数必须加上，不加不注入
         })
     ])
-}else{
+} else {
     module.exports.devtool = '#source-map'
 }

@@ -29,7 +29,7 @@
     @media screen and (min-width:540px){html{font-size:21px;}}
     @media screen and (min-width:740px){html{font-size:28px;}}
 
-    p,h2{ padding: 0; margin: 0;}
+    p,h2,ul{ padding: 0; margin: 0;}
 
     .slide-down-enter-active, .slide-down-leave-active {
         transition: .4s all ease;

@@ -1,44 +1,163 @@
 <template>
     <div class="my_page">
-        个人中心
-        <input type="button" value="增加" @click="increment"/>
-        <input type="button" value="偶数增加" @click="addOdd"/>
-        <input type="button" value="异步增加" @click="clickAsync"/>
-        <p>现在数字为{{getNum}}</p>
-       <p>动画队列运动，过滤筛选</p>
-        <input type="text" v-model="$store.state.show"/>
-        <transition-group enter-active-class="zoomInLeft" leave-active-class="animated zoomOutRight">
-            <div class="box animated" v-for="(val,index) in lists" :key="index">
-                {{val}}
-            </div>
-        </transition-group>
-
+        <div class="login_top">
+            <img slot="icon" src="../assets/user_default.png">
+            <div class="login_msg">Hi 您还未登录 <br><a href="#">点击登陆</a></div>
+        </div>
+        <mt-cell title="我的订单" is-link
+                 :to="{ name:'', params: { url: '/lkp/v2/movie/coming_soon?' }}"
+                 value="查看全部订单"></mt-cell>
+        <ul class="order_item">
+            <li>
+                <a href="#">
+                    <span class="order-icons order-pay"></span>
+                    <p>待付款</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons order-use"></span>
+                    <p>待使用</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons order-eval"></span>
+                    <p>待评价</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons order-refund"></span>
+                    <p>退款/返利</p>
+                </a>
+            </li>
+        </ul>
+        <mt-cell title="会员专区" is-link></mt-cell>
+        <ul class="order_item order_item3">
+            <li>
+                <a href="#">
+                    <span class="order-icons child-traveller"></span>
+                    <p>亲子活动次数</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons coupon-icon"></span>
+                    <p class="item-info pa dib">
+                        <span class="item-title db">优惠券</span>
+                        <span class="item-value db">0张</span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons score-icon"></span>
+                    <p class="item-info pa dib">
+                        <span class="item-title db">积分</span>
+                        <span class="item-value db"></span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons collect-icon"></span>
+                    <p class="item-info pa dib">
+                        <span class="item-title db">收藏</span>
+                        <span class="item-value db"></span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="order-icons contact-icon"></span>
+                    <p class="item-info pa dib">
+                        <span class="item-title db">联系人</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
         <Foot></Foot>
     </div>
 </template>
 <script>
-    import {mapGetters,mapActions} from 'vuex'
     import Foot from './footer.vue'
-    /*import '_animate.css@3.5.2@animate.css/animate.css'*/
+
     export default{
         data(){
-            return{
-            }
+            return {}
         },
-       computed: mapGetters(['getNum','lists']),
-        methods:  mapActions(['increment','addOdd','clickAsync']),
-        components:{
+        components: {
             Foot
         }
     }
 </script>
 <style lang="less">
-    .box{
-        background-color: red;
-        width: 100px;
-        height: 100px;
-        margin-bottom: 10px;
-        line-height: 100px;
-        text-align: center;
+    .my_page {
+        .login_top {
+            display: flex;
+            background-color: #26a2ff;
+            opacity: 0.6;
+            font-size: 1.4rem;
+        }
+        .login_msg {
+            padding-top: 2rem;
+        }
+        .login_top img {
+            margin: 1rem;
+            width: 5rem;
+            height: 5rem;
+        }
+        .mint-cell {
+            margin-top: 0;
+            min-height: 3.2rem;
+        }
+        .mint-cell-title {
+            border-left: 0.3rem solid green;
+            padding-left: 0.5rem;
+            font-size: 1.5rem;
+        }
+        .mint-cell-wrapper {
+            font-size: 1.2rem;
+            background-image: none;
+            padding: 0;
+        }
+        .mint-cell-value.is-link {
+            color: green;
+            margin-right: 1.2rem;
+        }
+        .mint-cell-allow-right::after {
+            right: 0.5rem;
+        }
+        .order_item {
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            background-color: white;
+            border-top:1px solid #ccc;
+            margin:0 0 1rem;
+        }
+        .order_item  li {
+            min-height: 5rem;
+            display: block;
+            text-align: center;
+        }
+        .order_item3{ flex-wrap: wrap; justify-content: flex-start;}
+        .order_item3 li{ width: 33.33%;border-right: 1px solid #cccccc; border-bottom: 1px solid #cccccc; box-sizing: border-box;}
+        .order_item3 li:nth-child(3n){ border-right: none;}
+        .order_item  li a{ color: #000000; display: block;}
+        .order_item .order-icons{  width: 2rem;height: 2rem;display: block; margin:0.5rem auto;
+            background: url("../assets/icon1.png") no-repeat; background-size: cover;}
+        .order_item .order-pay{ background-position: 0 40%;}
+        .order_item .order-use{ background-position: 0 50%;}
+        .order_item .order-eval{ background-position: 0 60%;}
+        .order_item .order-refund{ background-position: 0 70%;}
+        .order_item3 .order-icons{ background: url("../assets/icon.png") no-repeat; background-size: cover;}
+        .order_item3 .child-traveller{ background-position: 0 0;}
+        .order_item3 .coupon-icon{ background-position: 0 10%;}
+        .order_item3 .score-icon{ background-position: 0 20%;}
+        .order_item3 .collect-icon{ background-position: 0 30%;}
+        .order_item3 .contact-icon{ background-position: 0 40%;}
+
     }
 </style>

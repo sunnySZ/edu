@@ -93,9 +93,9 @@
         padding-left: 3rem;
         box-sizing: border-box;
         border-radius: 15px;
-        width: 76%;
+        width: 74%;
         position: absolute;
-        left: 12%;
+        left: 13%;
         top: 6px;
         color: #999999;
         height: 28px;
@@ -225,7 +225,6 @@
             border-left: 0.3rem solid green;
             padding-left: 0.5rem;
             font-size: 1.4rem;
-
         }
         .mint-cell-wrapper {
             font-size: 1.2rem;

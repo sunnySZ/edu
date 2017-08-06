@@ -13,12 +13,20 @@
             <div class="select_box" v-show="selected==3?true:false">333</div>
             <mt-cell class="page-part" title="当前选中">{{selected}}</mt-cell>
         </mt-popup>
-        <mt-cell v-for="n in 6" :title="'预售--乌克兰幽默小丑马戏团“欢乐小丑嘉年华”  ' + n" :key="n">
-            <img slot="icon" src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png">
-            <div class="ticket_msg">
-               <p><span class="price">100.00</span><del>150.00</del></p>
-               <p>已售12份 <span class="address">江汉路步行街</span></p></div>
-        </mt-cell>
+        <ul class="list_box">
+            <li v-for="n in 6">
+                <a href="#">
+                   <div class="list_item">
+                       <div class="img_box"><img src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png"></div>
+                       <div class="ticket_msg">
+                           <span class="title">预售--乌克兰幽默小丑马戏团“欢乐小丑嘉年华</span>
+                           <p><span class="price">100.00</span><del>150.00</del></p>
+                           <p>已售12份 <span class="address">江汉路步行街</span></p></div>
+                   </div>
+                </a>
+            </li>
+        </ul>
+
         <Foot></Foot>
     </div>
 </template>
@@ -67,13 +75,15 @@
         .select_box {
             padding: 20px;
         }
-        .mint-cell-wrapper{padding: 1rem; background-image: none; border-bottom: 1px solid #e5e5e5;box-sizing: border-box;}
-        .mint-cell img{width: 8rem; height: 8rem; margin-right: 1rem;}
-        .mint-cell-title{ display: flex;}
-        .mint-cell-text{font-size: 1.6rem; line-height: 1.6em;}
-        .mint-cell-value{ position: absolute; left: 10rem; bottom: 1rem; font-size: 1.2rem; color: #bbbbbb;}
-        .ticket_msg{}
-        .ticket_msg p{ line-height: 1.6rem;}
+        .list_box{ background-color: white;}
+        .list_box li{ display: block; padding: 1rem;border-bottom: 1px solid #e5e5e5; }
+        .list_box li a{color: #bbbbbb;}
+        .list_item{ display: flex;}
+        .img_box{ flex:1;}
+        .img_box img{ width: 100%;}
+        .ticket_msg{ flex: 3; padding-left: 1rem;}
+        .ticket_msg .title{ font-size: 1.4rem; color:#000000;}
+        .ticket_msg p{ line-height: 1.4rem;}
         .ticket_msg .price{ font-size: 1.6rem; color: #fa6e51; padding-right: 1rem;}
         .ticket_msg .address{ padding-left: 5rem;}
     }

@@ -15,7 +15,7 @@
         </mt-popup>
         <ul class="list_box">
             <li v-for="n in 6">
-                <a href="#">
+                <router-link :to="{ name: 'detail',params: { id: n }}">
                    <div class="list_item">
                        <div class="img_box"><img src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png"></div>
                        <div class="ticket_msg">
@@ -23,7 +23,7 @@
                            <p><span class="price">100.00</span><del>150.00</del></p>
                            <p>已售12份 <span class="address">江汉路步行街</span></p></div>
                    </div>
-                </a>
+                </router-link>
             </li>
         </ul>
 

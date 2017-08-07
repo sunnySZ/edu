@@ -8,6 +8,7 @@ import My from './components/my.vue'
 import Ticket from './components/ticket.vue'
 import Search from './components/search.vue'
 import Detail from './components/detail.vue'
+import Discover from './components/discover.vue'
 
 /*const my_routes = [
  {name: 'home', path: '/', component: List},
@@ -27,7 +28,8 @@ const router = new VueRouter({
         {name: 'ticket', path: '/ticket', component: Ticket},
         {name: 'my', path: '/my', component: My},
         {name: 'search', path: '/search', component: Search},
-        {name: 'detail', path: '/detail/:id', component: Detail}
+        {name: 'detail', path: '/detail/:id', component: Detail},
+        {name: 'discover', path: '/discover/:type', component: Discover}
     ]
 })
 

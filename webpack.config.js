@@ -1,14 +1,14 @@
 var path = require('path')
 var webpack = require('webpack')
 var fs = require('fs')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+//var HtmlWebpackPlugin = require('html-webpack-plugin')
 var production = (process.env.NODE_ENV === 'production')
 
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: production ? './' : '/dist/',
+        publicPath: '/dist/',
         filename: 'build.js'
     },
     module: {
@@ -101,10 +101,10 @@ if (process.env.NODE_ENV === 'production') {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new HtmlWebpackPlugin({
+/*        new HtmlWebpackPlugin({
             filename: './index.html',//在dist目录下会生成index.html，并注入脚本
             inject: true //此参数必须加上，不加不注入
-        })
+        })*/
     ])
 } else {
     module.exports.devtool = '#source-map'

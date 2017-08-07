@@ -77,6 +77,7 @@
                 </a>
             </li>
         </ul>
+        <mt-spinner color="#26a2ff" type="fading-circle" class="loading"></mt-spinner>
         <Foot></Foot>
     </div>
 </template>
@@ -145,7 +146,7 @@
         .order_item3{ flex-wrap: wrap; justify-content: flex-start;}
         .order_item3 li{ width: 33.33%;border-right: 1px solid #cccccc; border-bottom: 1px solid #cccccc; box-sizing: border-box;}
         .order_item3 li:nth-child(3n){ border-right: none;}
-        .order_item  li a{ color: #000000; display: block;}
+        .order_item  li a{ color: #000000; display: block; padding: 1rem 0;}
         .order_item .order-icons{  width: 2rem;height: 2rem;display: block; margin:0.5rem auto;
             background: url("../assets/icon1.png") no-repeat; background-size: cover;}
         .order_item .order-pay{ background-position: 0 40%;}

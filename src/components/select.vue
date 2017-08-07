@@ -6,27 +6,10 @@
                 <input class="info" type="text" placeholder="搜索商品活动或游玩地">
             </router-link>
         </mt-header>
-        <Banner></Banner>
-        <ul class="type_list">
-            <li><img src="http://img.wanfantian.com/uploads/201706/16/bba95870ae8a27ce5f21a4571c4f66a7.png">
-                <span>夏令营</span></li>
-            <li><img src="http://img.wanfantian.com/uploads/201706/16/dd93350d82b61389b4f453b1c0c1ece9.png">
-                <span>暑期游</span></li>
-            <li>
-                <img src="http://img.wanfantian.com/uploads/201706/30/834b8eb4329534a71a60b7170b273580.png">
-                <span>运动</span>
-            </li>
-            <li>
-                <img src="http://img.wanfantian.com/uploads/201704/20/37008df3effbd37d7079481adb4ea030.png">
-                <span>儿童剧</span>
-            </li>
-            <li>
-                <img src="http://img.wanfantian.com/uploads/201706/12/248c3ca6e394111720f944199c45ec3d.png">
-                <span>微度假</span>
-            </li>
-        </ul>
+        <SelectBanner></SelectBanner>
+        <SelectType></SelectType>
         <mt-cell title="优惠推荐" label="全年遛娃 嗨翻天！" is-link
-                 :to="{ name:'home', params: { url: '/lkp/v2/movie/coming_soon?' }}"
+                 :to="{ name: 'discover',params: { type: 'more' }}"
                  value="更多"></mt-cell>
         <ul class="coupon_list">
             <li v-for="(item,index) in hotData">
@@ -57,12 +40,20 @@
     </div>
 </template>
 <script>
-    import Banner from './banner.vue'
+    import SelectBanner from './select_banner.vue'
+    import SelectType from './select_type.vue'
     import Foot from './footer.vue'
     export default{
         data(){
             return {
-                hotData:[{"id":1},{"id":2},{"id":3}]
+                hotData:[{"id":1},{"id":2},{"id":3}],
+                typeData:[
+                    {"name":"夏令营","type":"a","iconUrl":"http://img.wanfantian.com/uploads/201706/16/bba95870ae8a27ce5f21a4571c4f66a7.png"},
+                    {"name":"暑期游","type":"b","iconUrl":"http://img.wanfantian.com/uploads/201706/16/dd93350d82b61389b4f453b1c0c1ece9.png"},
+                    {"name":"运动","type":"c","iconUrl":"http://img.wanfantian.com/uploads/201706/30/834b8eb4329534a71a60b7170b273580.png"},
+                    {"name":"儿童剧","type":"d","iconUrl":"http://img.wanfantian.com/uploads/201704/20/37008df3effbd37d7079481adb4ea030.png"},
+                    {"name":"微度假","type":"e","iconUrl":"http://img.wanfantian.com/uploads/201706/12/248c3ca6e394111720f944199c45ec3d.png"}
+                ]
             }
         },
       /*  created(){
@@ -81,7 +72,8 @@
            }*/
         },
         components: {
-            Banner,
+            SelectBanner,
+            SelectType,
             Foot
         }
     }
@@ -103,6 +95,7 @@
         background:#ffffff url("../assets/icon1.png") no-repeat;
         background-position: 0 30%;
     }
+    .loading{display: flex;justify-content: center;}
     .hot_list {
         padding: 0;
         margin: 0;
@@ -165,18 +158,7 @@
             padding: 0;
             background-color: white;
         }
-        .type_list {
-            padding: 1rem 0;
-        }
-        .type_list > li {
-            width: 16%;
-            min-height: 5rem;
-            display: block;
-            text-align: center;
-        }
-        .type_list li img {
-            width: 100%;
-        }
+
         .coupon_list > li {
             width: 30%;
             display: block;

@@ -12,30 +12,35 @@
                  :to="{ name: 'discover',params: { type: 'more' }}"
                  value="更多"></mt-cell>
         <ul class="coupon_list">
-            <li v-for="(item,index) in hotData">
-                <router-link :to="{ name: 'detail',params: { id: item.id }}">
-                    <img src="http://img.wanfantian.com/uploads/201707/31/107fb1575047943239a8f94675eab7d2.jpg">
+            <li v-for="(item,index) in recommendData">
+                <router-link :to="{ name: 'detail',params: { id: item.ID }}">
+                    <img :src="item.S_PIC">
                     <span>¥49.90起</span>
-                    <p>顽童堡儿童主题乐园</p>
+                    <p>{{item.NAME}}</p>
                 </router-link>
             </li>
         </ul>
         <mt-cell title="热门精选" label="用心推荐 优质体验"></mt-cell>
-        <ul class="hot_list">
+        <ul class="hot_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="allLoaded"
+            infinite-scroll-distance="50">
             <li v-for="(item,index) in hotData">
-                <router-link :to="{ name: 'detail',params: { id: item.id }}">
-                    <img src="http://img.wanfantian.com/uploads/201708/02/2203c30f42c01473cb3a874816e315e9.jpg"/>
+                <router-link :to="{ name: 'detail',params: { id: item.ID }}">
+                    <img :src="item.S_PIC"/>
                     <aside class="aside">
-                        <p>超燃丨加拿大互动亲子剧《你是演奏家》</p>
+                        <p>{{item.NAME}}</p>
                         <span>返利18元</span>
                         <span>分享有礼</span>
                         <span>点评有礼</span>
                     </aside>
-                    <span class="price">￥<mark>120.00</mark>起</span>
+                    <span class="price">￥<mark>{{item.PRICE}}</mark>起</span>
                     <span class="num">已售94份</span>
                 </router-link>
             </li>
         </ul>
+        <p v-show="listLoading" class="loading">
+            <mt-spinner type="fading-circle"></mt-spinner>
+            loading...
+        </p>
         <Foot></Foot>
     </div>
 </template>
@@ -43,33 +48,60 @@
     import SelectBanner from './select_banner.vue'
     import SelectType from './select_type.vue'
     import Foot from './footer.vue'
-    export default{
-        data(){
+
+    export default {
+        data() {
             return {
-                hotData:[{"id":1},{"id":2},{"id":3}],
-                typeData:[
-                    {"name":"夏令营","type":"a","iconUrl":"http://img.wanfantian.com/uploads/201706/16/bba95870ae8a27ce5f21a4571c4f66a7.png"},
-                    {"name":"暑期游","type":"b","iconUrl":"http://img.wanfantian.com/uploads/201706/16/dd93350d82b61389b4f453b1c0c1ece9.png"},
-                    {"name":"运动","type":"c","iconUrl":"http://img.wanfantian.com/uploads/201706/30/834b8eb4329534a71a60b7170b273580.png"},
-                    {"name":"儿童剧","type":"d","iconUrl":"http://img.wanfantian.com/uploads/201704/20/37008df3effbd37d7079481adb4ea030.png"},
-                    {"name":"微度假","type":"e","iconUrl":"http://img.wanfantian.com/uploads/201706/12/248c3ca6e394111720f944199c45ec3d.png"}
-                ]
+                listLoading: false,//加载中
+                allLoaded: false, //默认下拉数据加载完毕，不调用loadBottom方法
+                recommendData: [],
+                hotData: [],
+                params: {
+                    curPage: 1,
+                    pageSize: 5
+                },
+                listType: 7  //热门精选
             }
         },
-      /*  created(){
-            this.$indicator.open('加载中...');
-            this.getBanner();
-        },*/
-        methods:{
-          /* getBanner(){
-               var url = 'lkp/yjt/bannerlist';
-               this.$http.get(url).then((res) => {
-                 console.log(res)
-                   this.$indicator.close();//隐藏loading
-               }).catch((err) => {
+        created() {
+            this.getDataList();
+        },
+        methods: {
+            getDataList() {
+                var _this = this
+                let httpArr = [
+                    _this.$http.get('yjt/shopgoods/pagelistbytype/1-3-6'), //推荐活动
+                    _this.$http.get('yjt/shopgoods/pagelistbytype/1-5-7')  //热门精选
+                ]
 
-               });
-           }*/
+                _this.$http.all(httpArr)
+                    .then(_this.$http.spread(function (data1, data2) {
+                        _this.recommendData = data1.data.list;
+                        _this.hotData = data2.data.list;
+                        console.log(data1.data)
+                        console.log(data2.data)
+                    }));
+            },
+            loadMore() {
+                //isRefresh,bool==true是下拉刷新，false表示是上拉加载更多
+                if (this.listLoading) return;
+                this.listLoading = true;
+                let url = 'yjt/shopgoods/pagelistbytype/' + this.params.curPage + '-' + this.params.pageSize + '-' + this.listType
+                this.$http.get(url).then((res) => {
+                    this.listLoading = false;
+                    this.params.curPage += 1
+                    if (this.params.curPage > res.data.totalPage) {
+                        this.allLoaded = true;
+                        this.$toast('没有更多了...')
+                    }
+                    this.hotData = this.hotData.concat(res.data.list)
+                }).catch((err) => {
+                    //上下拉loading动画关闭
+                    //   this.$indicator.close();//隐藏loading
+                    this.listLoading = true;
+                    console.log(err)
+                });
+            }
         },
         components: {
             SelectBanner,
@@ -92,14 +124,25 @@
         color: #999999;
         height: 28px;
         line-height: 28px;
-        background:#ffffff url("../assets/icon1.png") no-repeat;
+        background: #ffffff url("../assets/icon1.png") no-repeat;
         background-position: 0 30%;
     }
-    .loading{display: flex;justify-content: center;}
+
+    .loading {
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+    }
+    .loading div {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
     .hot_list {
         padding: 0;
         margin: 0;
     }
+
     .hot_list li {
         display: block;
         margin-bottom: 1rem;
@@ -107,9 +150,11 @@
         background-color: white;
         padding-bottom: 0.5rem;
     }
+
     .hot_list li a img {
         width: 100%;
     }
+
     .hot_list li a .aside {
         font-size: 1.4rem;
         line-height: 2.2rem;
@@ -117,6 +162,7 @@
         color: #000000;
         font-size: 1.4rem;
     }
+
     .hot_list li a .aside span {
         font-size: 1rem;
         padding: 0.1rem 0.3rem;
@@ -124,6 +170,7 @@
         border-radius: 0.3rem;
         color: #fa6e51;
     }
+
     .hot_list li a .price {
         font-size: 1.2rem;
         padding: 0.2rem 0.5rem;
@@ -133,11 +180,13 @@
         bottom: 7rem;
         left: 0;
     }
+
     .hot_list li a .price mark {
         font-size: 2.4rem;
         background: none;
         color: #ffffff;
     }
+
     .hot_list li a .num {
         border-radius: 1rem 0 0 1rem;
         padding: 0.2rem 1rem;
@@ -148,6 +197,7 @@
         background: rgba(0, 0, 0, 0.6);
         color: #ffffff;
     }
+
     .select_page {
         margin-top: 40px;
         margin-bottom: 65px;

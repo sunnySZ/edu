@@ -22,7 +22,7 @@ import Discover from './components/discover.vue'
 
 const router = new VueRouter({
     routes: [
-        {name: 'home', path: '/', component: Select},
+        {path: '*',redirect:'/select'},//默认显示
         {name: 'select', path: '/select', component: Select},
         {name: 'activity', path: '/activity', component: Activity},
         {name: 'ticket', path: '/ticket', component: Ticket},

@@ -58,6 +58,17 @@
     }
 </script>
 <style lang="less">
+    .list_box{ background-color: white;}
+    .list_box li{ display: block; padding: 1rem;border-bottom: 1px solid #e5e5e5; }
+    .list_box li a{color: #bbbbbb;}
+    .list_item{ display: flex;}
+    .img_box{ flex:1;}
+    .img_box img{ width: 100%;}
+    .ticket_msg{ flex: 3; padding-left: 1rem;}
+    .ticket_msg .title{ font-size: 1.4rem; color:#000000;}
+    .ticket_msg p{ line-height: 1.4rem;}
+    .ticket_msg .price{ font-size: 1.6rem; color: #fa6e51; padding-right: 1rem;}
+    .ticket_msg .address{ padding-left: 5rem;}
     .ticket_page {
         margin-top: 50px;
         margin-bottom: 65px;
@@ -75,16 +86,6 @@
         .select_box {
             padding: 20px;
         }
-        .list_box{ background-color: white;}
-        .list_box li{ display: block; padding: 1rem;border-bottom: 1px solid #e5e5e5; }
-        .list_box li a{color: #bbbbbb;}
-        .list_item{ display: flex;}
-        .img_box{ flex:1;}
-        .img_box img{ width: 100%;}
-        .ticket_msg{ flex: 3; padding-left: 1rem;}
-        .ticket_msg .title{ font-size: 1.4rem; color:#000000;}
-        .ticket_msg p{ line-height: 1.4rem;}
-        .ticket_msg .price{ font-size: 1.6rem; color: #fa6e51; padding-right: 1rem;}
-        .ticket_msg .address{ padding-left: 5rem;}
+
     }
 </style>

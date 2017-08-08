@@ -1,6 +1,8 @@
 <template>
     <div class="type_page">
-        <mt-spinner v-show="loading" class="loading" color="#26a2ff" type="fading-circle"></mt-spinner>
+        <p v-show="listLoading" class="loading">
+            <mt-spinner color="#26a2ff" type="fading-circle"></mt-spinner>
+        </p>
         <ul class="type_list">
             <li v-for="item in typeData">
                 <router-link :to="{ name: 'discover',params: { type: item.TYPE_ID }}">
@@ -15,7 +17,7 @@
     export default{
         data(){
             return {
-                loading: true,
+                listLoading: true,
                 typeData: []
             }
         },
@@ -27,7 +29,7 @@
             getBanner(){
                 var url = 'yjt/goodstypelist';
                 this.$http.get(url).then((res) => {
-                    this.loading = false;//隐藏loading
+                    this.listLoading = false;//隐藏loading
                     this.typeData = res.data;
                 }).catch((err) => {
                 });

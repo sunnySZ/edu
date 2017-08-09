@@ -78,8 +78,6 @@
                     .then(_this.$http.spread(function (data1, data2) {
                         _this.recommendData = data1.data.list;
                         _this.hotData = data2.data.list;
-                        console.log(data1.data)
-                        console.log(data2.data)
                     }));
             },
             loadMore() {
@@ -98,7 +96,7 @@
                 }).catch((err) => {
                     //上下拉loading动画关闭
                     //   this.$indicator.close();//隐藏loading
-                    this.listLoading = true;
+                    this.listLoading = false;
                     console.log(err)
                 });
             }

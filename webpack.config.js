@@ -2,7 +2,8 @@ var path = require('path')
 var webpack = require('webpack')
 var fs = require('fs')
 //var HtmlWebpackPlugin = require('html-webpack-plugin')
-var production = (process.env.NODE_ENV === 'production')
+
+const production = (process.env.NODE_ENV === 'production')
 
 module.exports = {
     entry: './src/main.js',
@@ -100,7 +101,7 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
-        }),
+        })
 /*        new HtmlWebpackPlugin({
             filename: './index.html',//在dist目录下会生成index.html，并注入脚本
             inject: true //此参数必须加上，不加不注入

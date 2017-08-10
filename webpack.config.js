@@ -64,7 +64,7 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map'
+ //   devtool: '#eval-source-map'
 }
 var deleteFolder = function (paths, isrmDir) {
     if (fs.existsSync(paths)) {

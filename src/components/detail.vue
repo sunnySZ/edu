@@ -12,8 +12,9 @@
             </div>
 
             <mt-cell title="适合年龄：" :value="detailData.AGE"></mt-cell>
-            <mt-cell title="联系电话：" :value="detailData.TEL" is-link></mt-cell>
-            <mt-cell title="注意事项：" :value="detailData.ATTENTION" is-link></mt-cell>
+            <mt-cell title="联系电话：" :value="detailData.TEL" is-link to="tel:8888888"></mt-cell>
+            <mt-cell title="注意事项：" @click.native="openAlert(detailData.ATTENTION)" :value="detailData.ATTENTION"
+                     is-link></mt-cell>
         </div>
         <div class="wrap_place">
             <p>游玩地</p>
@@ -22,7 +23,7 @@
         <mt-navbar v-model="selected">
             <mt-tab-item id="1">游玩内容</mt-tab-item>
             <mt-tab-item id="2">点评({{commentsData.totalRow}})</mt-tab-item>
-            <mt-tab-item id="3">咨询(8)</mt-tab-item>
+            <mt-tab-item id="3">咨询({{questionData.totalRow}})</mt-tab-item>
         </mt-navbar>
         <mt-tab-container v-model="selected">
             <mt-tab-container-item id="1">
@@ -45,16 +46,36 @@
                             </div>
                         </li>
                     </ul>
-                    <p v-show="listLoading" class="loading">
+                    <p v-show="comments.isLoading" class="loading">
                         <mt-spinner type="fading-circle"></mt-spinner>
                     </p>
-                    <div class="get_more" @click="getMoreComments()" v-show="isMore">点击查看更多</div>
-
-
+                    <div class="get_more" @click="getMoreComments" v-show="comments.isMore">点击查看更多</div>
                 </div>
             </mt-tab-container-item>
             <mt-tab-container-item id="3">
-                <div class="detail_tab_content" style="height:600px;"></div>
+                <div class="detail_tab_content">
+
+                    <mt-field placeholder="请输入您想要咨询的问题，玩翻天客服会尽快回复您哦！~" type="textarea" rows="4"  v-model="val"></mt-field>
+                    <mt-button type="primary" size="small" @click.native="sendQuestion">我要提问</mt-button>
+
+                    <ul class="list_box">
+                        <li v-for="item in questionData.list">
+                            <div class="list_item">
+                                <div class="img_box"><img
+                                        src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png">
+                                </div>
+                                <div class="ticket_msg">
+                                    <span class="title">{{item.USER_NAME}}</span>
+                                    <p>{{item.CONTENT}}</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <p v-show="questions.isLoading" class="loading">
+                        <mt-spinner type="fading-circle"></mt-spinner>
+                    </p>
+                    <div class="get_more" @click="getMoreQuestions" v-show="questions.isMore">点击查看更多</div>
+                </div>
             </mt-tab-container-item>
         </mt-tab-container>
         <div class="footer">
@@ -73,16 +94,25 @@
     </div>
 </template>
 <script>
+    import {MessageBox} from 'mint-ui';
     export default{
         data(){
             return {
-                listLoading: false,
                 selected: '1',
                 id: null,
+                val: '', //提问内容
                 detailData: null,
                 commentsData: null,
-                isMore: false, //点评是否显示"点击加载更多"
-                params: {
+                questionData: null,
+                comments: {
+                    isLoading: false,
+                    isMore: false,  //是否显示"点击加载更多"
+                    curPage: 1,
+                    pageSize: 5
+                },
+                questions: {
+                    isLoading: false,
+                    isMore: false,
                     curPage: 1,
                     pageSize: 5
                 }
@@ -92,42 +122,89 @@
             this.getData();
         },
         methods: {
-
-            //获取详情及评论
-            getData() {
-                this.id = this.$route.params.id;
-                var _this = this
-                let httpArr = [
-                    _this.$http.get('yjt/shopgoods/info/' + this.id), //推荐活动
-                    _this.$http.get('yjt/goodsrepaly/pagelist/1-5?shoid=' + this.id)  //点评,根据活动ID获取活动评论列表
-                ]
-                _this.$http.all(httpArr).then(_this.$http.spread(function (data1, data2) {
-                    _this.detailData = data1.data;
-                    _this.commentsData = data2.data;
-                    if (data2.data.pageSize > 1) {
-                        _this.isMore = true;
-                    }
-                }));
-
-
+            openAlert(msg) {
+                MessageBox({
+                    title: '注意事项',
+                    message: msg,
+                    confirmButtonText: '关闭'
+                });
             },
-            getMoreComments() {
-                this.listLoading = true;
-                this.params.curPage += 1
-                let url = 'yjt/goodsrepaly/pagelist/' + this.params.curPage + '-' + this.params.pageSize + '?shoid=' + this.id
+            getData() {  //获取详情,评论,提问
+                this.id = this.$route.params.id;
+                this.$indicator.open();
+                let httpArr = [
+                    this.$http.get('yjt/shopgoods/info/' + this.id), //活动详情
+                    this.$http.get('yjt/goodsrepaly/pagelist/1-5?shoid=' + this.id),  //点评,根据活动ID获取活动评论列表
+                    this.$http.get('yjt/goodsquestion/pagelist/1-5?shoid=' + this.id)  //提问,根据活动ID获取活动提问列表
+                ];
+                this.$http.all(httpArr).then(this.$http.spread((data1, data2, data3) => {
+                    this.detailData = data1.data;
+                    this.commentsData = data2.data;
+                    this.questionData = data3.data;
+                    if (data2.data.pageSize > 1) {  //判断点评列表是否显示点击查看更多
+                        this.comments.isMore = true;
+                    }
+                    if (data3.data.pageSize > 1) {  //判断点评列表是否显示点击查看更多
+                        this.questions.isMore = true;
+                    }
+                    this.$indicator.close();
+                }));
+            },
+            getMoreComments() { //加载更多评论
+                this.comments.isLoading = true;
+                this.comments.curPage += 1;
+                let url = 'yjt/goodsrepaly/pagelist/' + this.comments.curPage + '-' + this.comments.pageSize + '?shoid=' + this.id
                 this.$http.get(url).then((res) => {
-                    this.listLoading = false;
-                    if (this.params.curPage >= res.data.totalPage) {
-                        this.isMore = false;
-                        this.$toast('没有更多了...')
+                    this.comments.isLoading = false;
+                    if (this.comments.curPage >= res.data.totalPage) {
+                        this.comments.isMore = false;
+                        // this.$toast('没有更多了...')
                     }
                     this.commentsData.list = this.commentsData.list.concat(res.data.list)
                 }).catch((err) => {
-                    //上下拉loading动画关闭
-                    //   this.$indicator.close();//隐藏loading
-                    this.listLoading = false;
+                    this.comments.isLoading = false;
                     console.log(err)
                 });
+            },
+            getMoreQuestions() { //加载更多提问
+                this.questions.isLoading = true;
+                this.questions.curPage += 1;
+                let url = 'yjt/goodsquestion/pagelist/' + this.questions.curPage + '-' + this.questions.pageSize + '?shoid=' + this.id;
+                this.$http.get(url).then((res) => {
+                    this.questions.isLoading = false;
+                    if (this.questions.curPage >= res.data.totalPage) {
+                        this.questions.isMore = false;
+                        // this.$toast('没有更多了...')
+                    }
+                    this.questionData.list = this.questionData.list.concat(res.data.list)
+                }).catch((err) => {
+                    this.questions.isLoading = false;
+                    console.log(err)
+                });
+            },
+            sendQuestion(){  //提问
+              //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
+
+                if (this.val !== '') {
+                    this.$http.post('yjt/goodsquestion/add', {
+                        shoid:this.id,
+                        content: this.val
+                    }).then((res) => {
+                        if(res.data.code===200){
+                            this.$toast('提交成功')
+                            this.val='';
+                        }else{
+                            this.$toast('提交失败')
+                        }
+
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                }else{
+                    this.$toast('请输入提问内容')
+                }
+
+
             }
         }
     }
@@ -206,13 +283,19 @@
 
         .detail_tab_content {
             background-color: white;
-            padding: 1rem 1rem 4.6rem;
+            padding-bottom:5rem;
         }
+        .detail_info{ padding:1rem;}
         .detail_info img {
             width: 100%;
             height: auto;
         }
-        .get_more{ padding: 1rem; text-align: center;}
+        .get_more {
+            padding: 1rem;
+            text-align: center;
+        }
+        .mint-button--small{ margin-left: 70%;}
+
         .footer {
             display: flex;
             flex-wrap: nowrap;

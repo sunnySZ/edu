@@ -38,8 +38,7 @@
             </li>
         </ul>
         <p v-show="listLoading" class="loading">
-            <mt-spinner type="fading-circle"></mt-spinner>
-            loading...
+            <mt-spinner color="#26a2ff" type="fading-circle"></mt-spinner>
         </p>
         <Foot></Foot>
     </div>
@@ -90,7 +89,7 @@
                     this.params.curPage += 1
                     if (this.params.curPage > res.data.totalPage) {
                         this.allLoaded = true;
-                        this.$toast('没有更多了...')
+                       // this.$toast('没有更多了...')
                     }
                     this.hotData = this.hotData.concat(res.data.list)
                 }).catch((err) => {

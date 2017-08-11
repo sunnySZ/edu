@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <!--<keep-alive><router-view></router-view></keep-alive>-->
+        <keep-alive><router-view></router-view></keep-alive>
         <!--<transition name="slide-down"><router-view></router-view></transition>-->
-        <router-view></router-view>
+        <!--<router-view></router-view>-->
     </div>
 </template>
 
@@ -13,7 +13,15 @@
             return {
                 msg: 'Welcome to Your Vue.js App'
             }
-        }
+        },
+        /*watch:{
+            $route(to,from){
+                console.log(to.path);
+                if(to.path=='/my1'){
+                  this.$store.dispatch('increament')
+                }
+            }
+        },*/
     }
 </script>
 

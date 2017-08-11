@@ -83,7 +83,7 @@
                 //isRefresh,bool==true是下拉刷新，false表示是上拉加载更多
                 if (this.listLoading) return;
                 this.listLoading = true;
-                let url = 'yjt/shopgoods/pagelistbytype/' + this.params.curPage + '-' + this.params.pageSize + '-' + this.listType
+                let url = 'yjt/shopgoods/pagelistbytype/' + this.params.curPage + '-' + this.params.pageSize + '-' + this.listType;
                 this.$http.get(url).then((res) => {
                     this.listLoading = false;
                     this.params.curPage += 1

@@ -77,13 +77,11 @@
                 </a>
             </li>
         </ul>
-        <mt-spinner color="#26a2ff" type="fading-circle" class="loading"></mt-spinner>
         <Foot></Foot>
     </div>
 </template>
 <script>
     import Foot from './footer.vue'
-
     export default{
         data(){
             return {}
@@ -155,10 +153,10 @@
         .order_item .order-refund{ background-position: 0 70%;}
         .order_item3 .order-icons{ background: url("../assets/icon.png") no-repeat; background-size: cover;}
         .order_item3 .child-traveller{ background-position: 0 0;}
-        .order_item3 .coupon-icon{ background-position: 0 10%;}
-        .order_item3 .score-icon{ background-position: 0 20%;}
-        .order_item3 .collect-icon{ background-position: 0 30%;}
-        .order_item3 .contact-icon{ background-position: 0 40%;}
+        .order_item3 .coupon-icon{ background-position: 0 5%;}
+        .order_item3 .score-icon{ background-position: 0 10%;}
+        .order_item3 .collect-icon{ background-position: 0 15%;}
+        .order_item3 .contact-icon{ background-position: 0 20%;}
 
     }
 </style>

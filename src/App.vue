@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <!--keep-alive><router-view></router-view></keep-alive>-->
+        <!--<keep-alive><router-view></router-view></keep-alive>-->
         <!--<transition name="slide-down"><router-view></router-view></transition>-->
         <router-view></router-view>
         <ScrollTop></ScrollTop>

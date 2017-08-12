@@ -43,15 +43,22 @@
                 },
             }
         },
-        created(){
-
-        },
+/*        activated(){
+            console.log(123)
+            this.nodata=false;
+            this.hotData=[];
+            this.params.curPage=1;
+            this.listType= this.$route.params.type
+            this.loadMore();
+        },*/
         methods: {
             loadMore() {
+                console.log(11)
                 if (this.listLoading) return;
                 this.listLoading = true;
                 let url = 'yjt/shopgoods/pagelistbytype/' + this.params.curPage + '-' + this.params.pageSize + '-' + this.listType;
                 this.$http.get(url).then((res) => {
+                    console.log(22)
                    if(res.data.totalRow==0){
                        console.log(111)
                        this.nodata=true;

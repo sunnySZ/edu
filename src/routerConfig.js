@@ -9,6 +9,7 @@ import Ticket from './components/ticket.vue'
 import Search from './components/search.vue'
 import Detail from './components/detail.vue'
 import Discover from './components/discover.vue'
+import Order from './components/order.vue'
 
 /*const my_routes = [
  {name: 'home', path: '/', component: List},
@@ -21,15 +22,17 @@ import Discover from './components/discover.vue'
  })*/
 
 const router = new VueRouter({
+  //  scrollBehavior: () => ({y: 0}),
     routes: [
-        {path: '*',redirect:'/select'},//默认显示
+        {path: '*', redirect: '/select'},//默认显示
         {name: 'select', path: '/select', component: Select},
         {name: 'activity', path: '/activity', component: Activity},
         {name: 'ticket', path: '/ticket', component: Ticket},
         {name: 'my', path: '/my', component: My},
         {name: 'search', path: '/search', component: Search},
         {name: 'detail', path: '/detail/:id', component: Detail},
-        {name: 'discover', path: '/discover/:type', component: Discover}
+        {name: 'discover', path: '/discover/:type', component: Discover},
+        {name: 'order', path: '/order', component: Order}
     ]
 })
 

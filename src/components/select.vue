@@ -15,7 +15,7 @@
             <li v-for="(item,index) in recommendData">
                 <router-link :to="{ name: 'detail',params: { id: item.ID }}">
                     <img :src="item.S_PIC">
-                    <span>¥49.90起</span>
+                    <span>¥{{item.PRICE}}起</span>
                     <p>{{item.NAME}}</p>
                 </router-link>
             </li>
@@ -28,12 +28,10 @@
                     <img :src="item.S_PIC"/>
                     <aside class="aside">
                         <p>{{item.NAME}}</p>
-                        <span>返利18元</span>
-                        <span>分享有礼</span>
-                        <span>点评有礼</span>
+                        <span v-if="item.LABEL.length>0" class="share_gift" v-for="a in item.LABEL">{{a}}</span>
                     </aside>
                     <span class="price">￥<mark>{{item.PRICE}}</mark>起</span>
-                    <span class="num">已售94份</span>
+                    <span class="num">已售{{item.SALES_NUM}}份</span>
                 </router-link>
             </li>
         </ul>
@@ -156,13 +154,7 @@
         font-size: 1.4rem;
     }
 
-    .hot_list li a .aside span {
-        font-size: 1rem;
-        padding: 0.1rem 0.3rem;
-        border: 1px solid #fa6e51;
-        border-radius: 0.3rem;
-        color: #fa6e51;
-    }
+
 
     .hot_list li a .price {
         font-size: 1.2rem;
@@ -190,7 +182,14 @@
         background: rgba(0, 0, 0, 0.6);
         color: #ffffff;
     }
-
+    .share_gift {
+        font-size: 1rem;
+        padding: 0.1rem;
+        border: 1px solid #fa6e51;
+        border-radius: 0.3rem;
+        margin-right: 0.5rem;
+        color: #fa6e51;
+    }
     .select_page {
         margin-top: 40px;
         margin-bottom: 65px;

@@ -2,12 +2,13 @@
     <div class="detail_page" v-if="detailData">
         <div class="wrap_top">
             <img :src="detailData.B_IMAGE"/>
-            <span class="collect-btn" id="collect"></span>
+            <span class="collect_btn" @click="addCollect"></span>
             <h2>{{detailData.NAME}}</h2>
             <p class="txt_msg">{{detailData.REMARKS}}</p>
             <div class="wrap_msg">
                 <span class="low_price">￥<mark>{{detailData.PRICE}}</mark>起</span>
-                <span class="share_gift" v-for="item in detailData.LABEL">{{item}}</span>
+                <span v-if="detailData.LABEL.length>0" class="share_gift"
+                      v-for="item in detailData.LABEL">{{item}}</span>
                 <span class="apply_num">累计报名{{detailData.SALED_NUM}}人</span>
             </div>
 
@@ -36,11 +37,11 @@
                     <ul class="list_box">
                         <li v-for="item in commentsData.list">
                             <div class="list_item">
-                                <div class="img_box"><img
-                                        src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png">
-                                </div>
+                                <div class="img_box"><img src="../assets/user_default.png"></div>
                                 <div class="ticket_msg">
-                                    <span class="title">{{item.USER_NAME}}</span>
+                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i
+                                        :style="{width: item.SOCRE*1.5 + 'rem' }"></i></span>
+                                    <p>{{item.CREATE_TIME | yy_mm_dd}}</p>
                                     <p>{{item.CONTENT}}</p>
                                 </div>
                             </div>
@@ -54,19 +55,29 @@
             </mt-tab-container-item>
             <mt-tab-container-item id="3">
                 <div class="detail_tab_content">
-
-                    <mt-field placeholder="请输入您想要咨询的问题，玩翻天客服会尽快回复您哦！~" type="textarea" rows="4"  v-model="val"></mt-field>
+                    <mt-field placeholder="请输入您想要咨询的问题，玩翻天客服会尽快回复您哦！~" type="textarea" rows="4"
+                              v-model="val"></mt-field>
                     <mt-button type="primary" size="small" @click.native="sendQuestion">我要提问</mt-button>
-
                     <ul class="list_box">
                         <li v-for="item in questionData.list">
                             <div class="list_item">
-                                <div class="img_box"><img
-                                        src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png">
-                                </div>
+                                <div class="img_box"><img src="../assets/user_default.png"></div>
                                 <div class="ticket_msg">
                                     <span class="title">{{item.USER_NAME}}</span>
+                                    <span>{{item.CREATE_TIME | yy_mm_dd}}</span>
                                     <p>{{item.CONTENT}}</p>
+                                    <ul v-if="item.REPALYLIST.length>0" class="list_box reply_msg">
+                                        <li v-for="item in item.REPALYLIST">
+                                            <div class="list_item">
+                                                <div class="img_box"><img src="../assets/user_default.png"></div>
+                                                <div class="ticket_msg">
+                                                    <span class="title">{{item.USER_NAME}}</span>
+                                                    <span>{{item.CREATE_TIME | yy_mm_dd}}</span>
+                                                    <p>{{item.CONTENT}}</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </li>
@@ -88,7 +99,7 @@
             </a>
             <a class="share" href="#">
                 <i></i>分享</a>
-            <a class="buy" href="#">立刻购买</a>
+            <a class="buy" href="javascript:;" @click="buy">立刻购买</a>
         </div>
 
     </div>
@@ -128,6 +139,12 @@
                     message: msg,
                     confirmButtonText: '关闭'
                 });
+            },
+            addCollect(){ //添加收藏
+
+            },
+            buy(){
+                this.$router.push({path: '/order'})
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
@@ -183,24 +200,33 @@
                 });
             },
             sendQuestion(){  //提问
-              //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
+                //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
 
                 if (this.val !== '') {
                     this.$http.post('yjt/goodsquestion/add', {
-                        shoid:this.id,
+                        shoid: this.id,
                         content: this.val
                     }).then((res) => {
-                        if(res.data.code===200){
-                            this.$toast('提交成功')
-                            this.val='';
-                        }else{
+                        if (res.data.code === 200) {
+                            this.$toast('提交成功');
+                            console.log(this.questionData.list)
+                            this.questionData.list.unshift({
+                                CONTENT: this.val,
+                                USER_NAME: '',
+                                HEAD_PIC: '',
+                                REPALYLIST: [],
+                                CREATE_TIME: new Date()
+                            });
+                            console.log(this.questionData.list)
+                            this.val = '';
+                        } else {
                             this.$toast('提交失败')
                         }
 
                     }).catch((err) => {
                         console.log(err)
                     });
-                }else{
+                } else {
                     this.$toast('请输入提问内容')
                 }
 
@@ -211,10 +237,50 @@
 </script>
 <style lang="less">
     .detail_page {
+        .ticket_msg {
+            flex: 5;
+        }
+        .stars {
+            display: inline-block;
+            width: 7.5rem;
+            height: 1.5rem;
+            background: url("../assets/star.png") no-repeat;
+            background-position: left bottom;
+            background-size: cover;
+            position: relative;
+        }
+        .stars i {
+            display: block;
+            height: 1.5rem;
+            background: url("../assets/star.png") no-repeat;
+            background-position: left top;
+            background-size: cover;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .reply_msg {
+            padding: 0.5rem;
+            background-color: #fff5dd;
+            border-radius: 0.5rem;
+        }
         .wrap_top {
             position: relative;
             background-color: white;
         }
+        .collect_btn {
+            background:rgba(0,0,0,0.6) url("../assets/icon1.png") no-repeat;
+            display: block;
+            position: absolute;
+            width: 2.5rem;
+            height: 2.5rem;
+            right: 1rem;
+            top: 1rem;
+            background-position: 0 90%;
+            background-size: cover;
+            border-radius: 50%;
+        }
+        .collect_btn.cur{ background-position: 0 100%}
         .wrap_top img {
             width: 100%;
         }
@@ -240,13 +306,6 @@
             font-size: 2.4rem;
             background: none;
             color: #fa6e51;
-        }
-        .wrap_msg .share_gift {
-            font-size: 1rem;
-            padding: 0.1rem;
-            border: 1px solid #fa6e51;
-            border-radius: 0.3rem;
-            margin-left: 0.5rem;
         }
         .wrap_msg .apply_num {
             color: #666666;
@@ -283,9 +342,11 @@
 
         .detail_tab_content {
             background-color: white;
-            padding-bottom:5rem;
+            padding-bottom: 5rem;
         }
-        .detail_info{ padding:1rem;}
+        .detail_info {
+            padding: 1rem;
+        }
         .detail_info img {
             width: 100%;
             height: auto;
@@ -294,7 +355,9 @@
             padding: 1rem;
             text-align: center;
         }
-        .mint-button--small{ margin-left: 70%;}
+        .mint-button--small {
+            margin-left: 70%;
+        }
 
         .footer {
             display: flex;

@@ -54,7 +54,7 @@ module.exports = {
         proxy: {
             //将请求地址里的'/yjt'通过本地开发服务器webpack-dev-server转发到'http://121.40.154.136/'
             '/yjt': {
-                target: 'http://121.40.154.136',
+                target: 'http://121.40.154.136', //http://121.40.154.136
                 pathRewrite: {'^/yjt': '/yjt'}, //将 '^/yjt' 替换成http://121.40.154.136/yjt
                 secure: false,  // 如果是https接口，需要配置这个参数
                 changeOrigin: true

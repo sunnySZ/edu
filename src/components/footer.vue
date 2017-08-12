@@ -26,15 +26,15 @@
     export default{
         data(){
             return {
-                selected: this.$route.name
+               // selected: this.$route.name
             }
         },
-        watch: {
+      /*  watch: {
             selected(curVal, oldVal){
                 console.log(curVal)
                 this.$router.push({path: '/' + curVal})
             }
-        }
+        }*/
     }
 </script>
 <style lang="less">

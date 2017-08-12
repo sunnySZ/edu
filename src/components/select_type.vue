@@ -31,6 +31,7 @@
                 this.$http.get(url).then((res) => {
                     this.listLoading = false;//隐藏loading
                     this.typeData = res.data;
+                    sessionStorage.setItem("typeListData",JSON.stringify(res.data))
                 }).catch((err) => {
                 });
             }

@@ -9,7 +9,7 @@
         <SelectBanner></SelectBanner>
         <SelectType></SelectType>
         <mt-cell title="优惠推荐" label="全年遛娃 嗨翻天！" is-link
-                 :to="{ name: 'discover',params: { type: 'more' }}"
+                 :to="{ name: 'discover',params: { type: '6' }}"
                  value="更多"></mt-cell>
         <ul class="coupon_list">
             <li v-for="(item,index) in recommendData">
@@ -40,6 +40,7 @@
         <p v-show="listLoading" class="loading">
             <mt-spinner color="#26a2ff" type="fading-circle"></mt-spinner>
         </p>
+
         <Foot></Foot>
     </div>
 </template>
@@ -47,7 +48,6 @@
     import SelectBanner from './select_banner.vue'
     import SelectType from './select_type.vue'
     import Foot from './footer.vue'
-
     export default {
         data() {
             return {
@@ -67,20 +67,19 @@
         },
         methods: {
             getDataList() {
-                var _this = this
+                var _this = this;
                 let httpArr = [
                     _this.$http.get('yjt/shopgoods/pagelistbytype/1-3-6'), //推荐活动
-                    _this.$http.get('yjt/shopgoods/pagelistbytype/1-5-7')  //热门精选
-                ]
+                 //   _this.$http.get('yjt/shopgoods/pagelistbytype/1-5-7')  //热门精选
+                ];
 
                 _this.$http.all(httpArr)
                     .then(_this.$http.spread(function (data1, data2) {
                         _this.recommendData = data1.data.list;
-                        _this.hotData = data2.data.list;
+                     //   _this.hotData = data2.data.list;
                     }));
             },
             loadMore() {
-                //isRefresh,bool==true是下拉刷新，false表示是上拉加载更多
                 if (this.listLoading) return;
                 this.listLoading = true;
                 let url = 'yjt/shopgoods/pagelistbytype/' + this.params.curPage + '-' + this.params.pageSize + '-' + this.listType;
@@ -93,10 +92,7 @@
                     }
                     this.hotData = this.hotData.concat(res.data.list)
                 }).catch((err) => {
-                    //上下拉loading动画关闭
-                    //   this.$indicator.close();//隐藏loading
                     this.listLoading = false;
-                    console.log(err)
                 });
             }
         },

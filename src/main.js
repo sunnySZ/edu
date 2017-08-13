@@ -6,7 +6,11 @@ import Axios from 'axios'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(Mint);
+
+
 Vue.prototype.$http = Axios;
+
+
 
 //自定义过滤器导入
 import filters from './filters'

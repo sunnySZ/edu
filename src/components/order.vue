@@ -18,11 +18,14 @@
             <mt-cell title="选择地点"></mt-cell>
             <mt-cell title="西沙群岛" value="中国" class="itembg"></mt-cell>
         </div>
-
-
+        <div class="order_item">
+            <mt-cell title="数量">
+                <div class="nums"><span class="price">￥{{price}}/份</span><i class="add"></i><span>1</span><i class="reduce"></i></div>
+            </mt-cell>
+        </div>
         <ul class="footer">
             <li>
-                总价:<span>￥299.00</span>
+                总价:<span>￥{{money}}</span>
             </li>
             <li class="buy">提交订单</li>
         </ul>
@@ -35,6 +38,8 @@
         data(){
             return {
                 id: null,
+                price:120,
+                money:120
             }
         },
         created(){
@@ -54,6 +59,7 @@
 </script>
 <style lang="less">
     .order_page {
+        margin-bottom: 5rem;
         h2 {
             font-size: 1.6rem;
             padding: 1rem;
@@ -71,7 +77,12 @@
             width: auto;
             background-size:120% 0;
         }
+
         .itembg .mint-cell-value{ color: white}
+        .nums{ display:flex; height: 2rem; }
+        .nums span{ line-height: 2rem; padding: 0 1rem; display: inline-block}
+        .nums i{ display: inline-block; width: 2rem; height: 2rem; background-color: lightgray;}
+        .nums span.price{ color: orangered; padding-right: 3rem;}
 
         .footer {
             display: flex;

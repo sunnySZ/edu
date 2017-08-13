@@ -99,7 +99,7 @@
             </a>
             <a class="share" href="#">
                 <i></i>分享</a>
-            <a class="buy" href="javascript:;" @click="buy">立刻购买</a>
+            <a class="buy" href="javascript:;" @click="wxLogin">立刻购买</a>
         </div>
 
     </div>
@@ -126,13 +126,69 @@
                     isMore: false,
                     curPage: 1,
                     pageSize: 5
+                },
+                userInfo:{
+                    nick: null,
+                    ulevel: null,
+                    uid: null,
+                    portrait: null
                 }
             }
         },
         created(){
             this.getData();
         },
+        //页面加载后执行
+        mounted(){
+            if(this.isWeiXin()){    //是来自微信内置浏览器
+                // 获取微信信息，如果之前没有使用微信登陆过，将进行授权登录
+             /*   this.$http.get('index.jsp').then((res) => {
+                    this.$store.dispatch('updateUserInfo', this.userInfo)
+                    if(res.data.code ==200){
+                        location.href='index.jsp';
+                    }
+                })*/
+            }
+        },
         methods: {
+            isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
+                let ua = window.navigator.userAgent.toLowerCase();
+                console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
+                if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            wxLogin(){  //点击购买
+                if (this.isWeiXin()) {
+                    this.$toast('微信登录验证')
+                    location.href='index.jsp?url=index.html#/detail/'+this.id
+                    //微信登录，接口由后台定义
+                   /* this.$http.get('index.jsp').then((res) => {
+                        this.$toast(res.data)
+                        this.$toast(res.data.code)
+                        if( res.data.code==200) {   //微信登录成功跳转订单界面
+                            this.$toast('微信登录成功')
+                            this.$router.push({
+                                name: 'order',
+                            })
+                        } else {                //微信登录失败，使用填写信息登录
+
+                            /!*this.$router.push({
+                                name: 'Login',
+                            })*!/
+                        }
+                    }).catch((err) => {
+                        this.$toast(err)
+                    });*/
+                }else{
+                    this.$toast('请在微信里使用购买')
+                   /* this.$router.push({
+                        name: 'order',
+                    })*/
+                }
+            },
             openAlert(msg) {
                 MessageBox({
                     title: '注意事项',
@@ -142,9 +198,6 @@
             },
             addCollect(){ //添加收藏
 
-            },
-            buy(){
-                this.$router.push({path: '/order'})
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
@@ -202,14 +255,14 @@
             sendQuestion(){  //提问
                 //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
 
+                var qs = require('qs');
                 if (this.val !== '') {
-                    this.$http.post('yjt/goodsquestion/add', {
+                    this.$http.post('yjt/goodsquestion/add', qs.stringify({
                         shoid: this.id,
                         content: this.val
-                    }).then((res) => {
+                    })).then((res) => {
                         if (res.data.code === 200) {
                             this.$toast('提交成功');
-                            console.log(this.questionData.list)
                             this.questionData.list.unshift({
                                 CONTENT: this.val,
                                 USER_NAME: '',
@@ -217,7 +270,7 @@
                                 REPALYLIST: [],
                                 CREATE_TIME: new Date()
                             });
-                            console.log(this.questionData.list)
+                            this.questionData.totalRow += 1;
                             this.val = '';
                         } else {
                             this.$toast('提交失败')
@@ -269,7 +322,7 @@
             background-color: white;
         }
         .collect_btn {
-            background:rgba(0,0,0,0.6) url("../assets/icon1.png") no-repeat;
+            background: rgba(0, 0, 0, 0.6) url("../assets/icon1.png") no-repeat;
             display: block;
             position: absolute;
             width: 2.5rem;
@@ -280,7 +333,9 @@
             background-size: cover;
             border-radius: 50%;
         }
-        .collect_btn.cur{ background-position: 0 100%}
+        .collect_btn.cur {
+            background-position: 0 100%
+        }
         .wrap_top img {
             width: 100%;
         }

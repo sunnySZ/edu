@@ -23,6 +23,7 @@ import Order from './components/order.vue'
 
 const router = new VueRouter({
    scrollBehavior: () => ({y: 0}),
+    mode: 'hash',
     routes: [
         {path: '*', redirect: '/select'},//默认显示
         {name: 'select', path: '/select', component: Select},

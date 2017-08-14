@@ -141,19 +141,32 @@
         //页面加载后执行
         mounted(){
             if(this.isWeiXin()){    //是来自微信内置浏览器
-                // 获取微信信息，如果之前没有使用微信登陆过，将进行授权登录
-             /*   this.$http.get('index.jsp').then((res) => {
-                    this.$store.dispatch('updateUserInfo', this.userInfo)
-                    if(res.data.code ==200){
-                        location.href='index.jsp';
-                    }
-                })*/
+                // 获取微信信息，如果获取不到之前没有使用微信登陆过，则点击购买时时会跳到授权登录
+                    this.$http.get('yjt/weixin/userinfo').then((res) => {
+                        this.$toast(res.data)
+                        this.$toast(res.data.code)
+                        if( res.data.code==200) {   //微信登录成功跳转订单界面
+                          this.$store.dispatch('setUer', res.data.result)
+                          localStorage.setItem('user_Info', res.data.result)
+                          /*  this.$toast('微信登录成功')
+                            this.$router.push({
+                                name: 'order',
+                            })*/
+                        } else {                //微信登录失败，使用填写信息登录
+
+                            /* this.$router.push({
+                                name: 'Login',
+                            })*/
+                        }
+                    }).catch((err) => {
+                        this.$toast(err)
+                    });
             }
         },
         methods: {
             isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
                 let ua = window.navigator.userAgent.toLowerCase();
-                console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
+               // console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
                 if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                     return true;
                 } else {
@@ -162,26 +175,13 @@
             },
             wxLogin(){  //点击购买
                 if (this.isWeiXin()) {
-                    this.$toast('微信登录验证')
-                    location.href='index.jsp?url=index.html#/detail/'+this.id
-                    //微信登录，接口由后台定义
-                   /* this.$http.get('index.jsp').then((res) => {
-                        this.$toast(res.data)
-                        this.$toast(res.data.code)
-                        if( res.data.code==200) {   //微信登录成功跳转订单界面
-                            this.$toast('微信登录成功')
-                            this.$router.push({
-                                name: 'order',
-                            })
-                        } else {                //微信登录失败，使用填写信息登录
+            
+                   // var url1='/#/detail/'+this.id;
+                      var url1='/route.html?code=1';
+    
+                    window.location.href='index.jsp?url='+encodeURIComponent(url1)
 
-                            /!*this.$router.push({
-                                name: 'Login',
-                            })*!/
-                        }
-                    }).catch((err) => {
-                        this.$toast(err)
-                    });*/
+                   
                 }else{
                     this.$toast('请在微信里使用购买')
                    /* this.$router.push({
@@ -197,7 +197,8 @@
                 });
             },
             addCollect(){ //添加收藏
-
+                     var url1='/route.html?code=2';
+                    window.location.href='index.jsp?url='+encodeURIComponent(url1)
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;

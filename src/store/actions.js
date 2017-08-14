@@ -5,8 +5,11 @@ const actions = {
     increment: ({commit}) => {  //增加
         commit(types.INCREMENT)
     },
-    updateUserInfo:({commit,state})=>{
-        commit(types.UPDATEUSERINFO,state.userInfo)
+    decrement: ({commit}) => {  //减少
+        commit(types.DECREMENT)
+    },
+    setUer: ({commit}) => {  //存储用户信息
+        commit(types.SETUSER,state.userInfo)
     },
     addOdd: ({commit, state}) => {  //偶数增加
         if (state.count % 2 == 0) {

@@ -20,12 +20,14 @@
         </div>
         <div class="order_item">
             <mt-cell title="数量">
-                <div class="nums"><span class="price">￥{{price}}/份</span><i class="add"></i><span>1</span><i class="reduce"></i></div>
+                <div class="nums"><span class="price">￥{{price}}/份</span>
+                <i class="add" @click="increment">+</i><span>{{getNum}}</span>
+                <i class="reduce" @click="decrement">-</i></div>
             </mt-cell>
         </div>
         <ul class="footer">
             <li>
-                总价:<span>￥{{money}}</span>
+                总价:<span>￥{{getNum*price}}</span>
             </li>
             <li class="buy">提交订单</li>
         </ul>
@@ -33,19 +35,21 @@
     </div>
 </template>
 <script>
+import {mapGetters,mapActions} from 'vuex'
     import {MessageBox} from 'mint-ui';
     export default{
         data(){
             return {
                 id: null,
                 price:120,
-                money:120
             }
         },
         created(){
             //this.getData();
         },
-        methods: {
+        computed:mapGetters(['getNum']),
+        methods:mapActions(['increment','decrement'])
+       /* methods: {
             openAlert(msg) {
                 MessageBox({
                     title: '注意事项',
@@ -54,7 +58,7 @@
                 });
             },
 
-        }
+        }*/
     }
 </script>
 <style lang="less">

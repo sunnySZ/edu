@@ -8,8 +8,9 @@ const mutations={ //处理状态、数据变化
     		 state.count--;
     	} 
     },
-    [types.SETUSER](state,res){  //设置用户信息
-        state.userInfo=res
+    [types.SETUSERID](state,res){  //设置用户id
+    	console.log(res)
+        state.user_id=res
     }
 }
 export default mutations

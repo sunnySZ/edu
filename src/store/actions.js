@@ -8,8 +8,8 @@ const actions = {
     decrement: ({commit}) => {  //减少
         commit(types.DECREMENT)
     },
-    setUer: ({commit}) => {  //存储用户信息
-        commit(types.SETUSER,state.userInfo)
+    setuserid: ({commit,state}) => {  //存储用户信息
+        commit(types.SETUSERID,state.user_id)
     },
     addOdd: ({commit, state}) => {  //偶数增加
         if (state.count % 2 == 0) {

@@ -25,17 +25,17 @@
                 <i class="reduce" @click="decrement">-</i></div>
             </mt-cell>
         </div>
-        <ul class="footer">
+        <ul class="footer_order">
             <li>
                 总价:<span>￥{{getNum*price}}</span>
             </li>
-            <li class="buy">提交订单</li>
+            <li class="buy" @click="submitOrder">提交订单</li>
         </ul>
 
     </div>
 </template>
 <script>
-import {mapGetters,mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
     import {MessageBox} from 'mint-ui';
     export default{
         data(){
@@ -46,10 +46,10 @@ import {mapGetters,mapActions} from 'vuex'
         },
         created(){
             //this.getData();
+               this.getUserMsg();
         },
         computed:mapGetters(['getNum']),
-        methods:mapActions(['increment','decrement'])
-       /* methods: {
+        methods: {
             openAlert(msg) {
                 MessageBox({
                     title: '注意事项',
@@ -57,11 +57,83 @@ import {mapGetters,mapActions} from 'vuex'
                     confirmButtonText: '关闭'
                 });
             },
+           increment(){
+            this.$store.dispatch('increment')
+           }, 
+           decrement(){
+            this.$store.dispatch('decrement')
+           }, 
+           getUserMsg(){
+            //点击购买授权成功后跳转到order界面地址传user_id
+            //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
+            let _Path=this.$route.fullPath
+            if(fullPath.indexOf('?')>0){
+                let user_id=_Path.split('?')[1].split('=')[1]
+                localStorage.setItem('user_id',user_id)
+            }
 
-        }*/
+            //授权登录进来后获取用户信息并本地存储
+             this.$http.get('yjt/weixin/userinfo').then((res) => {
+                        this.$toast(res.data.code)
+                        if( res.data.code==200) {   
+                          localStorage.setItem('user_Info',JSON.stringify(res.data.result) )
+                        } 
+                    }).catch((err) => {
+                        this.$toast(err)
+                    });
+
+              let orderObj={
+                id:null,//商品id
+                name:'',//商品名称
+                pay:100,//实付金额
+                gotime:'2017-09-10'
+              }
+              localStorage.setItem('orderMsg',JSON.stringify(orderObj));
+           },
+           submitOrder(){
+              //跳转到订单支付
+              this.$router.push({
+                path:'/orderPay'
+              })
+           }
+
+        }
     }
 </script>
 <style lang="less">
+
+.footer_order {
+            display: flex;
+            flex-wrap: nowrap;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+        }
+        .footer_order li {
+            display: block;
+            width: 60%;
+            height:4rem;
+            line-height: 4rem;
+            text-align: center;
+            font-size: 1.6rem;
+            border-top: 1px solid #ccc;
+            box-sizing: border-box;
+            color: #6d6d6d;
+        }
+        .footer_order li span {
+            color: #fa6e51;
+        }
+        .footer_order li:last-child {
+            width: 40%;
+            background-color: #fa6e51;
+            color: white;
+            border-top-color: #fa6e51;
+
+        }
+         .order_item {
+            margin-bottom: 1rem;
+        }
     .order_page {
         margin-bottom: 5rem;
         h2 {
@@ -69,9 +141,7 @@ import {mapGetters,mapActions} from 'vuex'
             padding: 1rem;
             background-color:white;
         }
-        .order_item {
-            margin-bottom: 1rem;
-        }
+       
         .itembg .mint-cell-wrapper {
             background-color: orangered;
             color: white;
@@ -88,35 +158,7 @@ import {mapGetters,mapActions} from 'vuex'
         .nums i{ display: inline-block; width: 2rem; height: 2rem; background-color: lightgray;}
         .nums span.price{ color: orangered; padding-right: 3rem;}
 
-        .footer {
-            display: flex;
-            flex-wrap: nowrap;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f8f8f8;
-        }
-        .footer li {
-            display: block;
-            width: 60%;
-            height:4rem;
-            line-height: 4rem;
-            text-align: center;
-            font-size: 1.6rem;
-            border-top: 1px solid #ccc;
-            box-sizing: border-box;
-            color: #6d6d6d;
-        }
-        .footer li span {
-            color: #fa6e51;
-        }
-        .footer li:last-child {
-            width: 40%;
-            background-color: #fa6e51;
-            color: white;
-            border-top-color: #fa6e51;
-
-        }
+        
 
     }
 </style>

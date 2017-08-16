@@ -19,8 +19,6 @@ Object.keys(filters).forEach((v,i)=>{
     Vue.filter(v,filters[v])
 });
 
-//导入基础方法类
-import utils from './utils'
 
 
 new Vue({

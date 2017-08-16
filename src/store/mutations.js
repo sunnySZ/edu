@@ -9,8 +9,19 @@ const mutations={ //处理状态、数据变化
     	} 
     },
     [types.SETUSERID](state,res){  //设置用户id
-    	console.log(res)
         state.user_id=res
+    },
+    [types.SETORDERID](state,res){  //设置订单id
+        state.order_id=res
+    },
+    [types.SETUSERMSG](state,res){  //用户信息
+        state.user_msg=res
+    },
+    [types.LOGOUT](state){  //注销
+        state.user_msg={}
+        state.user_id=''
+        sessionStorage.clear();
     }
 }
+
 export default mutations

@@ -138,25 +138,8 @@
         created(){
             this.getData();
         },
-        mounted(){  //页面加载后执行,判断进入到该页面是否获取微信用户信息
-                // 获取微信信息，如果获取不到之前没有使用微信登陆过，则点击购买时时会跳到授权登录
-                    /*this.$http.get('yjt/weixin/userinfo').then((res) => {
-                        this.$toast(res.data)
-                        if( res.data.code==200) {   //微信登录成功跳转订单界面
-                          this.$store.dispatch('setUer', res.data.result)
-                          localStorage.setItem('user_Info',JSON.stringify(res.data.result) )
-                            this.$toast('微信登录成功')
-                            this.$router.push({
-                                name: 'order',
-                            })
-                        } 
-                    }).catch((err) => {
-                        this.$toast(err)
-                    });*/
-      
-        },
         methods: {
-      /*    isWeiXin:function() {   //判断是否微信登陆 是不是微信浏览器
+          isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
                 let ua = window.navigator.userAgent.toLowerCase();
                // console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
                 if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -164,10 +147,10 @@
                 } else {
                     return false;
                 }
-            },*/
+            },
             buyNow(){  
-    
-                     //  var url1='/?#/order/';
+                if(this.isWeiXin()){
+                      //  var url1='/?#/order/';
                     /* var url1='/route.html?code=1';  
                      window.location.href='index.jsp?url='+encodeURIComponent(url1)*/
                     if(this.$store.state.user_id){
@@ -180,6 +163,10 @@
                       window.location.href='index.jsp?url='+encodeURIComponent(url1)
                     }
             
+                }else{
+                  this.$toast('请在微信里购买')
+                }
+               
  
             },
             openAlert(msg) {
@@ -190,8 +177,12 @@
                 });
             },
             addCollect(){ //添加收藏
-                     var url1='/route.html?code=2';
-                    window.location.href='index.jsp?url='+encodeURIComponent(url1)
+                   if(this.$store.state.user_id){
+                    //调接口收藏
+
+                   }else{
+                    this.$toast('请登录后操作')
+                   }
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;

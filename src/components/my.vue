@@ -1,8 +1,9 @@
 <template>
     <div class="my_page">
         <div class="login_top">
-            <img slot="icon" src="../assets/user_default.png">
-            <div class="login_msg">Hi 您还未登录 <br><a href="#">点击登陆</a></div>
+            <img slot="icon" :src="userImg">
+            <div class="login_msg">Hi {{nickName}}<span v-if="!isLogin">您还未登录</span> <br><a href="javascript:;" v-if="!isLogin" @click="login()">点击登陆</a>
+            <a v-if="isLogin" @click="loginOut()">注销</a></div>
         </div>
         <mt-cell title="我的订单" is-link
                  :to="{ name:'', params: { url: '/lkp/v2/movie/coming_soon?' }}"
@@ -84,7 +85,60 @@
     import Foot from './footer.vue'
     export default{
         data(){
-            return {}
+            return {
+                userImg:'/dist/user_default.png',
+                nickName:'',
+                isLogin:false
+            }
+        },
+        created(){
+            this.getUserMsg()
+        },
+        methods:{
+            getUserMsg(){
+             //点击登录授权成功后跳转到my界面地址传user_id
+            //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
+            let _Path=this.$route.fullPath
+            if(_Path.indexOf('?')>0){
+                let user_id=_Path.split('?')[1].split('=')[1]
+                console.log(user_id)
+                 this.$store.dispatch('setuserid',user_id)
+              //  sessionStorage.setItem('user_id',user_id)
+            }
+            console.log(this.$store.state)
+            if(this.$store.state.user_id){
+                this.isLogin=true;
+               // let user_info=JSON.parse(sessionStorage.getItem("user_info"))
+                  //授权登录进来后获取用户信息并本地存储
+                 this.$http.get('yjt/weixin/userinfo').then((res) => {
+                            this.$toast(res.data.code)
+                            if(res.data.code==200) {  
+                             this.$store.dispatch('setusermsg',res.data.result) 
+                             this.userImg=res.data.result.userHeadImgurl;
+                             this.nickName=res.data.result.userNickname;
+                          //sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
+                            } 
+                        }).catch((err) => {
+                            this.$toast(err)
+                        });
+
+               
+                }else{
+                
+                }
+            },
+            login(){  //点击授权登录
+                  var url1='/route.html?code=2';
+                  window.location.href='index.jsp?url='+encodeURIComponent(url1)
+            },
+            loginOut(){
+        
+                 this.$store.dispatch('logout') 
+                 this.isLogin=false;
+                 this.userImg='/dist/user_default.png';
+                 this.nickName=''
+            }
+
         },
         components: {
             Foot

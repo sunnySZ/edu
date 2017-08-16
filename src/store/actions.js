@@ -8,22 +8,18 @@ const actions = {
     decrement: ({commit}) => {  //减少
         commit(types.DECREMENT)
     },
-    setuserid: ({commit,state}) => {  //存储用户信息
-        commit(types.SETUSERID,state.user_id)
+    setuserid: ({commit},state) => {  //存储用户id
+        commit(types.SETUSERID,state)
     },
-    addOdd: ({commit, state}) => {  //偶数增加
-        if (state.count % 2 == 0) {
-            commit(types.INCREMENT)
-        }
+    setorderid: ({commit},state) => {  //存储订单id
+        commit(types.SETORDERID,state)
     },
-    clickAsync: ({commit}) => {  //异步增加
-        new Promise((resolve) => {
-            setTimeout(function () {
-                commit(types.INCREMENT)
-                resolve()
-            }, 1000)
-        })
+    setusermsg: ({commit},state) => {  //存储用户信息
+        commit(types.SETUSERMSG,state)
+    },
+    logout: ({commit}) => {  //注销
+        commit(types.LOGOUT)
+    },
 
-    }
 }
 export default actions

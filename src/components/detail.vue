@@ -149,7 +149,7 @@
                 }
             },
             buyNow(){  
-                if(this.isWeiXin()){
+                if(!this.isWeiXin()){
                       //  var url1='/?#/order/';
                     /* var url1='/route.html?code=1';  
                      window.location.href='index.jsp?url='+encodeURIComponent(url1)*/

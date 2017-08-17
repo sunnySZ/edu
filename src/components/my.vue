@@ -6,7 +6,7 @@
             <a v-if="isLogin" @click="loginOut()">注销</a></div>
         </div>
         <mt-cell title="我的订单" is-link
-                 :to="{ name:'', params: { url: '/lkp/v2/movie/coming_soon?' }}"
+                 :to="{ name:'orderList', params: { url: '/lkp/v2/movie/coming_soon?' }}"
                  value="查看全部订单"></mt-cell>
         <ul class="order_item">
             <li>

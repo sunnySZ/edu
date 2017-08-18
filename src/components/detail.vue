@@ -11,7 +11,6 @@
                       v-for="item in detailData.LABEL">{{item}}</span>
                 <span class="apply_num">累计报名{{detailData.SALED_NUM}}人</span>
             </div>
-
             <mt-cell title="适合年龄：" :value="detailData.AGE"></mt-cell>
             <mt-cell title="联系电话：" :value="detailData.TEL" is-link to="tel:8888888"></mt-cell>
             <mt-cell title="注意事项：" @click.native="openAlert(detailData.ATTENTION)" :value="detailData.ATTENTION"
@@ -127,7 +126,7 @@
                     curPage: 1,
                     pageSize: 5
                 },
-                userInfo:{
+                userInfo: {
                     nick: null,
                     ulevel: null,
                     uid: null,
@@ -139,35 +138,35 @@
             this.getData();
         },
         methods: {
-          isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
+            isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
                 let ua = window.navigator.userAgent.toLowerCase();
-               // console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
+                // console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
                 if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                     return true;
                 } else {
                     return false;
                 }
             },
-            buyNow(){  
-                if(!this.isWeiXin()){
-                      //  var url1='/?#/order/';
+            buyNow(){
+                if (this.isWeiXin()) {
+                    //  var url1='/?#/order/';
                     /* var url1='/route.html?code=1';  
                      window.location.href='index.jsp?url='+encodeURIComponent(url1)*/
-                    if(this.$store.state.user_id){
-                       this.$router.push({
-                        path:'/order'
-                       })
-                    }else{
-                    //  var url1='/#/order/';
-                     var url1='/route.html?code=1';
-                      window.location.href='index.jsp?url='+encodeURIComponent(url1)
+                    if (this.$store.state.user_id) {
+                        this.$router.push({
+                            path: '/order'
+                        })
+                    } else {
+                        //  var url1='/#/order/';
+                        var url1 = '/route.html?code=1';//http://youertong.cn/index.html#/order
+                        window.location.href = 'index.jsp?url=' + encodeURIComponent(url1)
                     }
-            
-                }else{
-                  this.$toast('请在微信里购买')
+
+                } else {
+                    this.$toast('请在微信里购买')
                 }
-               
- 
+
+
             },
             openAlert(msg) {
                 MessageBox({
@@ -176,13 +175,22 @@
                     confirmButtonText: '关闭'
                 });
             },
-            addCollect(){ //添加收藏
-                   if(this.$store.state.user_id){
-                    //调接口收藏
-
-                   }else{
-                    this.$toast('请登录后操作')
-                   }
+            addCollect(){ //添加收藏或取消收藏，yjt/goodsfavorites/favoritesorcancel/4
+                if (this.$store.state.user_id) {
+                    let url = 'yjt/goodsfavorites/favoritesorcancel/' + this.id
+                    this.$http.get(url).then((res) => {
+                         if (res.data.code === 200) {
+                             this.$toast('收藏成功')
+                         }else{
+                            this.$toast('收藏失败')
+                         }
+                        console.log(res.data)
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                } else {
+                    this.$toast('请在个人中心登录后操作')
+                }
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
@@ -239,7 +247,6 @@
             },
             sendQuestion(){  //提问
                 //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
-
                 var qs = require('qs');
                 if (this.val !== '') {
                     this.$http.post('yjt/goodsquestion/add', qs.stringify({

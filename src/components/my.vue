@@ -128,7 +128,7 @@
                 }
             },
             login(){  //点击授权登录
-                  var url1='/route.html?code=2';
+                  var url1='/route.html?code=2';  //http://youertong.cn/index.html#/my
                   window.location.href='index.jsp?url='+encodeURIComponent(url1)
             },
             loginOut(){

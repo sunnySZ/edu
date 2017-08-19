@@ -53,4 +53,42 @@
         opacity: 1;
         transform: translate3d(0, 5em, 0);
     }
+    .list_box li {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 1rem;
+        background-color: white;
+    }
+
+    .list_box li a {
+        color: #bbbbbb;
+    }
+
+    .list_item {
+        display: flex;
+    }
+
+    .img_box {
+        flex: 1;
+    }
+
+    .img_box img {
+        width: 100%;
+    }
+
+    .ticket_msg {
+        flex: 4;
+        padding-left: 1rem;
+        color: #cccccc;
+    }
+
+    .ticket_msg .title {
+        font-size: 1.4rem;
+        color: #000000;
+    }
+
+    .ticket_msg p {
+        line-height: 1.4rem;
+    }
 </style>

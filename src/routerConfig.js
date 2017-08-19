@@ -13,6 +13,7 @@ import Discover from './components/discover.vue'
 import Order from './components/order.vue'
 import OrderPay from './components/orderPay.vue'
 import OrderList from './components/orderList.vue'
+import Collect from './components/collect.vue'
 
 /*const my_routes = [
  {name: 'home', path: '/', component: List},
@@ -38,7 +39,8 @@ const router = new VueRouter({
         {name: 'discover', path: '/discover/:type', component: Discover,meta:{title:'发现'}},
         {name: 'order', path: '/order', component: Order,meta:{title:'订单确认',auth:true}},
         {name: 'orderPay', path: '/order/orderPay', component: OrderPay,meta:{title:'收银台',auth:true}},
-        {name: 'orderList', path: '/orderList', component: OrderList,meta:{title:'我的订单列表',auth:true}}
+        {name: 'orderList', path: '/orderList', component: OrderList,meta:{title:'订单列表',auth:true}},
+        {name: 'collect', path: '/collect', component: Collect,meta:{title:'我的收藏',auth:true}}
     ]
 })
 

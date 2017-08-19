@@ -7,11 +7,13 @@
             <router-link to="/search" slot="left">
                 <input class="info" type="text" placeholder="搜索商品活动或游玩地" v-model="val">
             </router-link>
-            <mt-button slot="right" @click="handleSearch">搜索</mt-button>
+            <mt-button slot="right" @click="handleSearch(false)">搜索</mt-button>
         </mt-header>
 
         <div class="search_history" v-show="historyShow">
-            <mt-cell v-for="item in searchHistory" :title="item"></mt-cell>
+            <h2>搜索记录</h2>
+            <mt-cell v-for="item in searchHistory" :title="item" @click.native="handleSearch(item)"></mt-cell>
+            <mt-button plain size="large" type="primary" @click.native="clearHistory">清空搜索记录</mt-button>
         </div>
 
         <div class="search_result">
@@ -24,10 +26,8 @@
                             </div>
                             <div class="ticket_msg">
                                 <span class="title">{{item.NAME}}</span>
-                                <p><span class="price">{{item.PRICE}}</span>
-                                    <del>150.00</del>
-                                </p>
-                                <p>已售12份 <span class="address">江汉路步行街</span></p></div>
+                                <p>￥<span class="price">{{item.PRICE}}</span></p>
+                                <p>已售{{item.SALES_NUM}}份 <span class="address">{{item.ADRESS}}</span></p></div>
                         </div>
                     </router-link>
                 </li>
@@ -66,6 +66,10 @@
             }
         },
         methods: {
+            clearHistory(){
+                localStorage.removeItem('search_list');
+                this.historyShow = false;
+            },
             loadMore() {
                 if (this.listLoading || this.val=='') return;
                 this.listLoading = true;
@@ -75,7 +79,7 @@
                     this.listLoading = false;
                     if (this.params.curPage >= res.data.totalPage) {
                         this.allLoaded = true;
-                        this.$toast('没有更多了...')
+                        this.$toast('全部加载完毕')
                     }
                     this.searchData = this.searchData.concat(res.data.list)
                 }).catch((err) => {
@@ -83,9 +87,16 @@
                     console.log(err)
                 });
             },
-            handleSearch(){
+            handleSearch(searchval){
+
+                if(searchval){  //点击搜索记录列表搜索
+                    this.val=searchval
+                }
+                this.listLoading = true;
                 this.historyShow = false; //隐藏搜索记录
                 this.allLoaded = false;
+                this.searchData=[];//重置搜索
+              //  this.$indicator.open();//显示loading
                 if (this.val !== '') {
                     if (this.searchHistory.length > 0) {
                         for (var i = 0; i < this.searchHistory.length; i++) {
@@ -103,6 +114,7 @@
                     var url = 'yjt/shopgoods/pagelist/' + this.params.curPage + '-' + this.params.pageSize + '?kw=' + this.val;
                     this.$http.get(url).then((res) => {
                         this.listLoading = false;
+                     //   this.$indicator.hide()//隐藏loading
                        if(res.data.list.length>0){
                            this.searchData =res.data.list
                        }else{
@@ -125,5 +137,7 @@
 <style lang="less">
     .search_page {
         margin-top: 50px;
+        h2{ padding:1rem;}
+        .mint-button--primary.is-plain{ margin: 5%;  width: 90%;}
     }
 </style>

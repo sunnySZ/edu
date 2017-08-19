@@ -30,16 +30,8 @@
     export default{
         data(){
             return {
-                orderId: this.$store.state.order_id,
-                price: 120,
-                data: []
             }
         },
-        created(){
-            //this.getData();
-            // this.directRightUrl()
-        },
-
         methods: {
             callPay(jsonStr){
                 if (typeof WeixinJSBridge == "undefined") {
@@ -54,46 +46,39 @@
                 }
             },
             jsApiCall(jsonStr){
-                /*{
-                 "appId":"wx2421b1c4370ec43b",     //公众号名称，由商户传入
-                 "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数
-                 "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串
-                 "package":"prepay_id=u802345jgfjsdfgsdg888",
-                 "signType":"MD5",         //微信签名方式：
-                 "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
-                 }*/
+                //微信H5支付API---https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&index=6
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', jsonStr,
                     function (res) {
-                        if (res.err_msg == "get_brand_wcpay_request:ok") {
-                            this.$toast('支付成功')
+                        alert('支付开始')
+                        this.$router.push({
+                            path: '/orderList'
+                        })
+                        alert(res.err_msg)
+                      //  if(/:ok$/i.test(res.err_msg)){
+                       if (res.err_msg == "get_brand_wcpay_request:ok") {
+                           alert('支付成功')
                             //跳转到订单支付成功后跳订单列表
                             this.$router.push({
                                 path: '/orderList'
                             })
                         } else {
-                            this.$toast('支付失败')
+                           alert('支付失败')
                         }
                     }
                 )
             },
             payOrder(){
                 let url = encodeURIComponent("/index.html");
-                 let qs = require('qs');
-                 let ordidstr=Math.random().toString(36).substr(2);//随机订单号测试用
-                 this.$http.post('yjt/weixin/weixinprepay',
-                 qs.stringify({"order_id":ordidstr,"url":url})).then((res)=>{
-                 console.log(res)
-                 //拿到支付订单信息调微信支付接口
-                 let jsonStr=res.data.result;
-                 console.log(jsonStr)
-                 this.callPay(jsonStr)
-
-                 }).catch((err)=>{
-                 this.$toast(err)
-                 })
-
-
+                let qs = require('qs');
+                let ordidstr = this.$store.state.order_id;   //Math.random().toString(36).substr(2);//随机订单号测试用
+                this.$http.post('yjt/weixin/weixinprepay',
+                    qs.stringify({"order_id": ordidstr, "url": url})).then((res) => {
+                    let jsonStr = res.data.result; //拿到支付订单信息调微信支付接口
+                    this.callPay(jsonStr)
+                }).catch((err) => {
+                    this.$toast(err)
+                })
             }
         }
     }

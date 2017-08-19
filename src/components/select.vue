@@ -68,13 +68,13 @@
                 var _this = this;
                 let httpArr = [
                     _this.$http.get('yjt/shopgoods/pagelistbytype/1-3-6'), //推荐活动
-                 //   _this.$http.get('yjt/shopgoods/pagelistbytype/1-5-7')  //热门精选
+                    //   _this.$http.get('yjt/shopgoods/pagelistbytype/1-5-7')  //热门精选
                 ];
 
                 _this.$http.all(httpArr)
                     .then(_this.$http.spread(function (data1, data2) {
                         _this.recommendData = data1.data.list;
-                     //   _this.hotData = data2.data.list;
+                        //   _this.hotData = data2.data.list;
                     }));
             },
             loadMore() {
@@ -86,7 +86,7 @@
                     this.params.curPage += 1
                     if (this.params.curPage > res.data.totalPage) {
                         this.allLoaded = true;
-                       // this.$toast('没有更多了...')
+                        // this.$toast('没有更多了...')
                     }
                     this.hotData = this.hotData.concat(res.data.list)
                 }).catch((err) => {
@@ -124,11 +124,13 @@
         height: 50px;
         line-height: 50px;
     }
+
     .loading div {
         display: inline-block;
         vertical-align: middle;
         margin-right: 5px;
     }
+
     .hot_list {
         padding: 0;
         margin: 0;
@@ -153,8 +155,6 @@
         color: #000000;
         font-size: 1.4rem;
     }
-
-
 
     .hot_list li a .price {
         font-size: 1.2rem;
@@ -182,6 +182,7 @@
         background: rgba(0, 0, 0, 0.6);
         color: #ffffff;
     }
+
     .share_gift {
         font-size: 1rem;
         padding: 0.1rem;
@@ -190,6 +191,7 @@
         margin-right: 0.5rem;
         color: #fa6e51;
     }
+
     .select_page {
         margin-top: 40px;
         margin-bottom: 65px;
@@ -246,7 +248,7 @@
             border-left: 1px solid #ccc;
         }
         .mint-cell-title {
-            border-left: 0.3rem solid green;
+            border-left: 0.3rem solid #26a2ff;
             padding-left: 0.5rem;
             font-size: 1.4rem;
         }
@@ -256,7 +258,7 @@
             padding: 0;
         }
         .mint-cell-value.is-link {
-            color: green;
+            color: #26a2ff;
             margin-right: 1.2rem;
         }
         .mint-cell-allow-right::after {

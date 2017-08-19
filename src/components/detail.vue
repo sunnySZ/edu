@@ -194,6 +194,9 @@
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
+                localStorage.setItem('goods_id',this.id) //存储商品id，订单界面用
+                console.log(localStorage.getItem('goods_id'))
+               // this.$store.dispatch('goodsid', this.id);
                 this.$indicator.open();
                 let httpArr = [
                     this.$http.get('yjt/shopgoods/info/' + this.id), //活动详情

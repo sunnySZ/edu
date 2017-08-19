@@ -17,6 +17,12 @@ const actions = {
     setusermsg: ({commit},state) => {  //存储用户信息
         commit(types.SETUSERMSG,state)
     },
+    ordercur: ({commit},state) => {  //订单界面高亮
+        commit(types.ORDERCUR,state)
+    },
+/*    goodsid: ({commit},state) => {  //商品id
+        commit(types.GOODSID,state)
+    },*/
     logout: ({commit}) => {  //注销
         commit(types.LOGOUT)
     },

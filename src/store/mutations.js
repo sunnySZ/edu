@@ -4,7 +4,7 @@ const mutations={ //处理状态、数据变化
         state.count++;
     },
     [types.DECREMENT](state){
-    	if(state.count>0){
+    	if(state.count>1){
     		 state.count--;
     	} 
     },
@@ -17,6 +17,12 @@ const mutations={ //处理状态、数据变化
     [types.SETUSERMSG](state,res){  //用户信息
         state.user_msg=res
     },
+    [types.ORDERCUR](state,res){  //订单tab高亮
+        state.order_cur=res
+    },
+/*    [types.GOODSID](state,res){  //商品id
+        state.goods_id=res
+    },*/
     [types.LOGOUT](state){  //注销
         state.user_msg={}
         state.user_id=''

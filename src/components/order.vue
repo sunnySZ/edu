@@ -50,33 +50,34 @@
                 this.$store.dispatch('decrement')
             },
             getUserMsg(){
-                //点击购买授权成功后跳转到order界面地址传user_id
-                //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
-                let _Path = this.$route.fullPath
-                if (_Path.indexOf('?') > 0) {
-                    let user_id = _Path.split('?')[1].split('=')[1]
-                    this.$store.dispatch('setuserid', user_id)
-                    // sessionStorage.setItem('user_id',user_id)
-                }
-
-                //授权登录进来后获取用户信息并本地存储
-                this.$http.get('yjt/weixin/userinfo').then((res) => {
-                    this.$toast(res.data.code)
-                    if (res.data.code == 200) {
-                        this.$store.dispatch('setusermsg', res.data.result)
-                        //  sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
+                if (!this.$store.state.user_id) {
+                    //点击购买授权成功后跳转到order界面地址传user_id
+                    //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
+                    let _Path = this.$route.fullPath
+                    if (_Path.indexOf('?') > 0) {
+                        let user_id = _Path.split('?')[1].split('=')[1]
+                        this.$store.dispatch('setuserid', user_id)
+                        // sessionStorage.setItem('user_id',user_id)
+                        //授权登录进来后获取用户信息并本地存储
+                        this.$http.get('yjt/weixin/userinfo').then((res) => {
+                            this.$toast(res.data.code)
+                            if (res.data.code == 200) {
+                                this.$store.dispatch('setusermsg', res.data.result)
+                                //  sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
+                            }
+                        }).catch((err) => {
+                            this.$toast(err)
+                        });
                     }
-                }).catch((err) => {
-                    this.$toast(err)
-                });
-
-                let orderObj = {
-                    id: null,//商品id
-                    name: '',//商品名称
-                    pay: 100,//实付金额
-                    gotime: '2017-09-10'
                 }
-                sessionStorage.setItem('orderMsg', JSON.stringify(orderObj));
+
+                /*let orderObj = {
+                 id: null,//商品id
+                 name: '',//商品名称
+                 pay: 100,//实付金额
+                 gotime: '2017-09-10'
+                 }
+                 sessionStorage.setItem('orderMsg', JSON.stringify(orderObj));*/
             },
             submitOrder(){
                 if (!this.validatePhone(this.telVal)) {
@@ -91,7 +92,7 @@
                 let params = {
                     REMARKS: this.textVal,  //备注
                     MOBILE: this.telVal,  //联系人手机号
-                    GOODS_ID:this.goods_id ,//商品id
+                    GOODS_ID: this.goods_id,//商品id
                     COUNT: this.$store.state.count,    //数量
                     NEED_INVOICE: '',  //是否需要发票,1:需要 2:不需要 默认值2
                     USER_NAME: '', //联系人姓名

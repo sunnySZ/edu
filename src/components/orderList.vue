@@ -31,12 +31,12 @@
             <mt-spinner type="fading-circle"></mt-spinner>
         </p>
         <div class="get_more" @click="getMoreOrders" v-show="isMore">点击查看更多</div>
-        <p v-show="nodata">暂无数据!</p>
-
+        <p v-show="nodata" class="no_data">暂无数据!</p>
+        <Foot></Foot>
     </div>
 </template>
 <script>
-
+    import Foot from './footer.vue'
     export default{
         data(){
             return {
@@ -117,12 +117,16 @@
                     this.$toast('订单列表' + err)
                 });
             },
+        },
+        components: {
+            Foot
         }
     }
 </script>
 <style lang="less">
     .orderList_page {
         margin-top: 55px;
+        margin-bottom: 65px;
         .mint-navbar.is-fixed {
             z-index: 3000;
         }

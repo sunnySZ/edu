@@ -19,12 +19,13 @@
         <p v-show="isLoading" class="loading">
             <mt-spinner type="fading-circle"></mt-spinner>
         </p>
-        <div class="get_more" @click="getMoreCollect" v-show="isMore">点击查看更多</div>
-        <p v-show="nodata">暂无数据!</p>
-
+        <div class="get_more" @click="getMoreData" v-show="isMore">点击查看更多</div>
+        <p v-show="nodata" class="no_data">暂无数据!</p>
+        <Foot></Foot>
     </div>
 </template>
 <script>
+    import Foot from './footer.vue'
     export default{
         data(){
             return {
@@ -63,10 +64,11 @@
             },
             getMoreData(){
                 this.isLoading = true;
-                this.curPage += 1;
+                this.params.curPage += 1;
                 let url = 'yjt/goodsfavorites/pagelist/' + this.params.curPage + '-' + this.params.pageSize;
                 this.$http.get(url).then((res) => {
                     if (res.data.list.length > 0) {
+                        this.isLoading = false;
                         this.collectData = res.data.list;
                         if (this.params.curPage >= res.data.totalPage) {
                             this.isMore = false;
@@ -79,13 +81,15 @@
                 }).catch((err) => {
                 });
             }
+        },
+        components: {
+            Foot
         }
-
     }
 </script>
 <style lang="less">
 
     .collect_page {
-
+        margin-bottom: 65px;
     }
 </style>

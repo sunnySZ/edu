@@ -43,7 +43,11 @@
     @media screen and (min-width:740px){html{font-size:28px;}}
 
     p,h2,ul{ padding: 0; margin: 0;}
-
+    .no_data{ text-align: center; padding: 1rem;}
+    .get_more {
+        padding: 1rem;
+        text-align: center;
+    }
     .slide-down-enter-active, .slide-down-leave-active {
         transition: .4s all ease;
         opacity: 0.5;

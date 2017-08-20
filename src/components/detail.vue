@@ -179,11 +179,11 @@
                 if (this.$store.state.user_id) {
                     let url = 'yjt/goodsfavorites/favoritesorcancel/' + this.id
                     this.$http.get(url).then((res) => {
-                         if (res.data.code === 200) {
-                             this.$toast('收藏成功')
-                         }else{
+                        if (res.data.code === 200) {
+                            this.$toast('收藏成功')
+                        } else {
                             this.$toast('收藏失败')
-                         }
+                        }
                         console.log(res.data)
                     }).catch((err) => {
                         console.log(err)
@@ -194,9 +194,9 @@
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
-                localStorage.setItem('goods_id',this.id) //存储商品id，订单界面用
+                localStorage.setItem('goods_id', this.id) //存储商品id，订单界面用
                 console.log(localStorage.getItem('goods_id'))
-               // this.$store.dispatch('goodsid', this.id);
+                // this.$store.dispatch('goodsid', this.id);
                 this.$indicator.open();
                 let httpArr = [
                     this.$http.get('yjt/shopgoods/info/' + this.id), //活动详情
@@ -249,36 +249,38 @@
                 });
             },
             sendQuestion(){  //提问
-                //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
-                var qs = require('qs');
-                if (this.val !== '') {
-                    this.$http.post('yjt/goodsquestion/add', qs.stringify({
-                        shoid: this.id,
-                        content: this.val
-                    })).then((res) => {
-                        if (res.data.code === 200) {
-                            this.$toast('提交成功');
-                            this.questionData.list.unshift({
-                                CONTENT: this.val,
-                                USER_NAME: '',
-                                HEAD_PIC: '',
-                                REPALYLIST: [],
-                                CREATE_TIME: new Date()
-                            });
-                            this.questionData.totalRow += 1;
-                            this.val = '';
-                        } else {
-                            this.$toast('提交失败')
-                        }
+                if (this.$store.state.user_id) {
+                    //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
+                    var qs = require('qs');
+                    if (this.val !== '') {
+                        this.$http.post('yjt/goodsquestion/add', qs.stringify({
+                            shoid: this.id,
+                            content: this.val
+                        })).then((res) => {
+                            if (res.data.code === 200) {
+                                this.$toast('提交成功');
+                                this.questionData.list.unshift({
+                                    CONTENT: this.val,
+                                    USER_NAME: '',
+                                    HEAD_PIC: '',
+                                    REPALYLIST: [],
+                                    CREATE_TIME: new Date()
+                                });
+                                this.questionData.totalRow += 1;
+                                this.val = '';
+                            } else {
+                                this.$toast('提交失败')
+                            }
 
-                    }).catch((err) => {
-                        console.log(err)
-                    });
+                        }).catch((err) => {
+                            console.log(err)
+                        });
+                    } else {
+                        this.$toast('请输入提问内容')
+                    }
                 } else {
-                    this.$toast('请输入提问内容')
+                    this.$toast('请在个人中心登录后操作')
                 }
-
-
             }
         }
     }
@@ -401,10 +403,7 @@
             width: 100%;
             height: auto;
         }
-        .get_more {
-            padding: 1rem;
-            text-align: center;
-        }
+
         .mint-button--small {
             margin-left: 70%;
         }

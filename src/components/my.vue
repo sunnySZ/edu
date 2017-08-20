@@ -36,22 +36,16 @@
         <mt-cell title="会员专区"></mt-cell>
         <ul class="order_item order_item3">
             <li>
-                <a href="#">
-                    <span class="order-icons child-traveller"></span>
-                    <p>亲子活动次数</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
+                <a href="javascript:;" @click="coupon">
                     <span class="order-icons coupon-icon"></span>
                     <p class="item-info pa dib">
                         <span class="item-title db">优惠券</span>
-                        <span class="item-value db">0张</span>
+                        <span class="item-value db"></span>
                     </p>
                 </a>
             </li>
             <li>
-                <a href="javascript:;" @click="">
+                <a href="javascript:;" @click="scores">
                     <span class="order-icons score-icon"></span>
                     <p class="item-info pa dib">
                         <span class="item-title db">积分</span>
@@ -97,27 +91,29 @@
             getUserMsg(){
                 //点击登录授权成功后跳转到my界面地址传user_id
                 //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
-                let _Path = this.$route.fullPath
-                if (_Path.indexOf('?') > 0) {
-                    let user_id = _Path.split('?')[1].split('=')[1]
-                    this.$store.dispatch('setuserid', user_id)
-                    //  sessionStorage.setItem('user_id',user_id)
-                }
-                if (this.$store.state.user_id) {
+                if (!this.$store.state.user_id) {
+                    let _Path = this.$route.fullPath
+                    if (_Path.indexOf('?') > 0) {
+                        let user_id = _Path.split('?')[1].split('=')[1]
+                        this.$store.dispatch('setuserid', user_id)
+                        //  sessionStorage.setItem('user_id',user_id)
+                        this.isLogin = true;
+                        this.$http.get('yjt/weixin/userinfo').then((res) => {
+                            this.$toast(res.data.code)
+                            if (res.data.code == 200) {
+                                this.$store.dispatch('setusermsg', res.data.result)
+                                this.userImg = res.data.result.userHeadImgurl;
+                                this.nickName = res.data.result.userNickname;
+                                //sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
+                            }
+                        }).catch((err) => {
+                            this.$toast(err)
+                        });
+                    }
+                }else{
                     this.isLogin = true;
-                    this.$http.get('yjt/weixin/userinfo').then((res) => {
-                        this.$toast(res.data.code)
-                        if (res.data.code == 200) {
-                            this.$store.dispatch('setusermsg', res.data.result)
-                            this.userImg = res.data.result.userHeadImgurl;
-                            this.nickName = res.data.result.userNickname;
-                            //sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
-                        }
-                    }).catch((err) => {
-                        this.$toast(err)
-                    });
-                } else {
-                    //授权登录进来后获取用户信息并本地存储
+                    this.userImg = this.$store.state.user_msg.userHeadImgurl;
+                    this.nickName =this.$store.state.user_msg.userNickname;
                 }
             },
             viewOrderList(index){ //查看订单
@@ -131,6 +127,20 @@
             collect(){ //查看收藏列表
                 if (this.$store.state.user_id) { //判断登录
                     this.$router.push({path: '/collect'})
+                } else {
+                    this.$toast("请登录后查看")
+                }
+            },
+            coupon(){
+                if (this.$store.state.user_id) { //判断登录
+                    this.$router.push({path: '/coupon'})
+                } else {
+                    this.$toast("请登录后查看")
+                }
+            },
+            scores(){
+                if (this.$store.state.user_id) { //判断登录
+                    this.$router.push({path: '/scores'})
                 } else {
                     this.$toast("请登录后查看")
                 }

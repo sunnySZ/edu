@@ -46,24 +46,25 @@
                 }
             },
             jsApiCall(jsonStr){
+                var _this=this;
                 //微信H5支付API---https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&index=6
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', jsonStr,
                     function (res) {
-                        alert('支付开始')
-                        this.$router.push({
+                       /* _this.$router.push({
                             path: '/orderList'
                         })
+                        alert('支付开始')*/
                         alert(res.err_msg)
                       //  if(/:ok$/i.test(res.err_msg)){
                        if (res.err_msg == "get_brand_wcpay_request:ok") {
-                           alert('支付成功')
+                         //  alert('支付成功')
                             //跳转到订单支付成功后跳订单列表
-                            this.$router.push({
+                            _this.$router.push({
                                 path: '/orderList'
                             })
                         } else {
-                           alert('支付失败')
+                        //   alert('支付失败')
                         }
                     }
                 )

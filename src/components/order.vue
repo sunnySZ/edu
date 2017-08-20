@@ -2,15 +2,16 @@
     <div class="order_page">
         <h2>凯德西城丨撒浪嘿哟，玩味CP大比拼</h2>
         <mt-cell title="数量">
-            <div class="nums"><span class="price">￥{{price}}/份</span>
+            <div class="nums"><span class="price">￥{{goods_price}}/份</span>
                 <i class="reduce" @click="decrement"></i>
                 <span>{{getNum}}</span> <i class="add" @click="increment"></i>
             </div>
         </mt-cell>
+        <mt-cell title="选择现金优惠券" :value="getCouponPrice" is-link :to="{ path: '/coupon_select' }"></mt-cell>
         <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="telVal"></mt-field>
         <mt-field label="备注" placeholder="" type="textarea" rows="4" v-model="textVal"></mt-field>
         <ul class="footer_order">
-            <li>总价:<span>￥{{getNum * price}}</span></li>
+            <li>总价:<span>￥{{getNum * goods_price}}</span></li>
             <li class="buy" @click="submitOrder">提交订单</li>
         </ul>
     </div>
@@ -24,13 +25,13 @@
                 telVal: '',
                 textVal: '',
                 goods_id: localStorage.getItem('goods_id'),
-                price: 120,
+                goods_price: parseFloat(localStorage.getItem('goods_price')),
             }
         },
         created(){
             this.getUserMsg();
         },
-        computed: mapGetters(['getNum']),
+        computed: mapGetters(['getNum','getCouponPrice']),
         methods: {
             openAlert(msg) {
                 MessageBox({
@@ -70,14 +71,6 @@
                         });
                     }
                 }
-
-                /*let orderObj = {
-                 id: null,//商品id
-                 name: '',//商品名称
-                 pay: 100,//实付金额
-                 gotime: '2017-09-10'
-                 }
-                 sessionStorage.setItem('orderMsg', JSON.stringify(orderObj));*/
             },
             submitOrder(){
                 if (!this.validatePhone(this.telVal)) {
@@ -93,6 +86,7 @@
                     REMARKS: this.textVal,  //备注
                     MOBILE: this.telVal,  //联系人手机号
                     GOODS_ID: this.goods_id,//商品id
+                    CASH_ID: this.$store.state.coupon_id,//优惠券id
                     COUNT: this.$store.state.count,    //数量
                     NEED_INVOICE: '',  //是否需要发票,1:需要 2:不需要 默认值2
                     USER_NAME: '', //联系人姓名

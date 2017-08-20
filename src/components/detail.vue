@@ -92,7 +92,7 @@
             <a class="ask" href="javaScript:;">
                 <i></i>客服
             </a>
-            <a class="comments" href="/comment/commentListAll?type=2&amp;coupon_id=2569&amp;buy_log=0">
+            <a class="comments" href="#">
                 <i></i>点评
                 <em>{{commentsData.totalRow}}</em>
             </a>
@@ -110,6 +110,7 @@
             return {
                 selected: '1',
                 id: null,
+                price:0,
                 val: '', //提问内容
                 detailData: null,
                 commentsData: null,
@@ -195,7 +196,8 @@
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
                 localStorage.setItem('goods_id', this.id) //存储商品id，订单界面用
-                console.log(localStorage.getItem('goods_id'))
+
+               // console.log(localStorage.getItem('goods_id'))
                 // this.$store.dispatch('goodsid', this.id);
                 this.$indicator.open();
                 let httpArr = [
@@ -207,6 +209,7 @@
                     this.detailData = data1.data;
                     this.commentsData = data2.data;
                     this.questionData = data3.data;
+                    localStorage.setItem('goods_price', this.detailData.PRICE) //存储商品id，订单界面用
                     if (data2.data.pageSize > 1) {  //判断点评列表是否显示点击查看更多
                         this.comments.isMore = true;
                     }

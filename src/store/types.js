@@ -6,4 +6,7 @@ export const SETORDERID='setorderid'  //设置订单id
 export const SETUSERMSG='setusermsg' //设置用户信息
 export const LOGOUT='logout'    //注销
 export const ORDERCUR='ordercur'  //订单界面订单状态tab高亮
+export const COUPONID='couponid'  //选中的现金兑换优惠券id
+export const COUPONIDPRICE='couponprice'  //选中的现金兑换优惠券的金额
+export const GOODSPRICE='goods_price'  //商品价格
 

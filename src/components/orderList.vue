@@ -10,17 +10,16 @@
         <ul class="list_box">
             <li v-for="item in orderListData">
                 <!--  <router-link :to="{ name: 'detail',params: { id: n }}">-->
-                <p class="list_item_top">商品订单:222222 <span>未付款</span></p>
+                <p class="list_item_top">商品订单:222222 <span>订单状态:{{item.STATE}}</span></p>
                 <div class="list_item">
-                    <div class="img_box"><img
-                            src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png">
+                    <div class="img_box"><img :src="item.S_PIC">
                     </div>
                     <div class="ticket_msg">
-                        <span class="title">{{item.CREATE_TIME}}</span>
+                        <span class="title">{{item.GOODS_NAME}}</span>
 
-                        <p>兑换方式：</p></div>
+                        <p>下单时间：{{item.CREATE_TIME}}</p></div>
                 </div>
-                <div class="list_item_btm">数量:1 实付:{{item.PAY_TOTAL}}
+                <div class="list_item_btm">数量:1 实付:{{item.ACTUAL_PAY_TOTAL}}
                     <mt-button size="small">取消订单</mt-button>
                     <mt-button type="primary" size="small" @click.native="payOrder(n)">去支付</mt-button>
                 </div>
@@ -76,14 +75,17 @@
             },
             getData(curVal){
                 this.$indicator.open();
+                this.isMore = false;
                 // yjt/shoporders/pageOrderList/页码-每页条数-订单状态 ，0--全部,1--待付款,2--待使用,3--待评价,4--退款/返利
                 let url = 'yjt/shoporders/pageOrderList/1-5-' + curVal;//this.params.orderType;
                 this.$http.get(url).then((res) => {
                     if (res.data.code == '200') {  //返回成功
-                        if (res.data.result.list.length > 0) {  //有数据
-                            this.orderListData = res.data.list;
-                            if (res.data.pageNumber > 1) {  //判断订单列表是否显示点击查看更多
-                                this.params.isMore = true;
+                        let lists = res.data.result.list;
+                        let totalPage = res.data.result.totalPage;
+                        if (lists.length > 0) {  //有数据
+                            this.orderListData = lists;
+                            if (totalPage > 1) {  //判断订单列表是否显示点击查看更多
+                                this.isMore = true;
                             }
                         } else { //显示暂无数据
                             this.nodata = true;
@@ -104,11 +106,13 @@
                 this.$http.get(url).then((res) => {
                     if (res.data.code == '200') {  //返回成功
                         this.isLoading = false;
-                        if (this.params.curPage >= res.data.totalPage) {
+                        let lists = res.data.result.list;
+                        let totalPage = res.data.result.totalPage;
+                        if (this.params.curPage >= totalPage) {
                             this.isMore = false;
                             this.$toast('已全部加载完毕')
                         }
-                        this.orderListData = this.orderListData.concat(res.data.result.list)
+                        this.orderListData = this.orderListData.concat(lists)
                     } else { //返回失败
                         this.$toast('数据返回失败')
                     }

@@ -8,21 +8,30 @@ const actions = {
     decrement: ({commit}) => {  //减少
         commit(types.DECREMENT)
     },
-    setuserid: ({commit},state) => {  //存储用户id
-        commit(types.SETUSERID,state)
+    setuserid: ({commit}, state) => {  //存储用户id
+        commit(types.SETUSERID, state)
     },
-    setorderid: ({commit},state) => {  //存储订单id
-        commit(types.SETORDERID,state)
+    setorderid: ({commit}, state) => {  //存储订单id
+        commit(types.SETORDERID, state)
     },
-    setusermsg: ({commit},state) => {  //存储用户信息
-        commit(types.SETUSERMSG,state)
+    setusermsg: ({commit}, state) => {  //存储用户信息
+        commit(types.SETUSERMSG, state)
     },
-    ordercur: ({commit},state) => {  //订单界面高亮
-        commit(types.ORDERCUR,state)
+    ordercur: ({commit}, state) => {  //订单界面高亮
+        commit(types.ORDERCUR, state)
     },
-/*    goodsid: ({commit},state) => {  //商品id
-        commit(types.GOODSID,state)
-    },*/
+    couponid: ({commit}, state) => {  //选中的现金兑换优惠券id
+        commit(types.COUPONID, state)
+    },
+    couponprice: ({commit}, state) => {  //选中的现金兑换优惠券的金额
+        commit(types.COUPONIDPRICE, state)
+    },
+    goodsprice: ({commit}, state) => {  //商品价格
+        commit(types.GOODSPRICE, state)
+    },
+    /*    goodsid: ({commit},state) => {  //商品id
+     commit(types.GOODSID,state)
+     },*/
     logout: ({commit}) => {  //注销
         commit(types.LOGOUT)
     },

@@ -17,6 +17,7 @@
             <li v-for="n in 6">
                 <router-link :to="{ name: 'detail',params: { id: n }}">
                    <div class="list_item">
+
                        <div class="img_box"><img src="http://img.wanfantian.com/uploads/201707/28/81d9b4e9049f785a418ada5287be221d.png"></div>
                        <div class="ticket_msg">
                            <span class="title">预售--乌克兰幽默小丑马戏团“欢乐小丑嘉年华</span>

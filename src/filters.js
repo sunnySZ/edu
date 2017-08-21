@@ -14,6 +14,17 @@ export default {
             return year + '-' + month + '-' + day
             // return  year+ '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
         }
+    },
+    isFavorites:function (str) {  //收藏显示状态判断
+        if(str){ //登录后会返回str
+            if(str==1){  //1表示已收藏，0表示未收藏
+                return 'collect_btn cur'
+            }else{
+                return 'collect_btn'
+            }
+        }else{
+            return 'collect_btn'
+        }
     }
 
 }

@@ -84,7 +84,8 @@
     .ticket_msg {
         flex: 4;
         padding-left: 1rem;
-        color: #cccccc;
+        color: #666666;
+        font-size: 1.2rem;
     }
 
     .ticket_msg .title {

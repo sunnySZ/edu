@@ -3,25 +3,41 @@
         <mt-navbar v-model="selected" fixed>
             <mt-tab-item id="0">全部</mt-tab-item>
             <mt-tab-item id="1">待付款</mt-tab-item>
-            <mt-tab-item id="2">待使用</mt-tab-item>
-            <mt-tab-item id="3">待评价</mt-tab-item>
-            <mt-tab-item id="4">退款/返利</mt-tab-item>
+            <mt-tab-item id="2">已付款</mt-tab-item>
+            <mt-tab-item id="3">退款</mt-tab-item>
+            <mt-tab-item id="4">已完成</mt-tab-item>
         </mt-navbar>
         <ul class="list_box">
             <li v-for="item in orderListData">
                 <!--  <router-link :to="{ name: 'detail',params: { id: n }}">-->
-                <p class="list_item_top">商品订单:222222 <span>订单状态:{{item.STATE}}</span></p>
+                <div class="list_item_top">订单编号：{{item.ORDER_ID}}</div>
                 <div class="list_item">
-                    <div class="img_box"><img :src="item.S_PIC">
-                    </div>
+                    <div class="img_box"><img :src="item.S_PIC"></div>
                     <div class="ticket_msg">
                         <span class="title">{{item.GOODS_NAME}}</span>
-
-                        <p>下单时间：{{item.CREATE_TIME}}</p></div>
+                        <p>下单时间：{{item.CREATE_TIME}}</p>
+                        <p>有效期至：</p>
+                    </div>
                 </div>
-                <div class="list_item_btm">数量:1 实付:{{item.ACTUAL_PAY_TOTAL}}
-                    <mt-button size="small">取消订单</mt-button>
-                    <mt-button type="primary" size="small" @click.native="payOrder(n)">去支付</mt-button>
+                <div class="list_item_btm">
+                    <div class="left"> 数量:{{item.COUNT}} 实付:{{item.ACTUAL_PAY_TOTAL}}</div>
+                    <div class="right" v-if="item.STATE==='1'">
+                        <mt-button size="small" @click.native="deleteOrder(item.ORDER_ID)">删除订单</mt-button>
+                        <mt-button type="primary" size="small" @click.native="payOrder(item.ORDER_ID)">去支付</mt-button>
+                    </div>
+                    <div class="right" v-else-if="item.STATE==='2'">
+                        <mt-button size="small" @click.native="cancelOrder(item.ORDER_ID)">取消订单</mt-button>
+                    </div>
+                    <div class="right" v-else-if="item.STATE==='3'">
+                        已经申请待审核
+                    </div>
+                    <div class="right" v-else-if="item.STATE==='4'">
+                        审核已通过等待退款
+                    </div>
+                    <div class="right" v-else-if="item.STATE==='5'">
+                        <mt-button type="primary" size="small" @click.native="commentOrder(item.ORDER_ID)">去评论
+                        </mt-button>
+                    </div>
                 </div>
                 <!-- </router-link>-->
             </li>
@@ -72,6 +88,15 @@
                 this.$router.push({
                     path: '/order/orderPay'
                 })
+            },
+            cancelOrder(n){ //取消订单
+
+            },
+            deleteOrder(n){ //删除订单
+
+            },
+            commentOrder(){ //评论订单
+
             },
             getData(curVal){
                 this.$indicator.open();
@@ -134,7 +159,6 @@
         .mint-navbar.is-fixed {
             z-index: 3000;
         }
-
         .list_item_top {
             padding-bottom: 1rem;
             color: #000000;
@@ -144,7 +168,21 @@
             color: orange;
         }
         .list_item_btm {
-
+            position: relative;
+            height: 3.6rem;
+            line-height: 3.6rem;
+            font-size: 1.2rem;
+            color: #000000;
+        }
+        .list_item_btm .left {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .list_item_btm .right {
+            position: absolute;
+            right: 0;
+            top: 0;
         }
         .mint-button--small {
             margin-left: 1.5rem;

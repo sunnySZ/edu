@@ -13,9 +13,6 @@
             <router-link to="/activity" tag="li" activeClass="active">
                 <i class="icon2"></i>活动
             </router-link>
-            <router-link to="/ticket" tag="li" activeClass="active">
-                <i class="icon3"></i>买票
-            </router-link>
             <router-link to="/my" tag="li" activeClass="active">
                 <i class="icon4"></i>我的
             </router-link>
@@ -56,7 +53,7 @@
         }
         .footer li {
             display: block;
-            width: 25%;
+            width:33.3%;
             text-align: center;
         }
         .footer li i {

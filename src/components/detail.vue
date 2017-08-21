@@ -2,7 +2,8 @@
     <div class="detail_page" v-if="detailData">
         <div class="wrap_top">
             <img :src="detailData.B_IMAGE"/>
-            <span class="collect_btn" @click="addCollect"></span>
+            <!--detailData.ISFAVORITES | isFavorites-->
+            <span :class="{ 'collect_btn': isNormal, 'cur':isCur}" @click="addCollect"></span>
             <h2>{{detailData.NAME}}</h2>
             <p class="txt_msg">{{detailData.REMARKS}}</p>
             <div class="wrap_msg">
@@ -108,9 +109,11 @@
     export default{
         data(){
             return {
+                isNormal: true, //点击时判断收藏高亮
+                isCur: false,
                 selected: '1',
                 id: null,
-                price:0,
+                price: 0,
                 val: '', //提问内容
                 detailData: null,
                 commentsData: null,
@@ -137,6 +140,7 @@
         },
         created(){
             this.getData();
+
         },
         methods: {
             isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
@@ -181,9 +185,18 @@
                     let url = 'yjt/goodsfavorites/favoritesorcancel/' + this.id
                     this.$http.get(url).then((res) => {
                         if (res.data.code === 200) {
-                            this.$toast('收藏成功')
+                            if (this.detailData.ISFAVORITES == 1) {
+                                this.$toast('取消成功')
+                                this.isCur = false;
+                            } else if (this.detailData.ISFAVORITES == 0) {
+                                this.isCur = true;
+                                this.$toast('收藏成功')
+                            }else{
+                                this.isCur = false;
+                            }
+
                         } else {
-                            this.$toast('收藏失败')
+                            this.$toast('操作失败')
                         }
                         console.log(res.data)
                     }).catch((err) => {
@@ -197,7 +210,7 @@
                 this.id = this.$route.params.id;
                 localStorage.setItem('goods_id', this.id) //存储商品id，订单界面用
 
-               // console.log(localStorage.getItem('goods_id'))
+                // console.log(localStorage.getItem('goods_id'))
                 // this.$store.dispatch('goodsid', this.id);
                 this.$indicator.open();
                 let httpArr = [
@@ -209,6 +222,10 @@
                     this.detailData = data1.data;
                     this.commentsData = data2.data;
                     this.questionData = data3.data;
+                    if (this.detailData.ISFAVORITES && this.detailData.ISFAVORITES == 1) {
+                        this.isCur = true;
+                    }
+
                     localStorage.setItem('goods_price', this.detailData.PRICE) //存储商品id，订单界面用
                     if (data2.data.pageSize > 1) {  //判断点评列表是否显示点击查看更多
                         this.comments.isMore = true;
@@ -335,6 +352,9 @@
         }
         .collect_btn.cur {
             background-position: 0 100%
+        }
+        .collect_btn.cur_no {
+            background-position: 0 90%;
         }
         .wrap_top img {
             width: 100%;

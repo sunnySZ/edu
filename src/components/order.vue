@@ -11,7 +11,7 @@
         <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="telVal"></mt-field>
         <mt-field label="备注" placeholder="" type="textarea" rows="4" v-model="textVal"></mt-field>
         <ul class="footer_order">
-            <li>总价:<span>￥{{getNum * goods_price}}</span></li>
+            <li>总价:<span>￥{{totalPrice}}</span></li>
             <li class="buy" @click="submitOrder">提交订单</li>
         </ul>
     </div>
@@ -31,7 +31,7 @@
         created(){
             this.getUserMsg();
         },
-        computed: mapGetters(['getNum','getCouponPrice']),
+        computed: mapGetters(['getNum', 'getCouponPrice','totalPrice']),
         methods: {
             openAlert(msg) {
                 MessageBox({
@@ -51,25 +51,34 @@
                 this.$store.dispatch('decrement')
             },
             getUserMsg(){
-                if (!this.$store.state.user_id) {
-                    //点击购买授权成功后跳转到order界面地址传user_id
+                //授权登录进来后获取用户信息并本地存储
+                if (!window.localStorage.getItem('user_id')) {
+                    //点击购买授权成功后跳转到order界面地址传user_id并本地存储,并通过user_id来获取登录信息
                     //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
                     let _Path = this.$route.fullPath
                     if (_Path.indexOf('?') > 0) {
                         let user_id = _Path.split('?')[1].split('=')[1]
-                        this.$store.dispatch('setuserid', user_id)
-                        // sessionStorage.setItem('user_id',user_id)
-                        //授权登录进来后获取用户信息并本地存储
-                        this.$http.get('yjt/weixin/userinfo').then((res) => {
-                            this.$toast(res.data.code)
+                          this.$store.dispatch('setuserid', user_id)
+                        window.localStorage.setItem('user_id', user_id)
+                        this.$http.get('yjt/weixin/userinfo?user_id=' + user_id).then((res) => {
+                          //  this.$toast(res.data.code)
                             if (res.data.code == 200) {
                                 this.$store.dispatch('setusermsg', res.data.result)
-                                //  sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
                             }
                         }).catch((err) => {
                             this.$toast(err)
                         });
                     }
+                } else {
+                    this.$http.get('yjt/weixin/userinfo?user_id=' + window.localStorage.getItem('user_id')).then((res) => {
+                      //  this.$toast(res.data.code)
+                        if (res.data.code == 200) {
+                            this.$store.dispatch('setuserid', window.localStorage.getItem('user_id'))
+                            this.$store.dispatch('setusermsg', res.data.result)
+                        }
+                    }).catch((err) => {
+                        this.$toast(err)
+                    });
                 }
             },
             submitOrder(){

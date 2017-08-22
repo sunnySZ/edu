@@ -7,7 +7,5 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="text/javascript" src="dist/js/vendor.js"></script>
-    <script type="text/javascript" src="dist/js/builds.js"></script>
   </body>
 </html>

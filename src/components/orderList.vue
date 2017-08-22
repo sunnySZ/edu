@@ -90,10 +90,32 @@
                 })
             },
             cancelOrder(n){ //取消订单
-
+                this.$indicator.open();
+                let url='yjt/shoporders/refundOrder/'+n ;
+                this.$http.get(url).then((res) => {
+                    if (res.data.code == '200') {
+                        this.$toast('操作成功')
+                    } else { //返回失败
+                        this.$toast('操作失败')
+                    }
+                    this.$indicator.close();
+                }).catch((err) => {
+                    this.$indicator.close();
+                });
             },
             deleteOrder(n){ //删除订单
-
+                this.$indicator.open();
+                let url='yjt/shoporders/cancelOrder/'+n ;
+                this.$http.get(url).then((res) => {
+                    if (res.data.code == '200') {
+                        this.$toast('操作成功')
+                    } else { //返回失败
+                        this.$toast('操作失败')
+                    }
+                    this.$indicator.close();
+                }).catch((err) => {
+                    this.$indicator.close();
+                });
             },
             commentOrder(){ //评论订单
 

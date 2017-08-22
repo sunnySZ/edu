@@ -35,7 +35,7 @@ const mutations = { //处理状态、数据变化
     [types.LOGOUT](state){  //注销
         state.user_msg = {}
         state.user_id = ''
-        sessionStorage.clear();
+        window.localStorage.clear();
     }
 }
 

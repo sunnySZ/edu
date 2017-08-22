@@ -32,8 +32,8 @@ const router = new VueRouter({
    scrollBehavior: () => ({y: 0}),
     mode: 'hash',
     routes: [
-        {path: '*', redirect: '/select',meta:{title:'精选'}},//默认显示
-        {name: 'select', path: '/select', component: Select,meta:{title:'精选'}},
+        {path: '*', redirect: '/select/',meta:{title:'精选'}},//默认显示
+        {name: 'select', path: '/select/', component: Select,meta:{title:'精选'}},
         {name: 'activity', path: '/activity', component: Activity,meta:{title:'活动'}},
         {name: 'ticket', path: '/ticket', component: Ticket,meta:{title:'购票'}},
         {name: 'my', path: '/my', component: My,meta:{title:'个人中心',auth:true}},

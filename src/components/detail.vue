@@ -157,7 +157,7 @@
                     //  var url1='/?#/order/';
                     /* var url1='/route.html?code=1';  
                      window.location.href='index.jsp?url='+encodeURIComponent(url1)*/
-                    if (this.$store.state.user_id) {
+                    if (window.localStorage.getItem('user_id')) {
                         this.$router.push({
                             path: '/order'
                         })
@@ -186,12 +186,14 @@
                     this.$http.get(url).then((res) => {
                         if (res.data.code === 200) {
                             if (this.detailData.ISFAVORITES == 1) {
-                                this.$toast('取消成功')
                                 this.isCur = false;
+                                this.detailData.ISFAVORITES = 0;
+                                this.$toast('取消成功');
                             } else if (this.detailData.ISFAVORITES == 0) {
                                 this.isCur = true;
-                                this.$toast('收藏成功')
-                            }else{
+                                this.detailData.ISFAVORITES = 1;
+                                this.$toast('收藏成功');
+                            } else {
                                 this.isCur = false;
                             }
 

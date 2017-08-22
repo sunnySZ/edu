@@ -91,15 +91,15 @@
             getUserMsg(){
                 //点击登录授权成功后跳转到my界面地址传user_id
                 //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
-                if (!this.$store.state.user_id) {
+                if (!window.localStorage.getItem('user_id')) {  //第一次授权进入
                     let _Path = this.$route.fullPath
                     if (_Path.indexOf('?') > 0) {
                         let user_id = _Path.split('?')[1].split('=')[1]
                         this.$store.dispatch('setuserid', user_id)
-                        //  sessionStorage.setItem('user_id',user_id)
+                        window.localStorage.setItem('user_id', user_id)
                         this.isLogin = true;
-                        this.$http.get('yjt/weixin/userinfo').then((res) => {
-                            this.$toast(res.data.code)
+                        this.$http.get('yjt/weixin/userinfo?user_id=' + user_id).then((res) => {
+                          //  this.$toast(res.data.code)
                             if (res.data.code == 200) {
                                 this.$store.dispatch('setusermsg', res.data.result)
                                 this.userImg = res.data.result.userHeadImgurl;
@@ -111,9 +111,20 @@
                         });
                     }
                 }else{
+                    this.$http.get('yjt/weixin/userinfo?user_id=' + window.localStorage.getItem('user_id')).then((res) => {
+                       // this.$toast(res.data.code)
+                        if (res.data.code == 200) {
+                            this.$store.dispatch('setuserid', window.localStorage.getItem('user_id'))
+                            this.$store.dispatch('setusermsg', res.data.result)
+                            this.userImg = res.data.result.userHeadImgurl;
+                            this.nickName = res.data.result.userNickname;
+                        }
+                    }).catch((err) => {
+                        this.$toast(err)
+                    });
                     this.isLogin = true;
-                    this.userImg = this.$store.state.user_msg.userHeadImgurl;
-                    this.nickName =this.$store.state.user_msg.userNickname;
+                   /* this.userImg = this.$store.state.user_msg.userHeadImgurl;
+                    this.nickName =this.$store.state.user_msg.userNickname;*/
                 }
             },
             viewOrderList(index){ //查看订单

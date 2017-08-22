@@ -22,6 +22,7 @@
                 price: 0,
                 goods_id: localStorage.getItem('goods_id'),
                 nodata: false,
+                options1:[],
                 optionArr: [],
                 nameArr: [],
                 priceArr: [],
@@ -30,7 +31,7 @@
         },
         created(){
             this.getData();
-            this.options1 = this.optionArr;
+
         },
         methods: {
             confirmCoupon(){
@@ -54,16 +55,18 @@
                 this.$http.get(url).then((res) => {
                     let lists = res.data;
                     if (lists.length > 0) {
+                        let showArr = [];
                         for (var i = 0; i < lists.length; i++) {
                             this.nameArr[i] = lists[i].VOLUME_NAME; //优惠券名称
                             this.priceArr[i] = lists[i].VOLUME_AMOUNT; //优惠券价格
                             this.idArr[i] = lists[i].ID; //优惠券id
-                            this.optionArr[i] = this.nameArr[i] + '---' + this.priceArr[i] + '元';//组装选项
-                           /* this.optionArr[i] = {
-                                label: this.nameArr[i],
-                                value: this.priceArr[i]
-                            }*/
+                            showArr[i] = this.nameArr[i] + '---' + this.priceArr[i] + '元';//组装选项
+                            this.optionArr[i] = {
+                                label: showArr[i],
+                                value: this.idArr[i]
+                            }
                         }
+                        this.options1 = this.optionArr;
                         console.log(this.optionArr)
                     } else {
                         this.nodata = true;

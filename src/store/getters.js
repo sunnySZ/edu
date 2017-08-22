@@ -6,7 +6,7 @@ const getters = {
         return state.coupon_price
     },
     totalPrice(state){   //实付金额
-        return state.goods_price * state.count - state.coupon_price
+        return ((state.goods_price * state.count).toFixed(2) - state.coupon_price).toFixed(2)
     },
     getUserMsg(state){
         return state.user_msg

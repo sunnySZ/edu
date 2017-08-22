@@ -7,7 +7,7 @@
             <mt-tab-item id="my"><img slot="icon" src="../assets/logo.png">我的</mt-tab-item>
         </mt-tabbar>-->
         <ul class="footer">
-            <router-link to="/select" tag="li" activeClass="active">
+            <router-link to="/select/" tag="li" activeClass="active">
                 <i class="icon1"></i>精选
             </router-link>
             <router-link to="/activity" tag="li" activeClass="active">

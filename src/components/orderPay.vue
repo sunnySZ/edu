@@ -42,7 +42,7 @@
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', jsonStr,
                     function (res) {
-                       // alert(res.err_msg)
+                      //  alert(res.err_msg)
                       //  if(/:ok$/i.test(res.err_msg)){
                        if (res.err_msg == "get_brand_wcpay_request:ok") {
                          //  alert('支付成功')
@@ -51,10 +51,11 @@
                                 path: '/orderList'
                             })
                         } else {
-                        //   alert('支付失败')
-                           _this.$router.push({
+                           _this.$toast('支付失败')
+                          // alert('支付失败')
+                          /* _this.$router.push({
                                path: '/select'
-                           })
+                           })*/
                         }
                     }
                 )

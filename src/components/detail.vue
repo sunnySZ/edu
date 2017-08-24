@@ -90,9 +90,9 @@
             </mt-tab-container-item>
         </mt-tab-container>
         <div class="footer">
-            <a class="ask" href="javaScript:;">
-                <i></i>客服
-            </a>
+            <router-link to="/select/" class="ask">
+                <i></i>首页
+            </router-link>
             <a class="comments" href="#">
                 <i></i>点评
                 <em>{{commentsData.totalRow}}</em>
@@ -140,7 +140,6 @@
         },
         created(){
             this.getData();
-
         },
         methods: {
             isWeiXin() {   //判断是否微信登陆 是不是微信浏览器

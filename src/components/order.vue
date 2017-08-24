@@ -14,6 +14,13 @@
             <li>总价:<span>￥{{totalPrice}}</span></li>
             <li class="buy" @click="submitOrder">提交订单</li>
         </ul>
+        <mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
+            <mt-field  placeholder="请输入手机号" type="tel" v-model="telVal"></mt-field>
+            <mt-field  placeholder="输入验证码">
+                <mt-button @click.native="" size="small" type="primary">获取验证码</mt-button>
+            </mt-field>
+            <mt-button @click.native="popupVisible3 = false" size="large" type="danger" class="confirm_btn">验证手机号</mt-button>
+        </mt-popup>
     </div>
 </template>
 <script>
@@ -24,6 +31,7 @@
             return {
                 telVal: '',
                 textVal: '',
+                popupVisible3:false,
                 goods_id: localStorage.getItem('goods_id'),
                 goods_price: parseFloat(localStorage.getItem('goods_price')),
             }
@@ -83,8 +91,10 @@
                 }
             },
             submitOrder(){
+
                 if (!this.validatePhone(this.telVal)) {
                     this.$toast("请填写正确手机号");
+                    this.popupVisible3=true;
                     return;
                 }
                 //提交订单
@@ -124,6 +134,7 @@
 
 </script>
 <style lang="less">
+
 
     .footer_order {
         display: flex;
@@ -165,6 +176,15 @@
             padding: 1rem;
 
         }
+        .mint-popup-3 {
+            padding:100px 30px;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+        .mint-popup-3  .mint-cell-wrapper{ background-image: none; border-bottom: 1px solid #f4f4f4;}
+        .confirm_btn{ margin-top: 30px;}
 
         .itembg .mint-cell-wrapper {
             background-color: orangered;

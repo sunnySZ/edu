@@ -91,7 +91,7 @@
             },
             removeItem(n){  //取消，删除订单操作后，前台从列表删除该项
                 for (var i = 0; i < this.orderListData.length; i++) {
-                    if (this.orderListData[i].ID == n) {  //从前台展示数据中删除
+                    if (this.orderListData[i].ORDER_ID== n) {  //从前台展示数据中删除
                         this.orderListData.splice(i, 1)
                     }
                 }

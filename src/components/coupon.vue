@@ -3,7 +3,7 @@
         <mt-field placeholder="请输入可兑换邀请码" v-model="couponCode">
             <mt-button size="small" type="primary" @click.native="exChange">兑换</mt-button>
         </mt-field>
-        <mt-cell v-for="item in couponData" title="优惠券标题" :label="item.CODE" :value="item.EXPIRE_TIME">
+        <mt-cell v-for="(item,index) in couponData" :key="index" title="优惠券标题" :label="item.CODE" :value="item.EXPIRE_TIME">
             <span>{{item.ADD_TIME}}</span>
         </mt-cell>
         <p v-show="isLoading" class="loading">

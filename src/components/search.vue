@@ -12,7 +12,7 @@
 
         <div class="search_history" v-show="historyShow">
             <h2>搜索记录</h2>
-            <mt-cell v-for="item in searchHistory" :title="item" @click.native="handleSearch(item)"></mt-cell>
+            <mt-cell v-for="(item,index) in searchHistory" :title="item" :key="index" @click.native="handleSearch(item)"></mt-cell>
             <mt-button plain size="large" type="primary" @click.native="clearHistory">清空搜索记录</mt-button>
         </div>
 

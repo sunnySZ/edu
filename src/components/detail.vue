@@ -145,7 +145,6 @@
         methods: {
             isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
                 let ua = window.navigator.userAgent.toLowerCase();
-                // console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
                 if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                     return true;
                 } else {
@@ -210,7 +209,7 @@
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
-                localStorage.setItem('goods_id', this.id) //存储商品id，订单界面用
+                window.localStorage.setItem('goods_id', this.id) //存储商品id，订单界面用
 
                 // console.log(localStorage.getItem('goods_id'))
                 // this.$store.dispatch('goodsid', this.id);

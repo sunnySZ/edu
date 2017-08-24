@@ -20,7 +20,7 @@ const mutations = { //处理状态、数据变化
     [types.ORDERCUR](state, res){  //订单tab高亮
         state.order_cur = res
     },
-    [types.ORDERCUR](state, res){  //选中的现金兑换优惠券id
+    [types.COUPONID](state, res){  //选中的现金兑换优惠券id
         state.coupon_id = res
     },
     [types.COUPONIDPRICE](state, res){  //选中的现金兑换优惠券的金额

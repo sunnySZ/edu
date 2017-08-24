@@ -3,9 +3,9 @@
         <mt-navbar v-model="selected" fixed>
             <mt-tab-item id="0">全部</mt-tab-item>
             <mt-tab-item id="1">待付款</mt-tab-item>
-            <mt-tab-item id="2">已付款</mt-tab-item>
-            <mt-tab-item id="3">退款</mt-tab-item>
-            <mt-tab-item id="4">已完成</mt-tab-item>
+            <mt-tab-item id="2">待使用</mt-tab-item>
+            <mt-tab-item id="3">待评价</mt-tab-item>
+            <mt-tab-item id="4">退款</mt-tab-item>
         </mt-navbar>
         <ul class="list_box">
             <li v-for="item in orderListData">
@@ -89,11 +89,19 @@
                     path: '/order/orderPay'
                 })
             },
+            removeItem(n){  //取消，删除订单操作后，前台从列表删除该项
+                for (var i = 0; i < this.orderListData.length; i++) {
+                    if (this.orderListData[i].ID == n) {  //从前台展示数据中删除
+                        this.orderListData.splice(i, 1)
+                    }
+                }
+            },
             cancelOrder(n){ //取消订单
                 this.$indicator.open();
-                let url='yjt/shoporders/refundOrder/'+n ;
+                let url = 'yjt/shoporders/refundOrder/' + n;
                 this.$http.get(url).then((res) => {
                     if (res.data.code == '200') {
+                        this.removeItem(n);
                         this.$toast('操作成功')
                     } else { //返回失败
                         this.$toast('操作失败')
@@ -105,9 +113,10 @@
             },
             deleteOrder(n){ //删除订单
                 this.$indicator.open();
-                let url='yjt/shoporders/cancelOrder/'+n ;
+                let url = 'yjt/shoporders/cancelOrder/' + n;
                 this.$http.get(url).then((res) => {
                     if (res.data.code == '200') {
+                        this.removeItem(n);
                         this.$toast('操作成功')
                     } else { //返回失败
                         this.$toast('操作失败')

@@ -31,7 +31,7 @@
         created(){
             this.getUserMsg();
         },
-        computed: mapGetters(['getNum', 'getCouponPrice','totalPrice']),
+        computed: mapGetters(['getNum', 'getCouponPrice', 'totalPrice']),
         methods: {
             openAlert(msg) {
                 MessageBox({
@@ -51,43 +51,41 @@
                 this.$store.dispatch('decrement')
             },
             getUserMsg(){
-                //授权登录进来后获取用户信息并本地存储
-                if (!window.localStorage.getItem('user_id')) {
-                    //点击购买授权成功后跳转到order界面地址传user_id并本地存储,并通过user_id来获取登录信息
-                    //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
-                    let _Path = this.$route.fullPath
+                let local_user_id = window.localStorage.getItem('user_id');
+                if (!local_user_id) {  //第一次授权进入
+                    let _Path = this.$route.fullPath;
+                    //点击登录授权成功后台通过url传来user_id ,http://youertong.cn/index.html#/my?user_id=a3eb85b253764e91a1fd9f18c186b928
                     if (_Path.indexOf('?') > 0) {
-                        let user_id = _Path.split('?')[1].split('=')[1]
-                          this.$store.dispatch('setuserid', user_id)
-                        window.localStorage.setItem('user_id', user_id)
+                        let user_id = _Path.split('?')[1].split('=')[1];
+                        this.$store.dispatch('setuserid', user_id);//存储到vuex
+                        window.localStorage.setItem('user_id', user_id);//存储到本地
+                        //授权后通过user_id验证获取用户信息
                         this.$http.get('yjt/weixin/userinfo?user_id=' + user_id).then((res) => {
-                          //  this.$toast(res.data.code)
-                            if (res.data.code == 200) {
-                                this.$store.dispatch('setusermsg', res.data.result)
+                            if (res.data.code == '200') {
+                                this.$store.dispatch('setusermsg', res.data.result);
                             }
                         }).catch((err) => {
                             this.$toast(err)
                         });
                     }
-                } else {
-                    this.$http.get('yjt/weixin/userinfo?user_id=' + window.localStorage.getItem('user_id')).then((res) => {
-                      //  this.$toast(res.data.code)
-                        if (res.data.code == 200) {
-                            this.$store.dispatch('setuserid', window.localStorage.getItem('user_id'))
-                            this.$store.dispatch('setusermsg', res.data.result)
+                } else if (local_user_id && !this.$store.state.user_id) { //用户关掉浏览器后再次进入,此时本地有存在用户user_id,vuex中无用户信息
+                    this.$http.get('yjt/weixin/userinfo?user_id=' + local_user_id).then((res) => {
+                        // this.$toast(res.data.code)
+                        if (res.data.code == '200') {
+                            this.$store.dispatch('setuserid', local_user_id);//存储到vuex
+                            this.$store.dispatch('setusermsg', res.data.result) //个人中心界面使用
                         }
                     }).catch((err) => {
                         this.$toast(err)
                     });
+                } else { //用户登录,并获取了用户信息。此时本地有存在用户user_id,vuex中有用户信息
+
                 }
             },
             submitOrder(){
                 if (!this.validatePhone(this.telVal)) {
                     this.$toast("请填写正确手机号");
                     return;
-                } else if (this.textVal == '') {
-                    this.$toast("请填写备注信息");
-                    return
                 }
                 //提交订单
                 let qs = require('qs');
@@ -120,7 +118,6 @@
                     this.$toast(err)
                 });
             }
-
         }
     }
 

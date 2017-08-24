@@ -3,7 +3,7 @@
         <div class="scores_top">{{totalScore}}<span>积分</span>
             <a href="#" class="rules_link">积分规则</a>
         </div>
-        <mt-cell v-for="item in scoresData" :title="item.INTEGRAL_NAME"  :label="item.CREATE_TIME"  :value="item.SCORE"></mt-cell>
+        <mt-cell v-for="(item,index) in scoresData" :key="index" :title="item.INTEGRAL_NAME"  :label="item.CREATE_TIME"  :value="item.SCORE"></mt-cell>
         <p v-show="isLoading" class="loading">
             <mt-spinner type="fading-circle"></mt-spinner>
         </p>

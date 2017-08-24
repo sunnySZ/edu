@@ -81,50 +81,59 @@
             return {
                 userImg: '/dist/user_default.png',
                 nickName: '',
-                isLogin: false
+                isLogin: false,
             }
         },
         created(){
             this.getUserMsg()
         },
         methods: {
+            isWeiXin() {   //判断是否微信登陆 是不是微信浏览器
+                let ua = window.navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             getUserMsg(){
-                //点击登录授权成功后跳转到my界面地址传user_id
-                //order/?user_id=a3eb85b253764e91a1fd9f18c186b928
-                if (!window.localStorage.getItem('user_id')) {  //第一次授权进入
+                let local_user_id = window.localStorage.getItem('user_id');
+                if (!local_user_id) {  //第一次授权进入
                     let _Path = this.$route.fullPath
+                    //点击登录授权成功后台通过url传来user_id ,http://youertong.cn/index.html#/my?user_id=a3eb85b253764e91a1fd9f18c186b928
                     if (_Path.indexOf('?') > 0) {
-                        let user_id = _Path.split('?')[1].split('=')[1]
-                        this.$store.dispatch('setuserid', user_id)
-                        window.localStorage.setItem('user_id', user_id)
-                        this.isLogin = true;
+                        let user_id = _Path.split('?')[1].split('=')[1];
+                        this.$store.dispatch('setuserid', user_id);//存储到vuex
+                        window.localStorage.setItem('user_id', user_id);//存储到本地
+                        //授权后通过user_id验证获取用户信息
                         this.$http.get('yjt/weixin/userinfo?user_id=' + user_id).then((res) => {
-                          //  this.$toast(res.data.code)
-                            if (res.data.code == 200) {
-                                this.$store.dispatch('setusermsg', res.data.result)
-                                this.userImg = res.data.result.userHeadImgurl;
-                                this.nickName = res.data.result.userNickname;
-                                //sessionStorage.setItem('user_Info',JSON.stringify(res.data.result) )
+                            if (res.data.code == '200') {
+                                this.$store.dispatch('setusermsg', res.data.result);
+                                this.userImg = res.data.result.userHeadImgurl; //用户头像
+                                this.nickName = res.data.result.userNickname; //用户昵称
+                                this.isLogin = true;
                             }
                         }).catch((err) => {
                             this.$toast(err)
                         });
                     }
-                }else{
-                    this.$http.get('yjt/weixin/userinfo?user_id=' + window.localStorage.getItem('user_id')).then((res) => {
+                } else if (local_user_id && !this.$store.state.user_id) { //用户关掉浏览器后再次进入,此时本地有存在用户user_id,vuex中无用户信息
+                    this.$http.get('yjt/weixin/userinfo?user_id=' + local_user_id).then((res) => {
                        // this.$toast(res.data.code)
-                        if (res.data.code == 200) {
-                            this.$store.dispatch('setuserid', window.localStorage.getItem('user_id'))
-                            this.$store.dispatch('setusermsg', res.data.result)
+                        if (res.data.code == '200') {
+                            this.$store.dispatch('setuserid', local_user_id);//存储到vuex
+                            this.$store.dispatch('setusermsg', res.data.result);
                             this.userImg = res.data.result.userHeadImgurl;
                             this.nickName = res.data.result.userNickname;
+                            this.isLogin = true;
                         }
                     }).catch((err) => {
                         this.$toast(err)
                     });
+                } else { //用户登录,并获取了用户信息。此时本地有存在用户user_id,vuex中有用户信息
                     this.isLogin = true;
-                   /* this.userImg = this.$store.state.user_msg.userHeadImgurl;
-                    this.nickName =this.$store.state.user_msg.userNickname;*/
+                    this.userImg = this.$store.state.user_msg.userHeadImgurl;
+                    this.nickName = this.$store.state.user_msg.userNickname;
                 }
             },
             viewOrderList(index){ //查看订单
@@ -156,9 +165,14 @@
                     this.$toast("请登录后查看")
                 }
             },
-            login(){  //点击授权登录
-                var url1 = '/route.html?code=2';  //http://youertong.cn/index.html#/my
-                window.location.href = 'index.jsp?url=' + encodeURIComponent(url1)
+            login(){
+                if (this.isWeiXin()) {
+                    //点击授权登录
+                    var url1 = '/route.html?code=2';  //http://youertong.cn/index.html#/my
+                    window.location.href = 'index.jsp?url=' + encodeURIComponent(url1)
+                } else {
+                    this.$toast("请在微信里操作")
+                }
             },
             loginOut(){
                 this.$store.dispatch('logout')

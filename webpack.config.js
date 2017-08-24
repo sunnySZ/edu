@@ -1,17 +1,16 @@
 var path = require('path')
 var webpack = require('webpack')
 var fs = require('fs')
+//var HtmlWebpackPlugin = require('html-webpack-plugin')
 
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var production = process.env.NODE_ENV === 'production';
+const production = (process.env.NODE_ENV === 'production')
 
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: production ? './' : '/dist/',
-        filename: production ? 'js/builds.js?v=[hash]' : 'js/build.js'
+        publicPath: '/dist/',
+        filename: 'build.js'
     },
     module: {
         rules: [
@@ -66,17 +65,6 @@ module.exports = {
         hints: false
     },
     //   devtool: '#eval-source-map'
-    plugins: [
-        //node_moudules下的js模块打包成单独文件
-        new CommonsChunkPlugin({
-            name: 'vendor',
-            filename: production ? 'js/vendor.js?v=[hash]' : 'js/vendor.js',
-            minChunks: function (module) {
-                return module.resource && (/\.js$/.test(module.resource) || /\.vue/.test(module.resource)) && module.resource.indexOf(path.resolve('node_modules')) === 0
-            }
-        })
-
-    ]
 }
 var deleteFolder = function (paths, isrmDir) {
     if (fs.existsSync(paths)) {
@@ -113,12 +101,11 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
-        }),
-        new HtmlWebpackPlugin({
-            filename: './index.html',//在dist目录下会生成index.html，并注入脚本
-            template: 'index.tpl',
-            inject: true, //此参数必须加上，不加不注入
         })
+        /*        new HtmlWebpackPlugin({
+         filename: './index.html',//在dist目录下会生成index.html，并注入脚本
+         inject: true //此参数必须加上，不加不注入
+         })*/
     ])
 } else {
     module.exports.devtool = '#source-map'

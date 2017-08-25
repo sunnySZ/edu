@@ -10,7 +10,7 @@
         <ul class="list_box">
             <li v-for="item in orderListData">
                 <!--  <router-link :to="{ name: 'detail',params: { id: n }}">-->
-                <div class="list_item_top">订单编号：{{item.ORDER_ID}}</div>
+                <div class="list_item_top">订单编号：{{item.ORDER_NO}}</div>
                 <div class="list_item">
                     <div class="img_box"><img :src="item.S_PIC"></div>
                     <div class="ticket_msg">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="list_item_btm">
-                    <div class="left"> 数量:{{item.COUNT}} 实付:{{item.ACTUAL_PAY_TOTAL}}</div>
+                    <div class="left">数量:{{item.COUNT}} 实付:{{item.ACTUAL_PAY_TOTAL}}</div>
                     <div class="right" v-if="item.STATE==='1'">
                         <mt-button size="small" @click.native="deleteOrder(item.ORDER_ID)">删除订单</mt-button>
                         <mt-button type="primary" size="small" @click.native="payOrder(item.ORDER_ID)">去支付</mt-button>
@@ -29,14 +29,14 @@
                         <mt-button size="small" @click.native="cancelOrder(item.ORDER_ID)">取消订单</mt-button>
                     </div>
                     <div class="right" v-else-if="item.STATE==='3'">
-                        已经申请待审核
-                    </div>
-                    <div class="right" v-else-if="item.STATE==='4'">
-                        审核已通过等待退款
-                    </div>
-                    <div class="right" v-else-if="item.STATE==='5'">
                         <mt-button type="primary" size="small" @click.native="commentOrder(item.ORDER_ID)">去评论
                         </mt-button>
+                    </div>
+                    <div class="right" v-else-if="item.STATE==='4'">
+                        待审核
+                    </div>
+                    <div class="right" v-else-if="item.STATE==='5'">
+                        已退款
                     </div>
                 </div>
                 <!-- </router-link>-->

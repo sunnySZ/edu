@@ -179,6 +179,20 @@
                 this.isLogin = false;
                 this.userImg = '/dist/user_default.png';
                 this.nickName = ''
+
+
+                //测试验证手机专用--start
+                ///yjt/shoporders/deleteBindMobile
+                this.$http.get('yjt/shoporders/deleteBindMobile').then((res) => {
+                    // this.$toast(res.data.code)
+                    if (res.data.code == '200') {
+                        this.$toast('手机号删除成功')
+                    }
+                }).catch((err) => {
+                    this.$toast(err)
+                });
+                //测试验证手机专用---end
+
             }
 
         },

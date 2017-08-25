@@ -14,12 +14,15 @@
             <li>总价:<span>￥{{totalPrice}}</span></li>
             <li class="buy" @click="submitOrder">提交订单</li>
         </ul>
-        <mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
-            <mt-field  placeholder="请输入手机号" type="tel" v-model="telVal"></mt-field>
-            <mt-field  placeholder="输入验证码">
-                <mt-button @click.native="" size="small" type="primary">获取验证码</mt-button>
+        <mt-popup v-model="verifyBox" position="right" class="mint-popup-3" :modal="false">
+            <mt-field placeholder="请输入手机号" type="tel" v-model="telVal"></mt-field>
+            <mt-field placeholder="输入验证码" v-model="codeVal">
+                <mt-button @click.native="getCode" :disabled="timeout==0?false:true" size="small"
+                           :type="timeout==0?'primary':'default'">{{timeout | timeText}}
+                </mt-button>
             </mt-field>
-            <mt-button @click.native="popupVisible3 = false" size="large" type="danger" class="confirm_btn">验证手机号</mt-button>
+            <mt-button @click.native="submintMobile" size="large" type="danger" class="confirm_btn">验证手机号
+            </mt-button>
         </mt-popup>
     </div>
 </template>
@@ -30,10 +33,14 @@
         data(){
             return {
                 telVal: '',
+                codeVal: '',
                 textVal: '',
-                popupVisible3:false,
+                verifyBox: false,
                 goods_id: localStorage.getItem('goods_id'),
                 goods_price: parseFloat(localStorage.getItem('goods_price')),
+                handling: false,
+                timeout: 0,
+                timerId: 0
             }
         },
         created(){
@@ -57,6 +64,71 @@
             },
             decrement(){
                 this.$store.dispatch('decrement')
+            },
+            timerSet: function () {
+                let v = this;
+                if (v.timerId) {
+                    clearInterval(v.timerId);
+                }
+                v.timerId = setInterval(function () {
+                    if (v.timeout <= 0) {
+                        clearInterval(v.timerId);
+                    } else {
+                        v.timeout--;
+                    }
+                }, 1000);
+            },
+            getCode(){
+                let v = this;
+                if (!v.validatePhone(v.telVal)) {
+                    v.$toast("请填写正确手机号");
+                    return;
+                }
+                if (v.handling || v.timeout > 0)return;
+                v.handling = true;
+                /* v.timeout = 60;
+                 v.timerSet();*/
+                v.$http.get('yjt/user/getmsgcode').then((res) => {   // yjt/user/getmsgcode
+                    // this.$toast(res.data.code)
+                    if (res.data.code == '200') {
+                        v.$toast("验证码已发送！");
+                        //设置验证码 重新获取时间
+                        v.timeout = 60;
+                        v.timerSet();
+                    } else {
+                        v.$toast(res.data.msg)
+                    }
+                    v.handling = false;
+                }).catch((err) => {
+                    v.$toast(err)
+                });
+            },
+            submintMobile(){
+                if (this.codeVal == '') {
+                    this.$toast('请输入验证码')
+                    return;
+                }
+                //yjt/weixin/bindMobile
+                this.$http.get('yjt/weixin/bindMobile', {
+                    params: {
+                        user_id: this.$store.state.user_id,
+                        mobile: this.telVal,
+                        code: this.codeVal
+                    }
+                }).then((res) => {
+                    if (res.data.code == '200') {
+                        this.$toast('验证成功');
+                        //验证手机号成功后，返回用户信息
+                        this.$store.dispatch('setusermsg', res.data.result);
+                        setTimeout(()=>{
+                            this.verifyBox = false;
+                        },2000)
+                    } else {
+                        this.$toast('验证码错误')
+                    }
+                }).catch((err) => {
+                    this.$toast(err)
+                });
             },
             getUserMsg(){
                 let local_user_id = window.localStorage.getItem('user_id');
@@ -90,12 +162,15 @@
 
                 }
             },
-            submitOrder(){
 
+            submitOrder(){
                 if (!this.validatePhone(this.telVal)) {
                     this.$toast("请填写正确手机号");
-                    this.popupVisible3=true;
                     return;
+                }
+                if (!this.$store.state.user_msg.mobile) {
+                    this.verifyBox = true; //弹出验证手机号界面
+                    return
                 }
                 //提交订单
                 let qs = require('qs');
@@ -177,14 +252,19 @@
 
         }
         .mint-popup-3 {
-            padding:100px 30px;
+            padding: 100px 30px;
             box-sizing: border-box;
             width: 100%;
             height: 100%;
             background-color: #fff;
         }
-        .mint-popup-3  .mint-cell-wrapper{ background-image: none; border-bottom: 1px solid #f4f4f4;}
-        .confirm_btn{ margin-top: 30px;}
+        .mint-popup-3 .mint-cell-wrapper {
+            background-image: none;
+            border-bottom: 1px solid #f4f4f4;
+        }
+        .confirm_btn {
+            margin-top: 30px;
+        }
 
         .itembg .mint-cell-wrapper {
             background-color: orangered;

@@ -48,6 +48,7 @@
         padding: 1rem;
         text-align: center;
     }
+   body .mint-toast{ z-index: 3000;}
     .slide-down-enter-active, .slide-down-leave-active {
         transition: .4s all ease;
         opacity: 0.5;

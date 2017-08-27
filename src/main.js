@@ -5,6 +5,8 @@ import stores from './store'
 import Axios from 'axios'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
+
+
 Vue.use(Mint);
 
 

@@ -1,14 +1,11 @@
 <template>
     <div class="coupon_select_page">
-        <div>
-            <mt-cell title="请选择现金优惠券">{{ value1 }}</mt-cell>
-        </div>
+        <mt-cell title="请选择现金优惠券"></mt-cell>
         <mt-radio
                 class="page-part"
                 v-model="value1"
                 :options="options1"/>
-        <mt-button class="btn" type="primary" @click.native="confirmCoupon">确定</mt-button>
-
+        <mt-button v-if="!nodata" class="btn" type="primary" @click.native="confirmCoupon">确定</mt-button>
         <p v-show="nodata" class="no_data">暂无可用优惠券!</p>
 
     </div>
@@ -22,7 +19,7 @@
                 price: 0,
                 goods_id: localStorage.getItem('goods_id'),
                 nodata: false,
-                options1:[],
+                options1: [],
                 optionArr: [],
                 nameArr: [],
                 priceArr: [],
@@ -31,19 +28,21 @@
         },
         created(){
             this.getData();
-
         },
         methods: {
             confirmCoupon(){
                 for (var i = 0; i < this.options1.length; i++) { //循环匹配选中项的id
-                    if (this.options1[i] == this.value1) {
+                    if (this.options1[i].value == this.value1) {
                         this.id = this.idArr[i];
                         this.price = this.priceArr[i];
-                        return;
+                        console.log(this.id);
+                        console.log(this.price)
+                       break;
                     }
                 }
                 this.$store.dispatch('couponid', this.id);  //存储优惠券id
                 this.$store.dispatch('couponprice', this.price); //存储优惠券面值
+                console.log( this.$store.state);
                 this.$router.push({
                     path: '/order'
                 })
@@ -67,7 +66,6 @@
                             }
                         }
                         this.options1 = this.optionArr;
-                        console.log(this.optionArr)
                     } else {
                         this.nodata = true;
                     }

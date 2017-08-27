@@ -17,6 +17,7 @@ import Collect from './components/collect.vue'
 import Coupon from './components/coupon.vue'
 import Scores from './components/scores.vue'
 import CouponSelect from './components/coupon_select.vue'
+import Comments from './components/comments.vue'
 
 /*const my_routes = [
  {name: 'home', path: '/', component: List},
@@ -46,7 +47,8 @@ const router = new VueRouter({
         {name: 'collect', path: '/collect', component: Collect,meta:{title:'我的收藏',auth:true}},
         {name: 'coupon', path: '/coupon', component: Coupon,meta:{title:'优惠券',auth:true}},
         {name: 'scores', path: '/scores', component: Scores,meta:{title:'优惠券',auth:true}},
-        {name: 'couponSelect', path: '/coupon_select', component: CouponSelect,meta:{title:'选择优惠券',auth:true}}
+        {name: 'couponSelect', path: '/coupon_select', component: CouponSelect,meta:{title:'选择优惠券',auth:true}},
+        {name: 'comments', path: '/comments', component: Comments,meta:{title:'评价',auth:true}}
     ]
 })
 

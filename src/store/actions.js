@@ -24,7 +24,7 @@ const actions = {
         commit(types.COUPONID, state)
     },
     couponprice: ({commit}, state) => {  //选中的现金兑换优惠券的金额
-        commit(types.COUPONIDPRICE, state)
+        commit(types.COUPONPRICE, state)
     },
     goodsprice: ({commit}, state) => {  //商品价格
         commit(types.GOODSPRICE, state)

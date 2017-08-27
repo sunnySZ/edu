@@ -23,7 +23,7 @@ const mutations = { //处理状态、数据变化
     [types.COUPONID](state, res){  //选中的现金兑换优惠券id
         state.coupon_id = res
     },
-    [types.COUPONIDPRICE](state, res){  //选中的现金兑换优惠券的金额
+    [types.COUPONPRICE](state, res){  //选中的现金兑换优惠券的金额
         state.coupon_price = res
     },
     [types.GOODSPRICE](state, res){  //商品价格

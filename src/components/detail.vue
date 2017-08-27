@@ -209,7 +209,6 @@
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
                 window.localStorage.setItem('goods_id', this.id) //存储商品id，订单界面用
-
                 // console.log(localStorage.getItem('goods_id'))
                 // this.$store.dispatch('goodsid', this.id);
                 this.$indicator.open();
@@ -277,7 +276,7 @@
                             shoid: this.id,
                             content: this.val
                         })).then((res) => {
-                            if (res.data.code === 200) {
+                            if (res.data.code === '200') {
                                 this.$toast('提交成功');
                                 this.questionData.list.unshift({
                                     CONTENT: this.val,

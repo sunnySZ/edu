@@ -129,7 +129,6 @@
             },
             loadBottom(){
                 //上拉加载更多
-                console.log(111)
                 if (this.listLoading) {
                     this.$refs.loadmore.onBottomLoaded();
                 } else {

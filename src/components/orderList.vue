@@ -29,8 +29,9 @@
                         <mt-button size="small" @click.native="cancelOrder(item.ORDER_ID)">取消订单</mt-button>
                     </div>
                     <div class="right" v-else-if="item.STATE==='3'">
-                        <mt-button type="primary" size="small" @click.native="commentOrder(item.ORDER_ID)">去评论
-                        </mt-button>
+                        <router-link :to="{ name: 'comments',params: { goods_id: item.GOODS_ID,order_id:item.ORDER_ID}}">
+                        <mt-button type="primary" size="small">去评论</mt-button>
+                        </router-link>
                     </div>
                     <div class="right" v-else-if="item.STATE==='4'">
                         待审核
@@ -126,8 +127,16 @@
                     this.$indicator.close();
                 });
             },
-            commentOrder(){ //评论订单
-
+            commentOrder(goodsId,orderId){ //评论订单
+                this.$router.push({
+                    path: '/comments',
+                    params:{
+                        goods_id:goodsId,
+                        order_id:orderId
+                    }
+                })
+                console.log(goodsId)
+                console.log(orderId)
             },
             getData(curVal){
                 this.$indicator.open();

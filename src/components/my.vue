@@ -178,8 +178,7 @@
                 this.$store.dispatch('logout')
                 this.isLogin = false;
                 this.userImg = '/dist/user_default.png';
-                this.nickName = ''
-
+                this.nickName = '';
 
                 //测试验证手机专用--start
                 ///yjt/shoporders/deleteBindMobile
@@ -244,7 +243,7 @@
             justify-content: space-around;
             padding: 0;
             background-color: white;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #e0e0e0;
             margin: 0 0 1rem;
         }
         .order_item li {
@@ -258,8 +257,8 @@
         }
         .order_item3 li {
             width: 33.33%;
-            border-right: 1px solid #cccccc;
-            border-bottom: 1px solid #cccccc;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
             box-sizing: border-box;
         }
         .order_item3 li:nth-child(3n) {
@@ -268,7 +267,7 @@
         .order_item li a {
             color: #000000;
             display: block;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
         }
         .order_item .order-icons {
             width: 2rem;

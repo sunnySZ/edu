@@ -194,7 +194,7 @@
 
     .select_page {
         margin-top: 40px;
-        margin-bottom: 65px;
+        margin-bottom: 56px;
         .type_list, .coupon_list {
             display: flex;
             justify-content: space-around;

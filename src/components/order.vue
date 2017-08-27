@@ -138,7 +138,6 @@
             getUserMsg(){
                 let local_user_id = window.localStorage.getItem('user_id');
                 if (!local_user_id) {  //第一次授权进入
-                  //  this.$toast('登录11')
                     let _Path = this.$route.fullPath;
                     //点击登录授权成功后台通过url传来user_id ,http://youertong.cn/index.html#/my?user_id=a3eb85b253764e91a1fd9f18c186b928
                     if (_Path.indexOf('?') > 0) {
@@ -155,21 +154,19 @@
                         });
                     }
                 } else if (local_user_id && !this.$store.state.user_id) { //用户关掉浏览器后再次进入,此时本地有存在用户user_id,vuex中无用户信息
-                  //  this.$toast('登录22')
                     this.$http.get('yjt/weixin/userinfo?user_id=' + local_user_id).then((res) => {
                         // this.$toast(res.data.code)
                         if (res.data.code == '200') {
                             this.$store.dispatch('setuserid', local_user_id);//存储到vuex
                             this.$store.dispatch('setusermsg', res.data.result) //个人中心界面使用
-                            console.log(this.$store.state.user_msg.mobile)
+                            this.telVal= res.data.result.mobile;
                         }
                     }).catch((err) => {
                         this.$toast(err)
                     });
                 } else { //用户登录,并获取了用户信息。此时本地有存在用户user_id,vuex中有用户信息
-                  //  this.$toast('登录33')
+                   this.telVal = this.$store.state.user_msg.mobile;
                 }
-                this.telVal = this.$store.state.user_msg.mobile || '';
             },
             submitOrder(){
                 if (!this.$store.state.user_msg.mobile) {
@@ -205,7 +202,7 @@
                             path: '/order/orderPay'
                         })
                     } else {
-                        this.$toast("下单失败")
+                        this.$toast(res.data.msg)
                     }
                 }).catch((err) => {
                     this.$toast(err)

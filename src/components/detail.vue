@@ -182,7 +182,7 @@
                 if (this.$store.state.user_id) {
                     let url = 'yjt/goodsfavorites/favoritesorcancel/' + this.id
                     this.$http.get(url).then((res) => {
-                        if (res.data.code === 200) {
+                        if (res.data.code === '200') {
                             if (this.detailData.ISFAVORITES == 1) {
                                 this.isCur = false;
                                 this.detailData.ISFAVORITES = 0;

@@ -83,8 +83,8 @@
             }
         },
         methods: {
-            payOrder(n){  //n是订单id
-                this.$store.dispatch('setorderid', n)
+            payOrder(n){
+                this.$store.dispatch('setorderid', n)////n是订单id
                 //跳转到订单支付
                 this.$router.push({
                     path: '/order/orderPay'
@@ -195,7 +195,7 @@
 <style lang="less">
     .orderList_page {
         margin-top: 55px;
-        margin-bottom: 65px;
+        margin-bottom: 56px;
         .mint-navbar.is-fixed {
             z-index: 3000;
         }

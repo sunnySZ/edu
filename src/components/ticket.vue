@@ -62,7 +62,7 @@
     
     .ticket_page {
         margin-top: 50px;
-        margin-bottom: 65px;
+        margin-bottom: 56px;
         .list_box{ background-color: white;}
     .list_box li{ display: block; padding: 1rem;border-bottom: 1px solid #e5e5e5; }
     .list_box li a{color: #bbbbbb;}

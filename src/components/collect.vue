@@ -90,6 +90,6 @@
 <style lang="less">
 
     .collect_page {
-        margin-bottom: 65px;
+        margin-bottom: 56px;
     }
 </style>

@@ -18,7 +18,8 @@ import Coupon from './components/coupon.vue'
 import Scores from './components/scores.vue'
 import CouponSelect from './components/coupon_select.vue'
 import Comments from './components/comments.vue'
-
+import MyActivity from './components/myActivity.vue'
+import MyActivityInfo from './components/myActivityInfo.vue'
 /*const my_routes = [
  {name: 'home', path: '/', component: List},
  {name: 'infinite', path: '/infinite', component: Infinite},
@@ -46,9 +47,11 @@ const router = new VueRouter({
         {name: 'orderList', path: '/orderList', component: OrderList,meta:{title:'订单列表',auth:true}},
         {name: 'collect', path: '/collect', component: Collect,meta:{title:'我的收藏',auth:true}},
         {name: 'coupon', path: '/coupon', component: Coupon,meta:{title:'优惠券',auth:true}},
-        {name: 'scores', path: '/scores', component: Scores,meta:{title:'优惠券',auth:true}},
+        {name: 'scores', path: '/scores', component: Scores,meta:{title:'积分',auth:true}},
         {name: 'couponSelect', path: '/coupon_select', component: CouponSelect,meta:{title:'选择优惠券',auth:true}},
-        {name: 'comments', path: '/comments', component: Comments,meta:{title:'评价',auth:true}}
+        {name: 'comments', path: '/comments', component: Comments,meta:{title:'评价',auth:true}},
+        {name: 'myActivity', path: '/myActivity', component: MyActivity,meta:{title:'我的活动',auth:true}},
+        {name: 'myActivityInfo', path: '/myActivityInfo', component: MyActivityInfo,meta:{title:'我的活动',auth:true}}
     ]
 })
 

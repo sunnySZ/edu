@@ -144,7 +144,7 @@
             background-image: none;
         }
         .mint-button {
-            margin-top: 1rem;
+            margin-top: 2rem;
         }
         .startext {
             padding-top: 1rem;

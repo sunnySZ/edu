@@ -83,7 +83,7 @@
 <style lang="less">
 
     .scores_page {
-        margin-bottom: 65px;
+        margin-bottom: 56px;
         .scores_top {
             padding: 5rem 1rem;
             text-align: center;

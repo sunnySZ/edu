@@ -70,6 +70,14 @@
                     </p>
                 </a>
             </li>
+            <li>
+                <a href="javascript:;" @click="myActivity">
+                    <span class="order-icons contact-icon"></span>
+                    <p class="item-info pa dib">
+                        <span class="item-title db">我的活动</span>
+                    </p>
+                </a>
+            </li>
         </ul>
         <Foot></Foot>
     </div>
@@ -165,6 +173,14 @@
                     this.$toast("请登录后查看")
                 }
             },
+            myActivity(){
+                this.$router.push({path: '/myActivity'})
+                /*if (this.$store.state.user_id) { //判断登录
+                    this.$router.push({path: '/myActivity'})
+                } else {
+                    this.$toast("请登录后查看")
+                }*/
+            },
             login(){
                 if (this.isWeiXin()) {
                     //点击授权登录
@@ -185,7 +201,7 @@
                 this.$http.get('yjt/shoporders/deleteBindMobile').then((res) => {
                     // this.$toast(res.data.code)
                     if (res.data.code == '200') {
-                        this.$toast('手机号删除成功')
+                        this.$toast('手机号已解除绑定')
                     }
                 }).catch((err) => {
                     this.$toast(err)
@@ -233,7 +249,7 @@
         }
         .mint-cell-value.is-link {
             color: #26a2ff;
-            margin-right: 1.2rem;
+            margin-right: 1.3rem;
         }
         .mint-cell-allow-right::after {
             right: 0.5rem;
@@ -267,7 +283,8 @@
         .order_item li a {
             color: #000000;
             display: block;
-            padding: 1.5rem 0;
+            padding: 1.8rem 0;
+            font-size: 1.3rem;
         }
         .order_item .order-icons {
             width: 2rem;

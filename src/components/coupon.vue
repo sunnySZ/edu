@@ -126,7 +126,7 @@
 <style lang="less">
 
     .coupon_page {
-        margin-bottom: 65px;
+        margin-bottom: 56px;
         .mint-field {
             margin: 1rem;
             background: none;

@@ -62,14 +62,14 @@
                     </p>
                 </a>
             </li>
-            <li>
+            <!--<li>
                 <a href="#">
                     <span class="order-icons contact-icon"></span>
                     <p class="item-info pa dib">
                         <span class="item-title db">联系人</span>
                     </p>
                 </a>
-            </li>
+            </li>-->
             <li>
                 <a href="javascript:;" @click="myActivity">
                     <span class="order-icons contact-icon"></span>

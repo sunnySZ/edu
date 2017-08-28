@@ -13,7 +13,8 @@
     "less-loader": "^4.0.5",
     "mint-ui": "^2.2.1",
     "vue": "^2.2.1",
-    "vue-awesome-swiper": "^2.5.4"
+    "vue-awesome-swiper": "^2.5.4",
+    "weixin-js-sdk": "^1.2.0"
   },
   "devDependencies": {
     "axios": "^0.15.3",

@@ -305,6 +305,62 @@
     }
 </script>
 <style lang="less">
+    .wrap_top {
+        position: relative;
+        background-color: white;
+    }
+    .wrap_top img {
+        width: 100%;
+    }
+    .wrap_top h2 {
+        font-size: 1.6rem;
+        padding: 0.8rem;
+        margin: 0;
+    }
+    .wrap_top .txt_msg {
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+        word-break: break-all;
+        color: #737373;
+        padding: 0 0.8rem;
+    }
+    .wrap_msg {
+        line-height: 3rem;
+        font-size: 1.2rem;
+        color: #fa6e51;
+        padding: 0 0.6rem;
+    }
+    .wrap_msg mark {
+        font-size: 2.4rem;
+        background: none;
+        color: #fa6e51;
+    }
+    .wrap_msg .apply_num {
+        color: #666666;
+        padding-left: 1rem;
+    }
+    .wrap_top .mint-cell-value {
+        flex: 2.4;
+        height: 48px;
+        white-space: nowrap;
+        line-height: 48px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .wrap_place {
+        background-color: white;
+        margin: 1rem 0;
+    }
+    .wrap_place .mint-cell-title {
+        font-size: 1.4rem;
+        padding: 1rem 0;
+        line-height: 1.4rem;
+    }
+    .wrap_place p {
+        font-size: 1.6rem;
+        line-height: 3.6rem;
+        padding-left: 1rem;
+    }
     .detail_page {
         .ticket_msg {
             flex: 5;
@@ -333,10 +389,7 @@
             background-color: #fff5dd;
             border-radius: 0.5rem;
         }
-        .wrap_top {
-            position: relative;
-            background-color: white;
-        }
+
         .collect_btn {
             background: rgba(0, 0, 0, 0.6) url("../assets/icon1.png") no-repeat;
             display: block;
@@ -355,58 +408,8 @@
         .collect_btn.cur_no {
             background-position: 0 90%;
         }
-        .wrap_top img {
-            width: 100%;
-        }
-        .wrap_top h2 {
-            font-size: 1.6rem;
-            padding: 0.8rem;
-            margin: 0;
-        }
-        .wrap_top .txt_msg {
-            font-size: 1.2rem;
-            line-height: 1.8rem;
-            word-break: break-all;
-            color: #737373;
-            padding: 0 0.8rem;
-        }
-        .wrap_msg {
-            line-height: 3rem;
-            font-size: 1.2rem;
-            color: #fa6e51;
-            padding: 0 0.6rem;
-        }
-        .wrap_msg mark {
-            font-size: 2.4rem;
-            background: none;
-            color: #fa6e51;
-        }
-        .wrap_msg .apply_num {
-            color: #666666;
-            padding-left: 1rem;
-        }
-        .wrap_top .mint-cell-value {
-            flex: 2.4;
-            height: 48px;
-            white-space: nowrap;
-            line-height: 48px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-        .wrap_place {
-            background-color: white;
-            margin: 1rem 0;
-        }
-        .wrap_place .mint-cell-title {
-            font-size: 1.4rem;
-            padding: 1rem 0;
-            line-height: 1.4rem;
-        }
-        .wrap_place p {
-            font-size: 1.6rem;
-            line-height: 3.6rem;
-            padding-left: 1rem;
-        }
+
+
         .mint-navbar {
             border-bottom: 1px solid #cccccc
         }

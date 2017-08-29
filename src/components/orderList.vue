@@ -156,7 +156,8 @@
                             this.nodata = true;
                         }
                     } else { //返回失败
-                        this.$toast('数据返回失败')
+                        this.$indicator.close();//隐藏loading
+                        this.$toast( res.data.msg)
                     }
                     this.$indicator.close();
                 }).catch((err) => {

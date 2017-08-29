@@ -174,12 +174,12 @@
                 }
             },
             myActivity(){
-                this.$router.push({path: '/myActivity'})
-                /*if (this.$store.state.user_id) { //判断登录
+              //  this.$router.push({path: '/myActivity'})
+                if (this.$store.state.user_id) { //判断登录
                     this.$router.push({path: '/myActivity'})
                 } else {
                     this.$toast("请登录后查看")
-                }*/
+                }
             },
             login(){
                 if (this.isWeiXin()) {

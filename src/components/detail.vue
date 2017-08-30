@@ -93,15 +93,15 @@
             <router-link to="/select/" class="ask">
                 <i></i>首页
             </router-link>
-            <a class="comments" href="#">
+            <a class="comments">
                 <i></i>点评
                 <em>{{commentsData.totalRow}}</em>
             </a>
-            <a class="share" href="#">
+            <a class="share" href="javascript:" @click="shareModal">
                 <i></i>分享</a>
             <a class="buy" href="javascript:;" @click="buyNow">立刻购买</a>
         </div>
-
+        <div class="v-modal"  v-show="isModal" style="z-index: 2004;"><img src="../assets/sharepic.png"  @click="closeModal"></div>
     </div>
 </template>
 <script>
@@ -115,6 +115,7 @@
                 id: null,
                 price: 0,
                 val: '', //提问内容
+                isModal:false,//分享
                 detailData: null,
                 commentsData: null,
                 questionData: null,
@@ -149,6 +150,12 @@
                 } else {
                     return false;
                 }
+            },
+            shareModal(){ //分享
+                this.isModal=true;
+            },
+            closeModal(){
+                this.isModal=false;
             },
             buyNow(){
                 if (this.isWeiXin()) {
@@ -226,10 +233,10 @@
                     }
 
                     localStorage.setItem('goods_price', this.detailData.PRICE) //存储商品id，订单界面用
-                    if (data2.data.pageSize > 1) {  //判断点评列表是否显示点击查看更多
+                    if (data2.data.totalPage > 1) {  //判断点评列表是否显示点击查看更多
                         this.comments.isMore = true;
                     }
-                    if (data3.data.pageSize > 1) {  //判断点评列表是否显示点击查看更多
+                    if (data3.data.totalPage > 1) {  //判断点评列表是否显示点击查看更多
                         this.questions.isMore = true;
                     }
                     this.$indicator.close();
@@ -365,6 +372,8 @@
         .ticket_msg {
             flex: 5;
         }
+        .v-modal{ text-align:right;}
+        .v-modal img{ width: 70%;}
         .stars {
             display: inline-block;
             width: 7.5rem;

@@ -29,6 +29,9 @@ const actions = {
     goodsprice: ({commit}, state) => {  //商品价格
         commit(types.GOODSPRICE, state)
     },
+    mystatus: ({commit}, state) => {  //我的活动列表订单状态
+        commit(types.MYSTATUS, state)
+    },
     /*    goodsid: ({commit},state) => {  //商品id
      commit(types.GOODSID,state)
      },*/

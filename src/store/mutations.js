@@ -29,6 +29,9 @@ const mutations = { //处理状态、数据变化
     [types.GOODSPRICE](state, res){  //商品价格
         state.goods_price = res
     },
+    [types.MYSTATUS](state, res){  //商品价格
+        state.my_status = res
+    },
     /*    [types.GOODSID](state,res){  //商品id
      state.goods_id=res
      },*/

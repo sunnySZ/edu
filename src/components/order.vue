@@ -92,7 +92,7 @@
                 v.$http.get('yjt/user/getmsgcode').then((res) => {   // yjt/user/getmsgcode
                     // this.$toast(res.data.code)
                     if (res.data.code == '200') {
-                        v.$toast("验证码已发送！");
+                     //   v.$toast("验证码已发送！");
                         //设置验证码 重新获取时间
                         v.timeout = 60;
                         v.timerSet();
@@ -127,7 +127,7 @@
                         this.$store.dispatch('setusermsg', res.data.result);
                         setTimeout(() => {
                             this.verifyBox = false;
-                        }, 1000)
+                        }, 500)
                     } else {
                         this.$toast('验证码错误')
                     }

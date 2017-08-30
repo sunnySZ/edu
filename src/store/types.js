@@ -9,4 +9,5 @@ export const ORDERCUR='ordercur'  //订单界面订单状态tab高亮
 export const COUPONID='couponid'  //选中的现金兑换优惠券id
 export const COUPONPRICE='couponprice'  //选中的现金兑换优惠券的金额
 export const GOODSPRICE='goodsprice'  //商品价格
+export const MYSTATUS='mystatus'  //商品价格
 

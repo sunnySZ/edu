@@ -47,6 +47,7 @@
         watch: {
             selected(curVal, oldVal){
                 this.params.state = curVal;
+                this.$store.dispatch('mystatus', curVal) //详情界面使用
                 //初始化数据
                 this.activityData = [];
                 this.nodata = false;

@@ -5,8 +5,9 @@ let states = {
     user_msg: {},
     order_cur: '0',//订单界面tab高亮，注意类型必须是字符串
     coupon_id: '',//选中的现金兑换优惠券id
-    goods_price:0,//商品价格
+    goods_price: 0,//商品价格
     coupon_price: 0,//选中的现金兑换优惠券的金额
+    my_status: 1,//我的活动列表订单状态,1-进行中,2-已下架
     //  goods_id:''//商品id
 }
 export default states

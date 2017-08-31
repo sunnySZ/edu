@@ -70,7 +70,7 @@
                     </p>
                 </a>
             </li>-->
-            <li>
+            <li v-show="isRole">
                 <a href="javascript:;" @click="myActivity">
                     <span class="order-icons contact-icon"></span>
                     <p class="item-info pa dib">
@@ -90,6 +90,8 @@
                 userImg: '/dist/user_default.png',
                 nickName: '',
                 isLogin: false,
+                isRole: false,
+                rid: ''
             }
         },
         created(){
@@ -119,7 +121,11 @@
                                 this.$store.dispatch('setusermsg', res.data.result);
                                 this.userImg = res.data.result.userHeadImgurl; //用户头像
                                 this.nickName = res.data.result.userNickname; //用户昵称
+                                this.rid = res.data.result.rid; //1，家长，2,园长，3老师
                                 this.isLogin = true;
+                                if (this.rid == '2' || this.rid == '3') {
+                                    this.isRole = true;
+                                }
                             }
                         }).catch((err) => {
                             this.$toast(err)
@@ -127,13 +133,17 @@
                     }
                 } else if (local_user_id && !this.$store.state.user_id) { //用户关掉浏览器后再次进入,此时本地有存在用户user_id,vuex中无用户信息
                     this.$http.get('yjt/weixin/userinfo?user_id=' + local_user_id).then((res) => {
-                       // this.$toast(res.data.code)
+                        // this.$toast(res.data.code)
                         if (res.data.code == '200') {
                             this.$store.dispatch('setuserid', local_user_id);//存储到vuex
                             this.$store.dispatch('setusermsg', res.data.result);
                             this.userImg = res.data.result.userHeadImgurl;
                             this.nickName = res.data.result.userNickname;
+                            this.rid = res.data.result.rid; //1，家长，2,园长，3老师
                             this.isLogin = true;
+                            if (this.rid == '2' || this.rid == '3') {
+                                this.isRole = true;
+                            }
                         }
                     }).catch((err) => {
                         this.$toast(err)
@@ -142,7 +152,13 @@
                     this.isLogin = true;
                     this.userImg = this.$store.state.user_msg.userHeadImgurl;
                     this.nickName = this.$store.state.user_msg.userNickname;
+                    this.rid = this.$store.state.user_msg.rid; //1，家长，2,园长，3老师
+                    if (this.rid == '2' || this.rid == '3') {
+                        this.isRole = true;
+                    }
                 }
+
+
             },
             viewOrderList(index){ //查看订单
                 if (this.$store.state.user_id) { //判断登录
@@ -174,7 +190,7 @@
                 }
             },
             myActivity(){
-              //  this.$router.push({path: '/myActivity'})
+                //  this.$router.push({path: '/myActivity'})
                 if (this.$store.state.user_id) { //判断登录
                     this.$router.push({path: '/myActivity'})
                 } else {
@@ -195,16 +211,17 @@
                 this.isLogin = false;
                 this.userImg = '/dist/user_default.png';
                 this.nickName = '';
+                this.isRole = false;
 
                 //测试验证手机专用--删除绑定手机号--start，
                 /*this.$http.get('yjt/shoporders/deleteBindMobile').then((res) => {
-                    // this.$toast(res.data.code)
-                    if (res.data.code == '200') {
-                        this.$toast('手机号已解除绑定')
-                    }
-                }).catch((err) => {
-                    this.$toast(err)
-                });*/
+                 // this.$toast(res.data.code)
+                 if (res.data.code == '200') {
+                 this.$toast('手机号已解除绑定')
+                 }
+                 }).catch((err) => {
+                 this.$toast(err)
+                 });*/
                 //测试验证手机专用---end
 
             }

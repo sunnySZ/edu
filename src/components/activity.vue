@@ -56,7 +56,7 @@
                     pageSize: 5,
                     lat: 22.67165,
                     lng: 114.014654,
-                    dis: 0.5,
+                    dis: 200,
                 },
                 listType: 6  //活动
             }
@@ -96,7 +96,7 @@
                             var accuracy = res.accuracy; // 位置精度
                             _this.params.lat = latitude;
                             _this.params.lng = longitude;
-                            alert('您的位置是'+_this.params.lat+','+ _this.params.lng);
+                           // alert('您的位置是'+_this.params.lat+','+ _this.params.lng);
                             //初始化刷新请求数据
                             _this.$indicator.open();
                             _this.getData(true)
@@ -137,7 +137,6 @@
              },*/
             getData(isRefresh){
 
-
                 //isRefresh,bool==true是下拉刷新，false表示是上拉加载更多
                 if (this.listLoading) return;
                 this.listLoading = true;
@@ -159,7 +158,6 @@
                     this.$indicator.close()
                     let lists = res.data.list;
                     this.listLoading = false;
-                    if (lists.length > 0) {
                         if (this.params.curPage >= res.data.totalPage) {
                             this.allLoaded = true;
                             if (this.params.curPage != 1) {
@@ -176,9 +174,6 @@
                            this.activityData = this.activityData.concat(lists)
                             this.$refs.loadmore.onBottomLoaded();//关闭上拉loading动画
                         }
-                    }else{
-                        this.$toast('暂无附近活动数据')
-                    }
                 }).catch((err) => {
                     //上下拉loading动画关闭
                     if (isRefresh) {
@@ -204,7 +199,7 @@
                     this.$refs.loadmore.onBottomLoaded();
                 } else {
                     this.allLoaded = true;
-                    this.getData(false)
+                  //  this.getData(false)
                 }
             }
         },

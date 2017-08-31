@@ -80,6 +80,7 @@
 
     .img_box img {
         width: 100%;
+        border-radius: 100%;
     }
 
     .ticket_msg {

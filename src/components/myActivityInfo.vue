@@ -57,21 +57,16 @@
                 this.status = this.$store.state.my_status;
                 let httpArr = [
                     this.$http.get('yjt/shopgoods/getGoodsUsers?goods_id=' + this.id), //我的活动详情
-                    this.$http.get('yjt/shopgoods/getGoodsUsersCount/1-5?goods_id=' + this.id + '&state=' + this.status),  //参与人员列表
+                    this.$http.get('yjt/shopgoods/getGoodsFans/1-5?goods_id=' + this.id)  //参与人员列表
                 ];
 
                 this.$http.all(httpArr).then(this.$http.spread((data1, data2) => {
                     this.$indicator.close();//隐藏loading
-                    this.detailData = data1.data.result.goods;
-
-                    this.fansData=data1.data.result.fans.list;
-
-
-
-                    //this.fansData = data2.data.result.list;
-
-
-
+                    this.detailData = data1.data.result;
+                    this.fansData = data2.data.result.list;
+                    if (data2.data.result.totalPage > 1) {
+                        this.isMore = true;
+                    }
                     /*if(res.data.code=='200'){
                      let fans=res.data.result.fans;
 
@@ -91,7 +86,7 @@
                 this.isLoading = true;
                 this.params.curPage += 1;
                 //http://youertong.cn/yjt/shopgoods/getGoodsUsersCount/页码-每页条数?goods_id=&state=
-                let url = 'yjt/shopgoods/getGoodsUsersCount/' + this.params.curPage + '-' + this.params.pageSize + '?goods_id=' + this.id + '&state=' + this.status;
+                let url = 'yjt/shopgoods/getGoodsFans/' + this.params.curPage + '-' + this.params.pageSize + '?goods_id=' + this.id;
                 this.$http.get(url).then((res) => {
                     if (res.data.code == '200') {  //返回成功
                         this.isLoading = false;
@@ -107,7 +102,7 @@
                     }
                 }).catch((err) => {
                     this.isLoading = false;
-                    this.$toast('订单列表' + err)
+                    this.$toast(err)
                 });
             }
 

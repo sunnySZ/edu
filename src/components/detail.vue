@@ -23,7 +23,7 @@
         </div>
         <mt-navbar v-model="selected">
             <mt-tab-item id="1">游玩内容</mt-tab-item>
-            <mt-tab-item id="2">点评({{commentsData.totalRow}})</mt-tab-item>
+            <mt-tab-item id="2" class="comment_pos">点评({{commentsData.totalRow}})</mt-tab-item>
             <mt-tab-item id="3">咨询({{questionData.totalRow}})</mt-tab-item>
         </mt-navbar>
         <mt-tab-container v-model="selected">
@@ -37,11 +37,10 @@
                     <ul class="list_box">
                         <li v-for="item in commentsData.list">
                             <div class="list_item">
-                                <div class="img_box"><img src="../assets/user_default.png"></div>
+                                <div class="img_box"><img :src="item.HEAD_PIC"></div>
                                 <div class="ticket_msg">
-                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i
-                                        :style="{width: item.SOCRE*1.5 + 'rem' }"></i></span>
-                                    <p>{{item.CREATE_TIME | yy_mm_dd}}</p>
+                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i :style="{width: parseInt(item.SOCRE)*1.5 + 'rem' }"></i></span>
+                                    <p>{{item.CREATE_TIME}}</p>
                                     <p>{{item.CONTENT}}</p>
                                 </div>
                             </div>
@@ -64,7 +63,7 @@
                                 <div class="img_box"><img src="../assets/user_default.png"></div>
                                 <div class="ticket_msg">
                                     <span class="title">{{item.USER_NAME}}</span>
-                                    <span>{{item.CREATE_TIME | yy_mm_dd}}</span>
+                                    <span>{{item.CREATE_TIME}}</span>
                                     <p>{{item.CONTENT}}</p>
                                     <ul v-if="item.REPALYLIST.length>0" class="list_box reply_msg">
                                         <li v-for="item in item.REPALYLIST">
@@ -72,7 +71,7 @@
                                                 <div class="img_box"><img src="../assets/user_default.png"></div>
                                                 <div class="ticket_msg">
                                                     <span class="title">{{item.USER_NAME}}</span>
-                                                    <span>{{item.CREATE_TIME | yy_mm_dd}}</span>
+                                                    <span>{{item.CREATE_TIME}}</span>
                                                     <p>{{item.CONTENT}}</p>
                                                 </div>
                                             </div>
@@ -93,15 +92,16 @@
             <router-link to="/select/" class="ask">
                 <i></i>首页
             </router-link>
-            <a class="comments">
+            <a class="comments" @click="viewComments">
                 <i></i>点评
-                <em>{{commentsData.totalRow}}</em>
+                <em v-show="isComShow">{{commentsData.totalRow}}</em>
             </a>
             <a class="share" href="javascript:" @click="shareModal">
                 <i></i>分享</a>
             <a class="buy" href="javascript:;" @click="buyNow">立刻购买</a>
         </div>
-        <div class="v-modal"  v-show="isModal" style="z-index: 2004;"><img src="../assets/sharepic.png"  @click="closeModal"></div>
+        <div class="v-modal" v-show="isModal" style="z-index: 2004;"><img src="../assets/sharepic.png"
+                                                                          @click="closeModal"></div>
     </div>
 </template>
 <script>
@@ -115,10 +115,11 @@
                 id: null,
                 price: 0,
                 val: '', //提问内容
-                isModal:false,//分享
+                isModal: false,//分享
                 detailData: null,
                 commentsData: null,
                 questionData: null,
+                isComShow: false,
                 comments: {
                     isLoading: false,
                     isMore: false,  //是否显示"点击加载更多"
@@ -152,10 +153,15 @@
                 }
             },
             shareModal(){ //分享
-                this.isModal=true;
+                this.isModal = true;
             },
             closeModal(){
-                this.isModal=false;
+                this.isModal = false;
+            },
+            viewComments(){
+                var offsetTop = document.querySelectorAll('.comment_pos')[0].offsetTop;
+                document.body.scrollTop = offsetTop
+                this.selected = '2'
             },
             buyNow(){
                 if (this.isWeiXin()) {
@@ -171,12 +177,9 @@
                         var url1 = '/route.html?code=1';//http://youertong.cn/index.html#/order
                         window.location.href = 'index.jsp?url=' + encodeURIComponent(url1)
                     }
-
                 } else {
                     this.$toast('请在微信里购买')
                 }
-
-
             },
             openAlert(msg) {
                 MessageBox({
@@ -186,32 +189,45 @@
                 });
             },
             addCollect(){ //添加收藏或取消收藏，yjt/goodsfavorites/favoritesorcancel/4
-                if (this.$store.state.user_id) {
-                    let url = 'yjt/goodsfavorites/favoritesorcancel/' + this.id
-                    this.$http.get(url).then((res) => {
-                        if (res.data.code === '200') {
-                            if (this.detailData.ISFAVORITES == 1) {
-                                this.isCur = false;
-                                this.detailData.ISFAVORITES = 0;
-                                this.$toast('取消成功');
-                            } else if (this.detailData.ISFAVORITES == 0) {
-                                this.isCur = true;
-                                this.detailData.ISFAVORITES = 1;
-                                this.$toast('收藏成功');
-                            } else {
-                                this.isCur = false;
-                            }
-
-                        } else {
-                            this.$toast('操作失败')
+                let local_user_id = window.localStorage.getItem('user_id');
+                if (local_user_id && !this.$store.state.user_id) {
+                    //用户关掉浏览器后再次进入,此时本地有存在用户user_id,vuex中无用户信息
+                    this.$http.get('yjt/weixin/userinfo?user_id=' + local_user_id).then((res) => {
+                        // this.$toast(res.data.code)
+                        if (res.data.code == '200') {
+                            this.$store.dispatch('setuserid', local_user_id);//存储到vuex
+                            this.$store.dispatch('setusermsg', res.data.result) //个人中心界面使用
+                            this.addCollectHttp()
                         }
-                        console.log(res.data)
-                    }).catch((err) => {
-                        console.log(err)
-                    });
+                    })
+                } else if (this.$store.state.user_id) {
+                    this.addCollectHttp()
                 } else {
                     this.$toast('请在个人中心登录后操作')
                 }
+            },
+            addCollectHttp(){
+                let url = 'yjt/goodsfavorites/favoritesorcancel/' + this.id
+                this.$http.get(url).then((res) => {
+                    if (res.data.code === '200') {
+                        if (this.detailData.ISFAVORITES == 1) {
+                            this.isCur = false;
+                            this.detailData.ISFAVORITES = 0;
+                            this.$toast('取消成功');
+                        } else if (this.detailData.ISFAVORITES == 0) {
+                            this.isCur = true;
+                            this.detailData.ISFAVORITES = 1;
+                            this.$toast('收藏成功');
+                        } else {
+                            this.isCur = false;
+                        }
+                    } else {
+                        this.$toast('操作失败')
+                    }
+                    console.log(res.data)
+                }).catch((err) => {
+                    console.log(err)
+                });
             },
             getData() {  //获取详情,评论,提问
                 this.id = this.$route.params.id;
@@ -228,6 +244,11 @@
                     this.detailData = data1.data;
                     this.commentsData = data2.data;
                     this.questionData = data3.data;
+
+                    if (this.commentsData.totalRow > 0) {  //判断底部点评数字是否显示
+                        this.isComShow = true;
+                    }
+
                     if (this.detailData.ISFAVORITES && this.detailData.ISFAVORITES == 1) {
                         this.isCur = true;
                     }
@@ -275,37 +296,51 @@
                 });
             },
             sendQuestion(){  //提问
-                if (this.$store.state.user_id) {
-                    //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
-                    var qs = require('qs');
-                    if (this.val !== '') {
-                        this.$http.post('yjt/goodsquestion/add', qs.stringify({
-                            shoid: this.id,
-                            content: this.val
-                        })).then((res) => {
-                            if (res.data.code === '200') {
-                                this.$toast('提交成功');
-                                this.questionData.list.unshift({
-                                    CONTENT: this.val,
-                                    USER_NAME: '',
-                                    HEAD_PIC: '',
-                                    REPALYLIST: [],
-                                    CREATE_TIME: new Date()
-                                });
-                                this.questionData.totalRow += 1;
-                                this.val = '';
-                            } else {
-                                this.$toast('提交失败')
-                            }
-
-                        }).catch((err) => {
-                            console.log(err)
-                        });
-                    } else {
-                        this.$toast('请输入提问内容')
-                    }
+                let local_user_id = window.localStorage.getItem('user_id');
+                if (local_user_id && !this.$store.state.user_id) {
+                    //用户关掉浏览器后再次进入,此时本地有存在用户user_id,vuex中无用户信息
+                    this.$http.get('yjt/weixin/userinfo?user_id=' + local_user_id).then((res) => {
+                        // this.$toast(res.data.code)
+                        if (res.data.code == '200') {
+                            this.$store.dispatch('setuserid', local_user_id);//存储到vuex
+                            this.$store.dispatch('setusermsg', res.data.result) //个人中心界面使用
+                            this.sendQuestionHttp()
+                        }
+                    })
+                } else if (this.$store.state.user_id) {
+                    this.sendQuestionHttp()
                 } else {
                     this.$toast('请在个人中心登录后操作')
+                }
+            },
+            sendQuestionHttp(){
+                //  let url = 'yjt/goodsquestion/add?shoid=4&content=999888';
+                var qs = require('qs');
+                if (this.val !== '') {
+                    this.$http.post('yjt/goodsquestion/add', qs.stringify({
+                        shoid: this.id,
+                        content: this.val
+                    })).then((res) => {
+                        if (res.data.code === '200') {
+                            this.$toast('提交成功');
+                            this.questionData.list.unshift({
+                                CONTENT: this.val,
+                                USER_NAME: '',
+                                HEAD_PIC: '',
+                                REPALYLIST: [],
+                                CREATE_TIME: new Date()
+                            });
+                            this.questionData.totalRow += 1;
+                            this.val = '';
+                        } else {
+                            this.$toast('提交失败')
+                        }
+
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                } else {
+                    this.$toast('请输入提问内容')
                 }
             }
         }
@@ -316,14 +351,17 @@
         position: relative;
         background-color: white;
     }
+
     .wrap_top img {
         width: 100%;
     }
+
     .wrap_top h2 {
         font-size: 1.6rem;
         padding: 0.8rem;
         margin: 0;
     }
+
     .wrap_top .txt_msg {
         font-size: 1.2rem;
         line-height: 1.8rem;
@@ -331,21 +369,25 @@
         color: #737373;
         padding: 0 0.8rem;
     }
+
     .wrap_msg {
         line-height: 3rem;
         font-size: 1.2rem;
         color: #fa6e51;
         padding: 0 0.6rem;
     }
+
     .wrap_msg mark {
         font-size: 2.4rem;
         background: none;
         color: #fa6e51;
     }
+
     .wrap_msg .apply_num {
         color: #666666;
         padding-left: 1rem;
     }
+
     .wrap_top .mint-cell-value {
         flex: 2.4;
         height: 48px;
@@ -354,26 +396,34 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
+
     .wrap_place {
         background-color: white;
         margin: 1rem 0;
     }
+
     .wrap_place .mint-cell-title {
         font-size: 1.4rem;
         padding: 1rem 0;
         line-height: 1.4rem;
     }
+
     .wrap_place p {
         font-size: 1.6rem;
         line-height: 3.6rem;
         padding-left: 1rem;
     }
+
     .detail_page {
         .ticket_msg {
             flex: 5;
         }
-        .v-modal{ text-align:right;}
-        .v-modal img{ width: 70%;}
+        .v-modal {
+            text-align: right;
+        }
+        .v-modal img {
+            width: 70%;
+        }
         .stars {
             display: inline-block;
             width: 7.5rem;
@@ -417,7 +467,6 @@
         .collect_btn.cur_no {
             background-position: 0 90%;
         }
-
 
         .mint-navbar {
             border-bottom: 1px solid #cccccc

@@ -39,7 +39,7 @@
                             <div class="list_item">
                                 <div class="img_box"><img :src="item.HEAD_PIC"></div>
                                 <div class="ticket_msg">
-                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i :style="{width: parseInt(item.SOCRE)*1.5 + 'rem' }"></i></span>
+                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i :style="{width: 1.5*parseInt(item.SCORE) + 'rem' }"></i></span>
                                     <p>{{item.CREATE_TIME}}</p>
                                     <p>{{item.CONTENT}}</p>
                                 </div>
@@ -60,7 +60,7 @@
                     <ul class="list_box">
                         <li v-for="item in questionData.list">
                             <div class="list_item">
-                                <div class="img_box"><img src="../assets/user_default.png"></div>
+                                <div class="img_box"><img :src="item.HEAD_PIC"></div>
                                 <div class="ticket_msg">
                                     <span class="title">{{item.USER_NAME}}</span>
                                     <span>{{item.CREATE_TIME}}</span>
@@ -325,10 +325,10 @@
                             this.$toast('提交成功');
                             this.questionData.list.unshift({
                                 CONTENT: this.val,
-                                USER_NAME: '',
-                                HEAD_PIC: '',
+                                USER_NAME:this.$store.state.user_msg.userNickname,
+                                HEAD_PIC: this.$store.state.user_msg.userHeadImgurl,
                                 REPALYLIST: [],
-                                CREATE_TIME: new Date()
+                                CREATE_TIME:'刚刚'
                             });
                             this.questionData.totalRow += 1;
                             this.val = '';
@@ -438,11 +438,13 @@
             height: 1.5rem;
             background: url("../assets/star.png") no-repeat;
             background-position: left top;
-            background-size: cover;
+            background-size: auto 235%;
             position: absolute;
+
             left: 0;
             top: 0;
         }
+
         .reply_msg {
             padding: 0.5rem;
             background-color: #fff5dd;

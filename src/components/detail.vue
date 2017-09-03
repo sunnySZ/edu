@@ -39,7 +39,8 @@
                             <div class="list_item">
                                 <div class="img_box"><img :src="item.HEAD_PIC"></div>
                                 <div class="ticket_msg">
-                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i :style="{width: 1.5*parseInt(item.SCORE) + 'rem' }"></i></span>
+                                    <span class="title">{{item.USER_NAME}}</span> <span class="stars"><i
+                                        :style="{width: 1.5*parseInt(item.SCORE) + 'rem' }"></i></span>
                                     <p>{{item.CREATE_TIME}}</p>
                                     <p>{{item.CONTENT}}</p>
                                 </div>
@@ -105,6 +106,7 @@
     </div>
 </template>
 <script>
+    import wx from 'weixin-js-sdk'
     import {MessageBox} from 'mint-ui';
     export default{
         data(){
@@ -132,13 +134,13 @@
                     curPage: 1,
                     pageSize: 5
                 },
-                userInfo: {
-                    nick: null,
-                    ulevel: null,
-                    uid: null,
-                    portrait: null
-                }
+                sharePic: '',
+                shareTitle: '',
+                shareDesc: ''
             }
+        },
+        mounted(){
+
         },
         created(){
             this.getData();
@@ -159,9 +161,106 @@
                 this.isModal = false;
             },
             viewComments(){
-                var offsetTop = document.querySelectorAll('.comment_pos')[0].offsetTop;
+                let offsetTop = document.querySelectorAll('.comment_pos')[0].offsetTop;
                 document.body.scrollTop = offsetTop
                 this.selected = '2'
+            },
+            getSign(){
+                let url = window.location.href.split("#")[0];
+                this.$http.get("yjt/weixin/weixinJsConfigSign?url=" + url).then((res) => {
+                    this.wxInit(res.data.result);
+                });
+            },
+            wxInit(sd){
+                /*
+                 this.shareTitle=data1.data.NAME;
+                 this.shareDesc=data1.data.REMARKS;
+                 this.sharePic=data1.data.S_PIC;*/
+                let _this = this;
+                //http://www.youertong.cn/index.html#/detail/4
+                //http://www.youertong.cn/index.html?from=singlemessage&isappinstalled=0#/detail/4
+                let links = window.location.href;  //分享出去的链接
+                let title = '【幼教通】' + _this.detailData.NAME;  //分享的标题
+                let desc = _this.detailData.REMARKS ? _this.detailData.REMARKS : '请添加分享介绍'; //分享的详情介绍
+                let imgUrl = _this.detailData.S_PIC;
+                wx.config({
+                    debug: false,
+                    appId: sd.appid,
+                    timestamp: sd.timestamp,
+                    nonceStr: sd.nonce_str,
+                    signature: sd.sign,
+                    jsApiList: [
+                        'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone'
+                    ]
+                });
+                wx.ready(function () {
+                    wx.onMenuShareTimeline({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: links, // 分享链接
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+                            _this.$toast("分享到朋友圈成功")
+                        },
+                        cancel: function () {
+                            _this.$toast("分享失败,您取消了分享!")
+                        }
+                    });
+                    //微信分享菜单测试
+                    wx.onMenuShareAppMessage({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: links, // 分享链接
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+                            _this.$toast("成功分享给朋友")
+                        },
+                        cancel: function () {
+                            _this.$toast("分享失败,您取消了分享!")
+                        }
+                    });
+
+                    wx.onMenuShareQQ({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: links, // 分享链接
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+                            _this.$toast("成功分享给QQ")
+                        },
+                        cancel: function () {
+                            _this.$toast("分享失败,您取消了分享!")
+                        }
+                    });
+                    wx.onMenuShareWeibo({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: links, // 分享链接
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+                            _this.$toast("成功分享给朋友")
+                        },
+                        cancel: function () {
+                            _this.$toast("分享失败,您取消了分享!")
+                        }
+                    });
+                    wx.onMenuShareQZone({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: links, // 分享链接
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+                            _this.$toast("成功分享给朋友")
+                        },
+                        cancel: function () {
+                            _this.$toast("分享失败,您取消了分享!")
+                        }
+                    });
+                });
+                wx.error(function (res) {
+                    // alert("error")
+                    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                });
             },
             buyNow(){
                 if (this.isWeiXin()) {
@@ -245,6 +344,9 @@
                     this.commentsData = data2.data;
                     this.questionData = data3.data;
 
+                    //调用微信分享
+                    this.getSign();
+
                     if (this.commentsData.totalRow > 0) {  //判断底部点评数字是否显示
                         this.isComShow = true;
                     }
@@ -325,10 +427,10 @@
                             this.$toast('提交成功');
                             this.questionData.list.unshift({
                                 CONTENT: this.val,
-                                USER_NAME:this.$store.state.user_msg.userNickname,
+                                USER_NAME: this.$store.state.user_msg.userNickname,
                                 HEAD_PIC: this.$store.state.user_msg.userHeadImgurl,
                                 REPALYLIST: [],
-                                CREATE_TIME:'刚刚'
+                                CREATE_TIME: '刚刚'
                             });
                             this.questionData.totalRow += 1;
                             this.val = '';

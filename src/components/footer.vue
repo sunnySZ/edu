@@ -14,7 +14,7 @@
                 <i class="icon3"></i>年龄
             </router-link>
             <router-link to="/activity" tag="li" activeClass="active">
-                <i class="icon2"></i>附近
+                <i class="icon2"></i>全部
             </router-link>
             <router-link to="/my" tag="li" activeClass="active">
                 <i class="icon4"></i>我的

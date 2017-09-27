@@ -69,15 +69,26 @@
         },
         methods: {
             getSign(){
-                var url = window.location.href.split("#")[0];
-                this.$http.get("yjt/weixin/weixinJsConfigSign?url=" + url).then((res) => {
+                //http://www.youertong.cn/index.html#/select/
+                //http://www.youertong.cn/index.html?from=singlemessage&isappinstalled=0#/select/
+                //var url = encodeURIComponent(window.location.href.split("#")[0]);
+
+                var url = '',
+                    wurl = window.location.href;
+                if (wurl.indexOf('?from') >= 0) {
+                    url = window.location.href.split("?")[0];
+                } else {
+                    url = window.location.href.split("#")[0];
+                }
+
+                this.$http.get("yjt/weixin/weixinJsConfigSign?url=" + encodeURIComponent(url)).then((res) => {
                     this.wxInit(res.data.result);
                 });
             },
             wxInit(sd){
                 var _this = this;
                 wx.config({
-                    debug: false,
+                    debug: true,
                     appId: sd.appid,
                     timestamp: sd.timestamp,
                     nonceStr: sd.nonce_str,
@@ -96,13 +107,13 @@
                             var accuracy = res.accuracy; // 位置精度
                             _this.params.lat = latitude;
                             _this.params.lng = longitude;
-                           // alert('您的位置是'+_this.params.lat+','+ _this.params.lng);
+                            // alert('您的位置是'+_this.params.lat+','+ _this.params.lng);
                             //初始化刷新请求数据
                             _this.$indicator.open();
                             _this.getData(true)
                         },
-                        fail:function(){
-                            alert("请开启微信位置权限")
+                        fail: function () {
+                            //  alert("请开启微信位置权限")
                         },
                         cancel: function () {
                             alert("请同意获取地理位置")
@@ -111,7 +122,7 @@
                     })
                 });
                 wx.error(function (res) {
-                    alert(res+'error')
+                    //  alert(res+'error')
                     // alert("error")
                     // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
                 });
@@ -158,22 +169,22 @@
                     this.$indicator.close()
                     let lists = res.data.list;
                     this.listLoading = false;
-                        if (this.params.curPage >= res.data.totalPage) {
-                            this.allLoaded = true;
-                            if (this.params.curPage != 1) {
-                                this.$toast('没有更多了...')
-                            }
-                        } else {
-                            this.allLoaded = false;
+                    if (this.params.curPage >= res.data.totalPage) {
+                        this.allLoaded = true;
+                        if (this.params.curPage != 1) {
+                            this.$toast('没有更多了...')
                         }
-                        if (isRefresh) {
-                            this.activityData = lists
-                          //  this.$indicator.close();//隐藏loading
-                            this.$refs.loadmore.onTopLoaded();//关闭下拉loading动画
-                        } else {
-                           this.activityData = this.activityData.concat(lists)
-                            this.$refs.loadmore.onBottomLoaded();//关闭上拉loading动画
-                        }
+                    } else {
+                        this.allLoaded = false;
+                    }
+                    if (isRefresh) {
+                        this.activityData = lists
+                        //  this.$indicator.close();//隐藏loading
+                        this.$refs.loadmore.onTopLoaded();//关闭下拉loading动画
+                    } else {
+                        this.activityData = this.activityData.concat(lists)
+                        this.$refs.loadmore.onBottomLoaded();//关闭上拉loading动画
+                    }
                 }).catch((err) => {
                     //上下拉loading动画关闭
                     if (isRefresh) {
@@ -199,7 +210,7 @@
                     this.$refs.loadmore.onBottomLoaded();
                 } else {
                     this.allLoaded = true;
-                  //  this.getData(false)
+                    //  this.getData(false)
                 }
             }
         },

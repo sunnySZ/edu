@@ -53,7 +53,7 @@
                 topStatus: '',
                 params: {
                     curPage: 1,
-                    pageSize: 5,
+                    pageSize:5,
                     lat: 22.67165,
                     lng: 114.014654,
                     dis: 200,
@@ -65,22 +65,13 @@
             this.getSign();
         },
         created(){
-
         },
         methods: {
             getSign(){
                 //http://www.youertong.cn/index.html#/select/
                 //http://www.youertong.cn/index.html?from=singlemessage&isappinstalled=0#/select/
                 //var url = encodeURIComponent(window.location.href.split("#")[0]);
-
-                var url = '',
-                    wurl = window.location.href;
-                if (wurl.indexOf('?from') >= 0) {
-                    url = window.location.href.split("?")[0];
-                } else {
-                    url = window.location.href.split("#")[0];
-                }
-
+                var url = window.location.href.split("#")[0];
                 this.$http.get("yjt/weixin/weixinJsConfigSign?url=" + encodeURIComponent(url)).then((res) => {
                     this.wxInit(res.data.result);
                 });
@@ -88,13 +79,13 @@
             wxInit(sd){
                 var _this = this;
                 wx.config({
-                    debug: true,
+                    debug: false,
                     appId: sd.appid,
                     timestamp: sd.timestamp,
                     nonceStr: sd.nonce_str,
                     signature: sd.sign,
                     jsApiList: [
-                        'getLocation',
+                        'getLocation'
                     ]
                 });
                 wx.ready(function () {
@@ -210,7 +201,7 @@
                     this.$refs.loadmore.onBottomLoaded();
                 } else {
                     this.allLoaded = true;
-                    //  this.getData(false)
+                  //  this.getData(false)
                 }
             }
         },

@@ -37,7 +37,7 @@
                 listLoading: false,
                 allLoaded: true,//默认下拉数据加载完毕，不调用loadBottom方法
                 selected: 1,
-                nodata:false,
+                nodata: false,
                 params: {
                     curPage: 1,
                     pageSize: 5
@@ -51,29 +51,29 @@
             selected(curVal, oldVal){
                 switch (curVal) {
                     case 1:
-                        this.agetags="0,0.5";
+                        this.agetags = "0,0.5";
                         break;
                     case 2:
-                        this.agetags="0.5,1";
+                        this.agetags = "0.5,1";
                         break;
                     case 3:
-                        this.agetags="1,2";
+                        this.agetags = "1,2";
                         break;
                     case 4:
-                        this.agetags="2,3";
+                        this.agetags = "2,3";
                         break;
                     case 5:
-                        this.agetags="3,6";
+                        this.agetags = "3,6";
                         break;
                     case 6:
-                        this.agetags="6,12";
+                        this.agetags = "6,12";
                         break;
                 }
                 //初始化数据
                 this.tabData = [];
                 this.nodata = false;
                 this.$indicator.open();
-               this.getData(true)
+                this.getData(true)
             }
         },
         created(){
@@ -82,17 +82,17 @@
         methods: {
             getAgelist(){
                 this.$indicator.open();
-              //  this.listLoading=true; //控制
+                //  this.listLoading=true; //控制
                 let httpArr = [
                     this.$http.get('yjt/shopgoods/agetaglist'), //年龄标签
-                    this.$http.get('yjt/shopgoods/pagelist/1-5?agetag=0,2') //年龄商品搜索
+                    this.$http.get('yjt/shopgoods/pagelist/1-5?agetag=0,2&tsort=1&psort=1') //年龄商品搜索
                 ];
                 //  var url = 'yjt/shopgoods/agetaglist';
                 this.$http.all(httpArr).then(this.$http.spread((data1, data2) => {
                     this.$indicator.close();
                     this.tagData = data1.data;
                     this.tabData = data2.data.list;
-              //      this.listLoading=false;
+                    //      this.listLoading=false;
                 }));
             },
             getData(isRefresh){
@@ -106,7 +106,7 @@
                 }
                 //   附近活动列表 {当前页}-{每页显示条数}   dis单位千米 0.5表示500米内的活动
                 // yjt/shopgoods/nearbypagelist/1-5?lat=22.67165&lng=114.014654&dis=0.5
-                let url = 'yjt/shopgoods/pagelist/' + this.params.curPage + '-' + this.params.pageSize + '?agetag=' + this.agetags;
+                let url = 'yjt/shopgoods/pagelist/' + this.params.curPage + '-' + this.params.pageSize + '?agetag=' + this.agetags + '&tsort=1&psort=1';
                 this.$http.get(url).then((res) => {
                     this.$indicator.close()
                     let lists = res.data.list;
@@ -166,7 +166,6 @@
 
         padding-top: 60px;
         padding-bottom: 56px;
-
 
     }
 </style>

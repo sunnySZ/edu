@@ -1,8 +1,8 @@
 <template>
     <div class="activity_page">
-        <ul class="hot_list">
-            <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore"
-                         :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" topLoadingText="加载中...">
+        <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore"
+                     :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" topLoadingText="加载中...">
+            <ul class="hot_list">
                 <li v-for="(item,index) in activityData">
                     <router-link :to="{ name: 'detail',params: { id: item.ID }}">
                         <img :src="item.S_PIC"/>
@@ -16,8 +16,10 @@
                         <span class="num">已售94份</span>
                     </router-link>
                 </li>
-            </mt-loadmore>
-        </ul>
+            </ul>
+        </mt-loadmore>
+
+
         <!--<ul class="hot_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="allLoaded"
             infinite-scroll-distance="50">
             <li v-for="(item,index) in activityData">
@@ -53,7 +55,7 @@
                 topStatus: '',
                 params: {
                     curPage: 1,
-                    pageSize:5,
+                    pageSize: 5,
                     lat: 22.67165,
                     lng: 114.014654,
                     dis: 200,
@@ -138,7 +140,6 @@
              });
              },*/
             getData(isRefresh){
-
                 //isRefresh,bool==true是下拉刷新，false表示是上拉加载更多
                 if (this.listLoading) return;
                 this.listLoading = true;
@@ -201,7 +202,7 @@
                     this.$refs.loadmore.onBottomLoaded();
                 } else {
                     this.allLoaded = true;
-                  //  this.getData(false)
+                    //  this.getData(false)
                 }
             }
         },

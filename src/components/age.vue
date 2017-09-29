@@ -6,9 +6,9 @@
         <mt-navbar class="page-part" v-model="selected" fixed>
             <mt-tab-item v-for="(item,index) in tagData" :id="index+1">{{item.NAME}}</mt-tab-item>
         </mt-navbar>
-        <ul class="hot_list">
-            <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore"
-                         :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" topLoadingText="加载中...">
+        <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore"
+                     :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" topLoadingText="加载中...">
+            <ul class="hot_list">
                 <li v-for="(item,index) in tabData">
                     <router-link :to="{ name: 'detail',params: { id: item.ID }}">
                         <img :src="item.S_PIC"/>
@@ -22,10 +22,9 @@
                         <span class="num">已售94份</span>
                     </router-link>
                 </li>
-            </mt-loadmore>
-        </ul>
 
-
+            </ul>
+        </mt-loadmore>
         <Foot></Foot>
     </div>
 </template>
@@ -38,6 +37,7 @@
                 allLoaded: true,//默认下拉数据加载完毕，不调用loadBottom方法
                 selected: 1,
                 nodata: false,
+                topStatus: '',
                 params: {
                     curPage: 1,
                     pageSize: 5
@@ -78,6 +78,7 @@
         },
         created(){
             this.getAgelist();
+             this.getData(true)
         },
         methods: {
             getAgelist(){
@@ -85,17 +86,17 @@
                 //  this.listLoading=true; //控制
                 let httpArr = [
                     this.$http.get('yjt/shopgoods/agetaglist'), //年龄标签
-                    this.$http.get('yjt/shopgoods/pagelist/1-5?agetag=0,2&tsort=1&psort=1') //年龄商品搜索
+                 //   this.$http.get('yjt/shopgoods/pagelist/1-5?agetag=0,2&tsort=1&psort=1') //年龄商品搜索
                 ];
                 //  var url = 'yjt/shopgoods/agetaglist';
-                this.$http.all(httpArr).then(this.$http.spread((data1, data2) => {
+                this.$http.all(httpArr).then(this.$http.spread((data1) => {
                     this.$indicator.close();
                     this.tagData = data1.data;
-                    this.tabData = data2.data.list;
-                    //      this.listLoading=false;
+                  //  this.tabData = data2.data.list;
                 }));
             },
             getData(isRefresh){
+
                 //isRefresh,bool==true是下拉刷新，false表示是上拉加载更多
                 if (this.listLoading) return;
                 this.listLoading = true;
@@ -121,7 +122,7 @@
                     }
                     if (isRefresh) {
                         this.tabData = lists
-                        //  this.$indicator.close();//隐藏loading
+                        this.$indicator.close();//隐藏loading
                         this.$refs.loadmore.onTopLoaded();//关闭下拉loading动画
                     } else {
                         this.tabData = this.tabData.concat(lists)
@@ -146,7 +147,6 @@
                 this.topStatus = status;
             },
             loadBottom(){
-
                 //上拉加载更多
                 if (this.listLoading) {
                     this.$refs.loadmore.onBottomLoaded();
@@ -155,6 +155,7 @@
                     this.getData(false)
                 }
             }
+
         },
         components: {
             Foot

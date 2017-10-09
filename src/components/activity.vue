@@ -1,23 +1,42 @@
 <template>
     <div class="activity_page">
-        <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore"
+        <ul class="sortItem">
+            <li><span>年龄：</span>
+                <a v-for="(item, index) in agelist"
+                   :class="{'cur':ind1 === index}"
+                   @click="select_age(index)">{{item}}</a>
+            </li>
+            <li><span>距离：</span>
+                <a v-for="(item, index) in dislist"
+                   :class="{'cur':ind2 === index}"
+                   @click="select_dis(index)">{{item}}</a>
+            </li>
+            <li><span>价格：</span><a val="">全部</a><input/>-<input/>元</li>
+            <li><span></span>
+                <a v-for="(item, index) in sortlist"
+                   :class="{'cur':ind3 === index}"
+                   @click="select_sort(index)">{{item}}</a>
+                <mt-button size="small" type="primary" @click.native="handleButtonClick">查询</mt-button>
+            </li>
+        </ul>
+        <!--<mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore"
                      :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" topLoadingText="加载中...">
-            <ul class="hot_list">
-                <li v-for="(item,index) in activityData">
-                    <router-link :to="{ name: 'detail',params: { id: item.ID }}">
-                        <img :src="item.S_PIC"/>
-                        <aside class="aside">
-                            <p>{{item.NAME}}</p>
-                            <span>返利18元</span>
-                            <span>分享有礼</span>
-                            <span>点评有礼</span>
-                        </aside>
-                        <span class="price">￥<mark>{{item.PRICE}}</mark>起</span>
-                        <span class="num">已售94份</span>
-                    </router-link>
-                </li>
-            </ul>
-        </mt-loadmore>
+        </mt-loadmore>-->
+        <ul class="hot_list">
+            <li v-for="(item,index) in activityData">
+                <router-link :to="{ name: 'detail',params: { id: item.ID }}">
+                    <img :src="item.S_PIC"/>
+                    <aside class="aside">
+                        <p>{{item.NAME}}</p>
+                        <span>返利18元</span>
+                        <span>分享有礼</span>
+                        <span>点评有礼</span>
+                    </aside>
+                    <span class="price">￥<mark>{{item.PRICE}}</mark>起</span>
+                    <span class="num">已售94份</span>
+                </router-link>
+            </li>
+        </ul>
 
 
         <!--<ul class="hot_list" v-infinite-scroll="loadMore" infinite-scroll-disabled="allLoaded"
@@ -49,26 +68,96 @@
     export default{
         data(){
             return {
+                agelist: ['全部', '0-2岁', '2-4岁', '4-6岁', '6-12岁'],
+                ind1: '0',
+                dislist: ['全部', '500米', '1000米', '2000米', '5000米'],
+                ind2: '0',
+                sortlist: ['按人气', '按价格', '上架时间'],
+                ind3: '0',
                 listLoading: false,//加载中
                 allLoaded: true,//默认下拉数据加载完毕，不调用loadBottom方法
                 activityData: [],
                 topStatus: '',
                 params: {
+                    kw: "",
+                    agetag: "",
+                    tsort: 1,
+                    psort: 1,
                     curPage: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                     lat: 22.67165,
                     lng: 114.014654,
-                    dis: 200,
+                    dis: 5000,
+                    pricestart: '',
+                    priceend: ''
                 },
                 listType: 6  //活动
             }
         },
         mounted(){
-            this.getSign();
+              this.getSign();
         },
         created(){
+          //  this.getData(true)
         },
         methods: {
+            select_age: function (index) {
+                this.ind1 = index;
+                switch (index) {
+                    case 0:
+                        this.params.agetag = "";
+                        break;
+                    case 1:
+                        this.params.agetag = "0,2";
+                        break;
+                    case 2:
+                        this.params.agetag = "2,4";
+                        break;
+                    case 3:
+                        this.params.agetag = "4,6";
+                        break;
+                    case 4:
+                        this.params.agetag = "6,12";
+                        break;
+                }
+            },
+            select_dis: function (index) {
+                this.ind2 = index;
+                switch (index) {
+                    case 0:
+                        this.params.dis = "5000";
+                        break;
+                    case 1:
+                        this.params.dis = "0.5";
+                        break;
+                    case 2:
+                        this.params.dis = "1";
+                        break;
+                    case 3:
+                        this.params.dis = "2";
+                        break;
+                    case 4:
+                        this.params.dis = "5";
+                        break;
+                }
+            },
+            select_sort: function (index) {
+                this.ind3 = index;
+                switch (index) {
+                    case 0:
+                        this.params.psort =1;
+                        break;
+                    case 1:
+                        this.params.psort = 3;
+                        break;
+                    case 2:
+                        this.params.psort = 2;
+                        break;
+                }
+            },
+            handleButtonClick(){
+                this.getData(true)
+            },
             getSign(){
                 //http://www.youertong.cn/index.html#/select/
                 //http://www.youertong.cn/index.html?from=singlemessage&isappinstalled=0#/select/
@@ -151,8 +240,23 @@
                 //   附近活动列表 {当前页}-{每页显示条数}   dis单位千米 0.5表示500米内的活动
                 // yjt/shopgoods/nearbypagelist/1-5?lat=22.67165&lng=114.014654&dis=0.5
                 let url = 'yjt/shopgoods/nearbypagelist/' + this.params.curPage + '-' + this.params.pageSize;
+
+                /*活动搜索列表
+                 {当前页}-{每页显示条数} kw=搜索关键词  agetag年龄标签  value值  多个 用逗号分隔
+                 tsort:1降序 2为升序
+                 psort:1人气  2上架时间 3价格
+                 dis单位千米 0.5表示500米内的活动
+                 pricestart:开始价格
+                 priceend:结束价格*/
+                //       http://121.40.154.136/yjt/shopgoods/pagelist/1-5?kw=西&agetag=0,2&tsort=1&psort=1&lat=22.67165&lng=114.014654&dis=0.5&pricestart=1&priceend=8
+
+                this.$indicator.open();
                 this.$http.get(url, {
                     params: {
+                        kw: this.params.kw,
+                        agetag: this.params.agetag,
+                        tsort: this.params.tsort,
+                        psort: this.params.psort,
                         lat: this.params.lat,
                         lng: this.params.lng,
                         dis: this.params.dis
@@ -172,47 +276,21 @@
                     if (isRefresh) {
                         this.activityData = lists
                         //  this.$indicator.close();//隐藏loading
-                        this.$refs.loadmore.onTopLoaded();//关闭下拉loading动画
+
                     } else {
                         this.activityData = this.activityData.concat(lists)
-                        this.$refs.loadmore.onBottomLoaded();//关闭上拉loading动画
+
                     }
                 }).catch((err) => {
-                    //上下拉loading动画关闭
-                    if (isRefresh) {
-                        this.$indicator.close();//隐藏loading
-                        this.$refs.loadmore.onTopLoaded();
-                    } else {
-                        this.$refs.loadmore.onBottomLoaded();
-                    }
+
                     console.log(err)
                 });
 
             },
-            loadTop(){
-                //下拉刷新数据
-                this.getData(true)
-            },
-            handleTopChange(status){
-                this.topStatus = status;
-            },
-            loadBottom(){
-                //上拉加载更多
-                if (this.listLoading) {
-                    this.$refs.loadmore.onBottomLoaded();
-                } else {
-                    this.allLoaded = true;
-                    //  this.getData(false)
-                }
-            }
         },
         /*watch: {
          selected(curVal, oldVal){
-         console.log(curVal)
-         this.$indicator.open()
-         setTimeout(() => {
-         this.$indicator.close()
-         }, 1000)
+
          }
          },*/
         components: {
@@ -223,5 +301,46 @@
 <style lang="less">
     .activity_page {
         margin-bottom: 56px;
+        padding-top: 11rem;
+        .sortItem {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            position: fixed;
+            width: 100%;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            height: 10rem;
+        }
+        .sortItem li {
+            list-style: none;
+            position: relative;
+            padding-left: 3rem;
+            line-height: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .sortItem li span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3rem;
+        }
+        .sortItem li a {
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+        .sortItem li a.cur {
+            background-color: #fa6e51;
+            color: white;
+        }
+        .sortItem li input {
+            width: 4rem;
+            margin: 0 0.5rem;
+        }
+        .mint-button--small {
+            height: 28px;
+            padding: 5px 10px;
+            margin-left: 3rem;
+        }
     }
 </style>

@@ -37,7 +37,7 @@ const router = new VueRouter({
     routes: [
         {path: '*', redirect: '/select/', meta: {title: '精选'}},//默认显示
         {name: 'select', path: '/select/', component: Select, meta: {title: '精选'}},
-        {name: 'activity', path: '/activity', component: Activity, meta: {title: '活动'}},
+        {name: 'activity', path: '/activity', component: Activity, meta: {title: '全部'}},
         // {name: 'ticket', path: '/ticket', component: Ticket,meta:{title:'购票'}},
         {name: 'my', path: '/my', component: My, meta: {title: '个人中心', auth: true}},
         {name: 'search', path: '/search', component: Search, meta: {title: '搜索'}},
@@ -53,7 +53,7 @@ const router = new VueRouter({
         {name: 'comments', path: '/comments', component: Comments, meta: {title: '评价', auth: true}},
         {name: 'myActivity', path: '/myActivity', component: MyActivity, meta: {title: '我的活动', auth: true}},
         {name: 'myActivityInfo', path: '/myActivityInfo', component: MyActivityInfo, meta: {title: '我的活动', auth: true}},
-        {name: 'age', path: '/age', component: Age, meta: {title: '年龄百宝箱'}}
+       /* {name: 'age', path: '/age', component: Age, meta: {title: '年龄百宝箱'}}*/
     ]
 })
 

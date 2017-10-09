@@ -10,9 +10,9 @@
             <router-link to="/select/" tag="li" activeClass="active">
                 <i class="icon1"></i>精选
             </router-link>
-            <router-link to="/age/" tag="li" activeClass="active">
+            <!--<router-link to="/age/" tag="li" activeClass="active">
                 <i class="icon3"></i>年龄
-            </router-link>
+            </router-link>-->
             <router-link to="/activity" tag="li" activeClass="active">
                 <i class="icon2"></i>全部
             </router-link>

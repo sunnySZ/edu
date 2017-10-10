@@ -11,7 +11,7 @@
                    :class="{'cur':ind2 === index}"
                    @click="select_dis(index)">{{item}}</a>
             </li>
-            <li><span>价格：</span><a val="">全部</a><input/>-<input/>元</li>
+            <li><span>价格：</span><input v-model="val_start" />-<input v-model="val_end"/>元</li>
             <li><span></span>
                 <a v-for="(item, index) in sortlist"
                    :class="{'cur':ind3 === index}"
@@ -74,6 +74,8 @@
                 ind2: '0',
                 sortlist: ['按人气', '按价格', '上架时间'],
                 ind3: '0',
+                val_start:'',
+                val_end:'',
                 listLoading: false,//加载中
                 allLoaded: true,//默认下拉数据加载完毕，不调用loadBottom方法
                 activityData: [],
@@ -259,7 +261,9 @@
                         psort: this.params.psort,
                         lat: this.params.lat,
                         lng: this.params.lng,
-                        dis: this.params.dis
+                        dis: this.params.dis,
+                        pricestart:this.val_start,
+                        priceend:this.val_end
                     }
                 }).then((res) => {
                     this.$indicator.close()
@@ -301,7 +305,7 @@
 <style lang="less">
     .activity_page {
         margin-bottom: 56px;
-        padding-top: 11rem;
+        padding-top: 13rem;
         .sortItem {
             padding: 0.5rem 1rem;
             background-color: white;
@@ -310,24 +314,28 @@
             left: 0;
             top: 0;
             z-index: 100;
-            height: 10rem;
+            height: 12rem;
         }
         .sortItem li {
             list-style: none;
             position: relative;
-            padding-left: 3rem;
-            line-height: 2rem;
+            padding-left: 4rem;
+            line-height: 2.4rem;
             margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            color:#666;
         }
         .sortItem li span {
             position: absolute;
             left: 0;
             top: 0;
-            width: 3rem;
+            width: 4.5rem;
+            color:#000;
         }
         .sortItem li a {
             display: inline-block;
-            padding: 0 0.5rem;
+            padding: 0 0.7rem;
+            color:#666;
         }
         .sortItem li a.cur {
             background-color: #fa6e51;
@@ -335,7 +343,7 @@
         }
         .sortItem li input {
             width: 4rem;
-            margin: 0 0.5rem;
+            margin:0 0.5rem;
         }
         .mint-button--small {
             height: 28px;
